@@ -7,7 +7,6 @@
           style="border: 10px solid white">
         </a>
       </h1>
-      <p class="lead">{{ site.tagline }}</p>
     </div>
 
     <nav class="sidebar-nav">
@@ -19,6 +18,11 @@
             <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url }}">{{ node.title }}</a>
           {% endif %}
         {% endif %}
+      {% endfor %}
+
+      <div class="sidebar-section">Zipkin around the web</div>
+      {% for link in site.data.sidebar_links %}
+        <a class="sidebar-nav-item" href="{{ link.url }}">{{ link.text }}</a>
       {% endfor %}
     </nav>
 

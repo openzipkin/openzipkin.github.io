@@ -1,0 +1,8 @@
+- url: https://github.com/openzipkin/zipkin
+  text: GitHub (source)
+
+- url: https://github.com/openzipkin/zipkin/issues
+  text: GitHub (issues)
+
+- url: http://twitter.com/zipkinproject
+  text: Twitter

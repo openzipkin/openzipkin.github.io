@@ -1,0 +1,10 @@
+/**
+ * Styles not part of the standard Hyde distribution, used to customize
+ * the Zipkin documentation site
+ */
+
+.sidebar-section {
+  margin-top: 15px;
+  font-size: 125%;
+  font-weight: bold;
+}
