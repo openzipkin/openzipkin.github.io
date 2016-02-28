@@ -3,7 +3,7 @@ title: Home
 weight: 0
 ---
 
-![Web interface screenshot]({{ site.baseurl }}public/img/web-screenshot.png)
+![Web interface screenshot]({{ site.github.url }}/public/img/web-screenshot.png)
 
 Zipkin is a distributed tracing system. It helps gather timing data needed to
 troubleshoot latency problems in microservice architectures. It manages both the
