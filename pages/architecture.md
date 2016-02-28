@@ -5,7 +5,7 @@ title: Architecture
 
 These are the components that make up a fully fledged tracing system.
 
-![Architecture overview]({{ site.base_url }}public/img/architecture-0.png)
+![Architecture overview]({{ site.github.url }}/public/img/architecture-0.png)
 
 Instrumented libraries
 ----------------------
@@ -15,7 +15,7 @@ and sent to Zipkin. When the host makes a request to another service, it passes
 a few tracing identifers along with the request so we can later tie the data
 together.
 
-![Instrumentation architecture]({{ site.base_url }}public/img/architecture-1.png)
+![Instrumentation architecture]({{ site.github.url }}/public/img/architecture-1.png)
 
 We have instrumented the libraries below to trace requests and to pass the
 required identifiers to the other services called in the request.
