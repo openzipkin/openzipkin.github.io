@@ -1,5 +1,6 @@
 ---
 title: Home
+weight: 0
 ---
 
 ![Web interface screenshot]({{ site.baseurl }}public/img/web-screenshot.png)

@@ -13,3 +13,5 @@ defaults:
   -
     values:
       layout: page
+      weight: 100   # Used to sort navbar items. Lower weight goes higher on the list.
+
