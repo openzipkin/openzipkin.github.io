@@ -1,0 +1,23 @@
+/**
+ * Styles not part of the standard Hyde distribution, used to customize
+ * the Zipkin documentation site
+ */
+
+.sidebar-section {
+  margin-top: 15px;
+  font-size: 125%;
+  font-weight: bold;
+}
+
+/* Code examples need a bit more space */
+figure.highlight {
+  margin-left: 0;
+}
+
+/* Make code snippets scrollable, as seen in https://monicagranbois.com/blog/webdev/formatting-code-with-pygments-and-jekyll/ */
+figure.highlight pre code {
+  white-space: pre;
+  display: block;
+  overflow-x: auto;
+  word-wrap: normal;
+}

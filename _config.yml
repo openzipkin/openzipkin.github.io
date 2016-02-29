@@ -1,0 +1,17 @@
+title: OpenZipkin
+
+tagline: A distributed tracing system
+
+description: >
+  Zipkin is a distributed tracing system. It helps gather timing data needed to
+  troubleshoot latency problems in microservice architectures.
+
+twitter_username: zipkinproject
+github_username:  openzipkin
+
+defaults:
+  -
+    values:
+      layout: page
+      weight: 100   # Used to sort navbar items. Lower weight goes higher on the list.
+
