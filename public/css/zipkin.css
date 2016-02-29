@@ -21,3 +21,8 @@ figure.highlight pre code {
   overflow-x: auto;
   word-wrap: normal;
 }
+
+/* Some tables need to be wide to make sense of them, even if it breaks the design and responsiveness */
+table.wide-table td {
+  white-space: nowrap;
+}

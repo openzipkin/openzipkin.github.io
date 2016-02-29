@@ -1,5 +1,6 @@
 ---
 title: Architecture
+weight: 2
 ---
 
 
@@ -17,69 +18,9 @@ together.
 
 ![Instrumentation architecture]({{ site.github.url }}/public/img/architecture-1.png)
 
-We have instrumented the libraries below to trace requests and to pass the
-required identifiers to the other services called in the request.
-
-Finagle
--------
-
-[Finagle](https://twitter.github.io/finagle/) is an asynchronous network stack
-for the JVM that you can use to build asynchronous Remote Procedure Call (RPC)
-clients and servers in Java, Scala, or any JVM-hosted language.
-
-[Finagle](https://twitter.github.io/finagle/) is used heavily inside of Twitter
-and it was a natural point to include tracing support. So far we have
-client/server support for Thrift and HTTP as well as client only support for
-Memcache and Redis.
-
-To set up a Finagle server in Scala, just do the following. Adding tracing is as
-simple as adding
-[finagle-zipkin](https://github.com/twitter/finagle/tree/master/finagle-zipkin)
-as a dependency and a `tracer` to the ServerBuilder.
-
-{% highlight java %}
-ServerBuilder()
-  .codec(ThriftServerFramedCodec())
-  .bindTo(serverAddr)
-  .name("servicename")
-  .tracer(ZipkinTracer.mk())
-  .build(new SomeService.FinagledService(queryService, new TBinaryProtocol.Factory()))
-{% endhighlight %}
-
-The tracing setup for clients is similar. When you've specified the Zipkin tracer
-as above a small sample of your requests will be traced automatically. We'll
-record when the request started and ended, services and hosts involved.
-
-In case you want to record additional information you can add a custom annotation
-in your code.
-
-{% highlight java %}
-Trace.record("starting that extremely expensive computation")
-{% endhighlight %}
-
-The line above will add an annotation with the string attached to the point in time
-when it happened. You can also add a key value annotation. It could look like this:
-
-{% highlight java %}
-Trace.recordBinary("http.status_code", "500")
-{% endhighlight %}
-
-Ruby Thrift
------------
-
-There's a [gem](https://rubygems.org/gems/finagle-thrift) we use to trace
-requests. In order to push the tracer and generate a trace id on a request you
-can use that gem in a RackHandler
-
-For tracing client calls from Ruby we rely on the Twitter
-[Ruby Thrift client](https://github.com/twitter/thrift_client) See below for an
-example on how to wrap the client.
-
-{% highlight ruby %}
-client = ThriftClient.new(SomeService::Client, "127.0.0.1:1234")
-client_id = FinagleThrift::ClientId.new(:name => "service_example.sample_environment")
-FinagleThrift.enable_tracing!(client, client_id), "service_name")
-{% endhighlight %}
+To see if an instrumentation library already exists for your platform, see the
+list of [existing instrumentations]({{ site.github.url
+}}/pages/existing_instrumentations).
 
 Transport
 ---------

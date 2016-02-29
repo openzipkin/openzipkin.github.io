@@ -2,48 +2,18 @@
 title: Instrumenting a library
 ---
 
-Finagle
--------
+This is an advanced topic. Before reading further, you may want to check whether
+an instrumentation library for your platform [already exists]({{ site.github.url
+}}/pages/existing_instrumentations).
+{: .message}
 
-Running a Finagle service makes it very easy to trace with Zipkin. If your
-service uses the DefaultTracer simply make your service depend on
-finagle-zipkin. That will inject the ZipkinTracer into the DefaultTracer and
-provide flags to set the host:port that it should send scribe messages to.
+So you want to send traces to Zipkin, and there is no existing library for your
+platform. If you want to take on creating an instrumentation library, here's
+what you'll need to do. First things first: jump on
+[Zipkin Gitter chat channel](https://gitter.im/openzipkin/zipkin). We'll be extremely
+happy to help you along the way.
 
-For current APIs the DefaultTracer is already used:
-
-{% highlight java %}
-Protocol.serve(...)
-Protocol.newClient(...)
-{% endhighlight %}
-
-When using the builders, however, the tracer parameter will need to be set:
-
-{% highlight java %}
-ServerBuilder()
-  .tracer(DefaultTracer)
-  ...
-  .build()
-
-ClientBuilder()
-  .tracer(DefaultTracer)
-  ...
-  .build()
-{% endhighlight %}
-
-Additional annotations can be recorded via the Trace object:
-
-{% highlight java %}
-Trace.record("time stamped annotation")
-Trace.recordBinary("annotation key", some value of nearly any type)
-{% endhighlight %}
-
-
-Instrumenting Other Libraries
------------------------------
-
-Let's walk through the parts required to instrument a service that doens't
-already have support for Zipkin.
+Alright, ready? Here we go.
 
 Core data structures
 --------------------
