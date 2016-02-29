@@ -13,13 +13,8 @@ Please refer to their individual documentation for setup and configuration
 guides.
 
 | Language | Library | Framework | Transports Supported | Sampling Supported? | Other notes |
-|:---------|:--------|:----------|:---------------------|:--------------------|:------------|
-| Python | [pyramid_zipkin](https://github.com/Yelp/pyramid_zipkin) | [Pyramid](http://docs.pylonsproject.org/projects/pyramid/en/latest/) |[Kafka \| Scribe](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-transport-handler) | [Yes](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-tracing-percent) | py2, py3 support. |
-| Java | [brave](https://github.com/openzipkin/brave) | Jersey, RestEASY, JAXRS2, Apache HttpClient, Mysql | Http, Kafka, Scribe | Yes | Java 7 or higher|
-| Java | [finagle-zipkin](https://github.com/twitter/finagle/tree/develop/finagle-zipkin) | Scribe | [Finagle](https://github.com/twitter/finagle) | Yes | |
-| Ruby | [zipkin-tracer](https://github.com/openzipkin/zipkin-tracer) | [Rack](http://rack.github.io/) | Http, Kafka, Scribe | Yes | lc support. Ruby 2.0 or higher|
-| C# | [ZipkinTracerModule](https://github.com/mdsol/Medidata.ZipkinTracerModule) | OWIN, HttpHandler | Http | Yes | lc support. 4.5.2 or higher |
-| Go | [go-zipkin](https://github.com/elodina/go-zipkin) | x/net Context | Kafka | Yes | |
+|:---------|:--------|:----------|:---------------------|:--------------------|:------------|{% for lib in site.data.existing_instrumentations %}
+| {{ lib.language }} | {{ lib.library }} | {{ lib.framework }} | {{ lib.transports }} | {{ lib.sampling }} | {{ lib.notes }} |{% endfor %}
 {: .wide-table}
 
 Did we miss a library? Please open a pull-request to
