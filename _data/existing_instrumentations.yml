@@ -17,7 +17,7 @@
   sampling: "Yes"
   notes: Java 7 or higher
 
-- language: Java
+- language: Scala
   library: >-
     [finagle-zipkin](https://github.com/twitter/finagle/tree/develop/finagle-zipkin) 
   framework: >-
