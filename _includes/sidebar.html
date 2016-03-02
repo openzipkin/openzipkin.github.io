@@ -1,16 +1,18 @@
 <div class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
-      <h1>
-        <a href="{{ site.github.url }}">
-          <img alt="OpenZipkin logo" src="{{ site.github.url }}/public/img/zipkin-logo-200x119.jpg"
-          style="border: 10px solid white">
-        </a>
-      </h1>
+      <a href="{{ site.github.url }}">
+        <img alt="OpenZipkin logo" src="{{ site.github.url }}/public/img/zipkin-logo-200x119.jpg"
+             class="sidebar-logo">
+      </a>
+      {% for link in site.data.sidebar_links %}
+      <a href="{{ link.url }}" target="_blank" title="{{ link.text }}">
+        <img class="sidebar-social-icon" alt="{{ link.text }}" src="{{ site.github.url }}/public/img/{{ link.img }}">
+      </a>
+      {% endfor %}
     </div>
 
     <nav class="sidebar-nav">
-
       {% assign pages_list = site.pages | sort:"weight" %}
       {% for node in pages_list %}
         {% if node.title != null %}
@@ -20,10 +22,6 @@
         {% endif %}
       {% endfor %}
 
-      <div class="sidebar-section">Zipkin around the web</div>
-      {% for link in site.data.sidebar_links %}
-        <a class="sidebar-nav-item" href="{{ link.url }}" target="_blank">{{ link.text }}</a>
-      {% endfor %}
     </nav>
 
     <p>&copy; {{ site.time | date: '%Y' }}. All rights reserved.</p>

@@ -1,0 +1,50 @@
+- language: Python
+  library: >-
+    [pyramid_zipkin](https://github.com/Yelp/pyramid_zipkin)
+  framework: >-
+    [Pyramid](http://docs.pylonsproject.org/projects/pyramid/en/latest/)
+  transports: >-
+    [Kafka \\| Scribe](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-transport-handler)
+  sampling: >-
+    [Yes](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-tracing-percent)
+  notes: py2, py3 support.
+
+- language: Java
+  library: >-
+    [brave](https://github.com/openzipkin/brave)
+  framework: Jersey, RestEASY, JAXRS2, Apache HttpClient, Mysql
+  transports: Http, Kafka, Scribe
+  sampling: "Yes"
+  notes: Java 7 or higher
+
+- language: Scala
+  library: >-
+    [finagle-zipkin](https://github.com/twitter/finagle/tree/develop/finagle-zipkin) 
+  framework: >-
+    [Finagle](https://github.com/twitter/finagle)
+  transports: Scribe
+  sampling: "Yes"
+
+- language: Ruby
+  library: >-
+    [zipkin-tracer](https://github.com/openzipkin/zipkin-tracer) 
+  framework: >-
+    [Rack](http://rack.github.io/)
+  transports: Http, Kafka, Scribe
+  sampling: "Yes"
+  notes: lc support. Ruby 2.0 or higher
+
+- language: "C#"
+  library: >-
+    [ZipkinTracerModule](https://github.com/mdsol/Medidata.ZipkinTracerModule) 
+  framework: OWIN, HttpHandler  
+  transports: Http
+  sampling: "Yes"
+  notes: lc support. 4.5.2 or higher
+
+- language: Go
+  library: >-
+    [go-zipkin](https://github.com/elodina/go-zipkin)
+  framework: x/net Context
+  transports: Kafka
+  sampling: "Yes"
