@@ -15,7 +15,7 @@
   framework: Jersey, RestEASY, JAXRS2, Apache HttpClient, Mysql
   transports: Http, Kafka, Scribe
   sampling: "Yes"
-  notes: Java 7 or higher
+  notes: Java 6 or higher
 
 - language: Scala
   library: >-
