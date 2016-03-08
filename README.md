@@ -14,9 +14,9 @@ implemented in [Ruby](https://www.ruby-lang.org/en/).
 ## Contributing
 
 Improvements to the documentation are more than welcome. This section tries to
-get you up to speed on how to run the site locally, and making changes. Just
-like the documentation, this meta-documentation also welcomes all improvements.
-If you can, you should use OSX or Linux; Jekyll is not very well supported on
+get you up to speed on how to run the site locally and make changes. Just like
+the documentation, this meta-documentation also welcomes all improvements. If
+you can, you should use OSX or Linux; Jekyll is not very well supported on
 Windows.
 
 ### Preparing your environment
@@ -185,7 +185,7 @@ You'll also want to make sure you have all the required Ruby packages, at
 exactly the required versions:
 
 ```
-bundle install
+bundle
 ```
 
 You are now ready to start a new branch and add more awesome to the
