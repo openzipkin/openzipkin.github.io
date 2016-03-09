@@ -19,6 +19,14 @@ the documentation, this meta-documentation also welcomes all improvements. If
 you can, you should use OSX or Linux; Jekyll is not very well supported on
 Windows.
 
+### If you've done this kind of thing before
+
+1. Fork, branch, clone
+2. `bundle`
+3. `jekyll serve`
+4. Make changes, commit, push
+5. Open a pull-request
+
 ### Preparing your environment
 
 1. **Install Ruby**
