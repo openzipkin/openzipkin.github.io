@@ -22,7 +22,7 @@ adequately we can also find out where in that service the issue is happening.
 
  * To try out Zipkin, check out our [Quickstart guide]({{ site.github.url }}/pages/quickstart)
  * See if your platform has an [existing instrumentation library]({{ site.github.url
-}}/pages/instrumentation_libraries)
+}}/pages/existing_instrumentations)
  * Join the [Zipkin Gitter chat channel](https://gitter.im/openzipkin/zipkin)
  * The source code is on GitHub as [openzipkin/zipkin](https://github.com/openzipkin/zipkin/)
  * Issues are also tracked on [GitHub](https://github.com/openzipkin/zipkin/issues)
