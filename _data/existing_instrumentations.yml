@@ -3,6 +3,8 @@
     [pyramid_zipkin](https://github.com/Yelp/pyramid_zipkin)
   framework: >-
     [Pyramid](http://docs.pylonsproject.org/projects/pyramid/en/latest/)
+    Http (B3)
+  propagation: Http (B3)
   transports: >-
     [Kafka \\| Scribe](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-transport-handler)
   sampling: >-
@@ -13,6 +15,7 @@
   library: >-
     [brave](https://github.com/openzipkin/brave)
   framework: Jersey, RestEASY, JAXRS2, Apache HttpClient, Mysql
+  propagation: Http (B3)
   transports: Http, Kafka, Scribe
   sampling: "Yes"
   notes: Java 6 or higher
@@ -22,6 +25,7 @@
     [finagle-zipkin](https://github.com/twitter/finagle/tree/develop/finagle-zipkin) 
   framework: >-
     [Finagle](https://github.com/twitter/finagle)
+  propagation: Http (B3), Thrift
   transports: Scribe
   sampling: "Yes"
 
@@ -30,6 +34,7 @@
     [zipkin-tracer](https://github.com/openzipkin/zipkin-tracer) 
   framework: >-
     [Rack](http://rack.github.io/)
+  propagation: Http (B3)
   transports: Http, Kafka, Scribe
   sampling: "Yes"
   notes: lc support. Ruby 2.0 or higher
@@ -38,6 +43,7 @@
   library: >-
     [ZipkinTracerModule](https://github.com/mdsol/Medidata.ZipkinTracerModule) 
   framework: OWIN, HttpHandler  
+  propagation: Http (B3)
   transports: Http
   sampling: "Yes"
   notes: lc support. 4.5.2 or higher
@@ -46,5 +52,6 @@
   library: >-
     [go-zipkin](https://github.com/elodina/go-zipkin)
   framework: x/net Context
+  propagation:
   transports: Kafka
   sampling: "Yes"
