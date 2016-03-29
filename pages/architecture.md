@@ -40,7 +40,7 @@ Once the trace data arrives at the Zipkin collector daemon, it is validated, sto
 
 Zipkin was initially built to store data on Cassandra since Cassandra is scalable, has a
 flexible schema, and is heavily used within Twitter. However, we made this
-component pluggable. In addition to Cassandra, We support Redis and MySQL.
+component pluggable. In addition to Cassandra, we support Redis and MySQL.
 
 ### Zipkin Query Service
 
