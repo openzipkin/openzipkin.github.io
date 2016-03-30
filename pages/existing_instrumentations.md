@@ -4,8 +4,8 @@ weight: 3
 ---
 
 Tracing information is collected on each host using the instrumented libraries
-and sent to Zipkin. When the host makes a request to another service, it passes
-a few tracing identifiers along with the request so we can later tie the data
+and sent to Zipkin. When the host makes a request to another application, it passes
+a few tracing identifiers along with the request to Zipkin so we can later tie the data
 together into spans.
 
 The following libraries exist to provide instrumentation on various platforms.

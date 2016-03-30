@@ -52,7 +52,7 @@ running the calculation.
 **BinaryAnnotation**
 
 Binary annotations do not have a time component. They are meant to provide extra
-information about the RPC. For instance, when calling an HTTP service providing
+information about the RPC. For instance when calling an HTTP service, providing
 the URI of the call will help with later analysis of requests coming into the
 service.
 
@@ -72,7 +72,7 @@ through the system.
 Trace identifiers
 =====
 
-In order to reassmble a set of spans into a full trace three pieces of
+In order to reassemble a set of spans into a full trace three pieces of
 information are required. These are all 64 bits long.
 
 **Trace Id**
@@ -115,27 +115,25 @@ Communicating trace information
 -------------------------------
 
 Trace information needs to be passed between upstream and downstream services in
-order to reassemble a complete trace. Five pieces of information are required:
+order to reassemble a complete trace.  Five pieces of information are required:
 
 * Trace Id
 * Span Id
 * Parent Id
-* Sampled
-* Flags
-
-"Sampled" lets the downstream service know if it should record trace
+* Sampled - Lets the downstream service know if it should record trace
 information for the request.
-
-"Flags" provide the ability to create and communicate feature flags. This is how
+* Flags - Provides the ability to create and communicate feature flags. This is how
 we can tell downstream services that this is a "debug" request.
 
-Finagle provides mechanisms for passing this information with Http and Thrift
+Check [here](https://github.com/openzipkin/brave/blob/e474ed1e1cd291c7ebc6830c58fdba0a6318fdd2/brave-http/src/main/java/com/github/kristofa/brave/http/BraveHttpHeaders.java) for the format
+
+Finagle provides mechanisms for passing this information with HTTP and Thrift
 requests. Other protocols will need to be augmented with the information for
 tracing to be effective.
 
-**Http Tracing**
+**HTTP Tracing**
 
-Http headers are used to pass along trace information:
+HTTP headers are used to pass along trace information.
 
 The B3 portion of the header is so named for the original name of Zipkin:
 BigBrotherBird.
