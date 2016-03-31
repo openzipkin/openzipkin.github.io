@@ -4,19 +4,25 @@ title: Instrumenting a library
 
 This is an advanced topic. Before reading further, you may want to check whether
 an instrumentation library for your platform [already exists]({{ site.github.url
-}}/pages/existing_instrumentations).
+}}/pages/existing_instrumentations). If not and if you want to take on creating an instrumentation library, first things first; jump on
+[Zipkin Gitter chat channel](https://gitter.im/openzipkin/zipkin) and let us know. We'll be extremely
+happy to help you along the way.
 {: .message}
 
-So you want to send traces to Zipkin, and there is no existing library for your
-platform. If you want to take on creating an instrumentation library, here's
-what you'll need to do. First things first: jump on
-[Zipkin Gitter chat channel](https://gitter.im/openzipkin/zipkin). We'll be extremely
-happy to help you along the way.
+Overview
+=======
+To instrument a library, you'll need to understand and create the following elements:
+1. Core data structures - the information that is collected and sent to Zipkin
+1. Trace identifiers - what tags for the information are needed so it can be reassembled in a logical order by Zipkin
+  * Generating identifiers - how to generate these Ids and which ids should be inherited
+  * Communicating trace information - additional information that is sent to Zipkin along with the traces and their IDs.
+
+
 
 Alright, ready? Here we go.
 
 Core data structures
---------------------
+=====
 
 First, there are a core set of structures that we need:
 
@@ -27,13 +33,13 @@ annotations used to define the beginning and end of a request:
 
 * **cs** - Client Start. The client has made the request. This sets the
   beginning of the span.
-* **sr** - Server Receive. The server has received the request and will start
+* **sr** - Server Receive: The server has received the request and will start
   processing it. The difference between this and `cs` will be combination of
   network latency and clock jitter.
-* **ss** - Server Send. The server has completed processing and has sent the
+* **ss** - Server Send: The server has completed processing and has sent the
   request back to the client. The difference between this and `ss` will be the
   amount of time it took the server to process the request.
-* **cr** - Client Recieve. The client has received the response from the server.
+* **cr** - Client Receiver: The client has received the response from the server.
   This sets the end of the span. The RPC is considered complete when this
   annotation is recorded.
 
@@ -46,7 +52,7 @@ running the calculation.
 **BinaryAnnotation**
 
 Binary annotations do not have a time component. They are meant to provide extra
-information about the RPC. For instance, when calling an HTTP service providing
+information about the RPC. For instance when calling an HTTP service, providing
 the URI of the call will help with later analysis of requests coming into the
 service.
 
@@ -64,9 +70,9 @@ spanId and parentId thus providing an overview of the path a request takes
 through the system.
 
 Trace identifiers
------------------
+=====
 
-In order to reassmble a set of spans into a full trace three pieces of
+In order to reassemble a set of spans into a full trace three pieces of
 information are required. These are all 64 bits long.
 
 **Trace Id**
@@ -109,27 +115,25 @@ Communicating trace information
 -------------------------------
 
 Trace information needs to be passed between upstream and downstream services in
-order to reassemble a complete trace. Five pieces of information are required:
+order to reassemble a complete trace.  Five pieces of information are required:
 
 * Trace Id
 * Span Id
 * Parent Id
-* Is Sampled
-* Flags
-
-"Is Sampled" lets the downstream service know if it should record trace
+* Sampled - Lets the downstream service know if it should record trace
 information for the request.
-
-"Flags" provide the ability to create and communicate feature flags. This is how
+* Flags - Provides the ability to create and communicate feature flags. This is how
 we can tell downstream services that this is a "debug" request.
 
-Finagle provides mechanisms for passing this information with Http and Thrift
+Check [here](https://github.com/openzipkin/brave/blob/e474ed1e1cd291c7ebc6830c58fdba0a6318fdd2/brave-http/src/main/java/com/github/kristofa/brave/http/BraveHttpHeaders.java) for the format
+
+Finagle provides mechanisms for passing this information with HTTP and Thrift
 requests. Other protocols will need to be augmented with the information for
 tracing to be effective.
 
-**Http Tracing**
+**HTTP Tracing**
 
-Http headers are used to pass along trace information:
+HTTP headers are used to pass along trace information.
 
 The B3 portion of the header is so named for the original name of Zipkin:
 BigBrotherBird.
