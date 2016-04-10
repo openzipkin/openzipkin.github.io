@@ -55,3 +55,13 @@
   propagation:
   transports: Kafka
   sampling: "Yes"
+
+- language: Scala
+  library: >-
+    [akka-tracing](https://github.com/levkhomich/akka-tracing)
+  framework: >-
+    [Akka](https://akka.io), [Spray](https://spray.io), [Play](https://www.playframework.com)
+  propagation: Http (B3), Thrift
+  transports: Scribe
+  sampling: "Yes"
+  notes: Java 6+, Scala 2.10+, activator templates for [Akka](https://github.com/levkhomich/activator-akka-tracing) and [Play](https://github.com/levkhomich/activator-play-tracing)
