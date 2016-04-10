@@ -20,6 +20,15 @@
   sampling: "Yes"
   notes: Java 6 or higher
 
+- language: Java
+  library: >-
+    [Spring Cloud Sleuth](https://github.com/spring-cloud/spring-cloud-sleuth)
+  framework: Spring, Spring Cloud (e.g. Stream, Netflix)
+  propagation: Http (B3), Messaging (B3)
+  transports: Http, Spring Cloud Stream Compatible (e.g. RabbitMQ, Kafka, Redis or anything with a custom Binder)
+  sampling: "Yes"
+  notes: Java 7 or higher
+  
 - language: Scala
   library: >-
     [finagle-zipkin](https://github.com/twitter/finagle/tree/develop/finagle-zipkin) 
