@@ -65,6 +65,14 @@
   transports: Kafka
   sampling: "Yes"
 
+- language: Go
+  library: >-
+    [Go kit](https://github.com/go-kit/kit)
+  framework: Go kit
+  propagation: Http (B3), gRPC (B3)
+  transports: Kafka, Scribe
+  sampling: "Yes"
+
 - language: Scala
   library: >-
     [akka-tracing](https://github.com/levkhomich/akka-tracing)
