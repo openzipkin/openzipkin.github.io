@@ -15,7 +15,7 @@
   library: >-
     [brave](https://github.com/openzipkin/brave)
   framework: Jersey, RestEASY, JAXRS2, Apache HttpClient, Mysql
-  propagation: Http (B3)
+  propagation: Http (B3), gRPC (B3)
   transports: Http, Kafka, Scribe
   sampling: "Yes"
   notes: Java 6 or higher
