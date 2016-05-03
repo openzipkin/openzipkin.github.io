@@ -82,3 +82,13 @@
   transports: Scribe
   sampling: "Yes"
   notes: Java 6+, Scala 2.10+, activator templates for [Akka](https://github.com/levkhomich/activator-akka-tracing) and [Play](https://github.com/levkhomich/activator-play-tracing)
+
+- language: Java
+  library: >-
+    [Dropwizard Zipkin](https://github.com/smoketurner/dropwizard-zipkin)
+  framework: >-
+    [Dropwizard](http://www.dropwizard.io)
+  propagation: Http (B3), Thrift
+  transports: Http, Scribe
+  sampling: "Yes"
+  notes: Java 7 or higher
