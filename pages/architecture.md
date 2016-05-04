@@ -23,14 +23,14 @@ Transport
 
 Tracing data sent by the instrumented library must be transported from the services being traced to Zipkin collectors.
 There are two primary transports: HTTP and Kafka. Scribe can also be used.
-See [Span Receivers]({{ site.github.url }}/pages/span_receivers) for more information.
 
 ![Architecture overview]({{ site.github.url }}/graphs/architecture/graph.png)
-There are 4 components that make up Zipkin:
+There are five components that make up Zipkin:
 
 * collector
 * storage
 * query
+* API
 * web UI
 
 
@@ -49,6 +49,10 @@ component pluggable. In addition to Cassandra, we support ElasticSearch and MySQ
 ### Zipkin Query Service
 
 Once the data is stored and indexed, we need a way to extract it. The query daemon provides a simple JSON API for finding and retrieving traces. The primary consumer of this API is the Web UI.
+
+### API
+
+This is the Zipkin component which provides an HTTP API to the UI for accessing tracing data.
 
 ### Web UI
 
