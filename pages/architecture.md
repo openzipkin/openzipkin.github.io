@@ -29,7 +29,7 @@ See [Span Receivers]({{ site.github.url }}/pages/span_receivers) for more inform
 There are 4 components that make up Zipkin:
 
 * collector
-* database
+* storage
 * query
 * web UI
 
@@ -40,7 +40,7 @@ There are 4 components that make up Zipkin:
 
 Once the trace data arrives at the Zipkin collector daemon, it is validated, stored, and indexed for lookups by the Zipkin collector.
 
-### Database
+### Storage
 
 Zipkin was initially built to store data on Cassandra since Cassandra is scalable, has a
 flexible schema, and is heavily used within Twitter. However, we made this
