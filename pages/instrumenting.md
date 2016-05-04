@@ -136,7 +136,7 @@ tracing to be effective.
 Downstream services must honour the sampling decision of the upstream system.
 If there's no "Sampled" information in the incoming request, the library should
 make a decision on whether to sample this request, and include the decision in
-further downstream. requests. This provides several desirable properties:
+further downstream requests. This provides several desirable properties:
 
  * Traces always start at the most-upstream service with Zipkin integration.
  * Since the sampling decision is made at the edge of the system, we'll always
