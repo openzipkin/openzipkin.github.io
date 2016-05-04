@@ -140,7 +140,7 @@ Ids are encoded as [hex strings](https://github.com/twitter/finagle/blob/master/
 * X-B3-SpanId: 64 encoded bits
 * X-B3-ParentSpanId: 64 encoded bits
 * X-B3-Sampled: Boolean (either "1" or "0")
-* X-B3-Flags: a Long string
+* X-B3-Flags: Long
 
 **Thrift Tracing**
 
