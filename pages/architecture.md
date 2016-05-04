@@ -8,7 +8,7 @@ weight: 2
 Instrumented libraries
 ----------------------
 
-Tracing information is collected on each host using the instrumented libraries
+Tracing data is collected on each host using the instrumented libraries
 and sent to Zipkin. When the host makes a request to another service, it passes
 a few tracing identifiers along with the request so we can later tie the data
 together.
@@ -18,25 +18,29 @@ together.
 To see if an instrumentation library already exists for your platform, see the
 list of [existing instrumentations]({{ site.github.url}}/pages/existing_instrumentations).
 
-![Architecture overview]({{ site.github.url }}/public/img/architecture-0.png)
-
 Transport
 ---------
 
-Spans sent by the instrumented library must be transported from the services being traced to Zipkin collectors.
-There are two primary transports: Scribe and Kafka. Scribe is shown in the figure. See [Span Receivers]({{ site.github.url }}/pages/span_receivers) for more information.
+Tracing data sent by the instrumented library must be transported from the services being traced to Zipkin collectors.
+There are two primary transports: HTTP and Kafka. Scribe can also be used.
+See [Span Receivers]({{ site.github.url }}/pages/span_receivers) for more information.
 
+![Architecture overview]({{ site.github.url }}/graphs/architecture/graph.png)
 There are 4 components that make up Zipkin:
+
 * collector
-* storage
-* search
+* database
+* query
 * web UI
+
+
+
 
 ### Zipkin Collector
 
 Once the trace data arrives at the Zipkin collector daemon, it is validated, stored, and indexed for lookups by the Zipkin collector.
 
-### Storage
+### Database
 
 Zipkin was initially built to store data on Cassandra since Cassandra is scalable, has a
 flexible schema, and is heavily used within Twitter. However, we made this
