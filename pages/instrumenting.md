@@ -11,10 +11,12 @@ happy to help you along the way.
 
 Overview
 =======
+
 To instrument a library, you'll need to understand and create the following elements:
+
 1. Core data structures - the information that is collected and sent to Zipkin
 1. Trace identifiers - what tags for the information are needed so it can be reassembled in a logical order by Zipkin
-  * Generating identifiers - how to generate these Ids and which ids should be inherited
+  * Generating identifiers - how to generate these IDs and which IDs should be inherited
   * Communicating trace information - additional information that is sent to Zipkin along with the traces and their IDs.
 
 
