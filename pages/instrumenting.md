@@ -39,7 +39,7 @@ annotations used to define the beginning and end of a request:
   processing it. The difference between this and `cs` will be combination of
   network latency and clock jitter.
 * **ss** - Server Send: The server has completed processing and has sent the
-  request back to the client. The difference between this and `ss` will be the
+  request back to the client. The difference between this and `sr` will be the
   amount of time it took the server to process the request.
 * **cr** - Client Receiver: The client has received the response from the server.
   This sets the end of the span. The RPC is considered complete when this
