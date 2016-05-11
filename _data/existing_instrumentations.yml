@@ -1,3 +1,16 @@
+- language: JavaScript
+  library: >-
+    [zipkin-js](https://github.com/openzipkin/zipkin-js)
+  framework: >-
+    [cujoJS](http://cujojs.com) [express](http://expressjs.com/)
+  propagation: Http (B3)
+  transports: >-
+    [Kafka \\| Scribe](https://github.com/openzipkin/zipkin-js#transports)
+  sampling: >-
+    Yes
+  notes: >-
+    Uses continuation-local-storage under to hood, so you don't have to pass around an explicit context
+
 - language: Python
   library: >-
     [pyramid_zipkin](https://github.com/Yelp/pyramid_zipkin)
