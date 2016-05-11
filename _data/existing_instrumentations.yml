@@ -2,7 +2,7 @@
   library: >-
     [zipkin-js](https://github.com/openzipkin/zipkin-js)
   framework: >-
-    [cujoJS](http://cujojs.com) [express](http://expressjs.com/)
+    [cujoJS](http://cujojs.com), [express](http://expressjs.com/)
   propagation: Http (B3)
   transports: >-
     [Kafka \\| Scribe](https://github.com/openzipkin/zipkin-js#transports)
@@ -16,7 +16,6 @@
     [pyramid_zipkin](https://github.com/Yelp/pyramid_zipkin)
   framework: >-
     [Pyramid](http://docs.pylonsproject.org/projects/pyramid/en/latest/)
-    Http (B3)
   propagation: Http (B3)
   transports: >-
     [Kafka \\| Scribe](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-transport-handler)
