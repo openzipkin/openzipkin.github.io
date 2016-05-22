@@ -127,11 +127,25 @@ information for the request.
 * Flags - Provides the ability to create and communicate feature flags. This is how
 we can tell downstream services that this is a "debug" request.
 
-Check [here](https://github.com/openzipkin/brave/blob/e474ed1e1cd291c7ebc6830c58fdba0a6318fdd2/brave-http/src/main/java/com/github/kristofa/brave/http/BraveHttpHeaders.java) for the format
+Check [here](https://github.com/openzipkin/brave/blob/e474ed1e1cd291c7ebc6830c58fdba0a6318fdd2/brave-http/src/main/java/com/github/kristofa/brave/http/BraveHttpHeaders.java) for the format.
 
 Finagle provides mechanisms for passing this information with HTTP and Thrift
 requests. Other protocols will need to be augmented with the information for
 tracing to be effective.
+
+**Instrumentation sampling decisions are made at the edge of the system**
+
+Downstream services must honour the sampling decision of the upstream system. If
+there's no "Sampled" information in the incoming request, the library should
+make a decision on whether to sample this request, and include the decision in
+further downstream requests. This simplifies the math when it comes to
+understanding what's sampled and what isn't. It also ensures that a request is
+either fully traced, or not traced at all, making the sampling policy easier to
+understand and configure.
+
+Note that the debug flag will force a trace to be sampled, regardless of any
+sampling rules. The debug flag also applies to storage tier sampling, which is
+configured on the server side of Zipkin.
 
 **HTTP Tracing**
 
