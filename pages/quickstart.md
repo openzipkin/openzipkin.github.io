@@ -3,41 +3,43 @@ title: Quickstart
 weight: 1
 ---
 
+
 In this section we’ll walk through building and starting an instance of Zipkin
-for checking out Zipkin locally. There are two options: using Docker and running from source. If you are familiar with Docker, this is the preferred method to start. If you are unfamiliar with Docker, try running from source.
+for checking out Zipkin locally. There are three options: using Java, Docker or running from source. If you are familiar with Docker, this is the preferred method to start. If you are unfamiliar with Docker, try running via Java or from source.
+
+Regardless of how you start Zipkin, browse to http://your_host:9411 to find traces!
 {: .message}
+
+## Java
+The quickest way to get started is to fetch the [latest released server](https://search.maven.org/remote_content?g=io.zipkin.java&a=zipkin-server&v=LATEST&c=exec) as a self-contained executable jar. Note that the Zipkin requires minimum JRE 8. For example:
+
+~~~ bash
+wget -O zipkin.jar 'https://search.maven.org/remote_content?g=io.zipkin.java&a=zipkin-server&v=LATEST&c=exec'
+java -jar zipkin.jar
+~~~
 
 ## Docker
 
 The [Docker Zipkin](https://github.com/openzipkin/docker-zipkin) project is able to build docker images, provide scripts and a
 [`docker-compose.yml`](https://github.com/openzipkin/docker-zipkin/blob/master/docker-compose.yml)
-for launching pre-built images. All you need to do is enter the following commands:
+for launching pre-built images. The quickest start is to run the latest image directly:
 
 ~~~ bash
-git clone https://github.com/openzipkin/docker-zipkin
-cd docker-zipkin
-docker-compose up
+docker run -d -p 9411:9411 openzipkin/zipkin
 ~~~
 
 ## Running from Source
 
-Zipkin can be run from source if you are testing new features or chose not to use
-Docker. The [`bin`](https://github.com/openzipkin/zipkin/tree/master/bin)
-directory of the source repository provides scripts to minimize the amount of
-copy-pasting.
+Zipkin can be run from source if you are developing new features. To acheive this, you'll need to get zipkin and build it.
+Stop by and socialize with us on [gitter](https://gitter.im/openzipkin/zipkin), if you end up making something interesting!
 
-1. Get the zipkin source and change to its directory.
+~~~ bash
+# get the latest source
+git clone https://github.com/openzipkin/zipkin
+cd zipkin
+# Build the server and also make its dependencies
+./mvnw -DskipTests --also-make -pl zipkin-server clean install
+# Run the server
+$ java -jar ./zipkin-server/target/zipkin-server-*exec.jar
+~~~
 
-   ~~~ bash
-   git clone https://github.com/openzipkin/zipkin
-   cd zipkin
-   ~~~
-
-1. In separate terminal windows or tabs, start
-   * The query server: `./bin/query`
-   * The collector server: `./bin/collector`
-   * The web server: `./bin/web`
-
-1. Create dummy traces: `./bin/tracegen`
-
-1. Open the UI at [http://localhost:8080](http://localhost:8080) and look at the traces!
