@@ -30,7 +30,7 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 
 ## Running from Source
 
-Zipkin can be run from source if you are developing new features. To acheive this, you'll need to get zipkin and build it.
+Zipkin can be run from source if you are developing new features. To acheive this, you'll need to get [Zipkin's source](https://github.com/openzipkin/zipkin) and build it.
 Stop by and socialize with us on [gitter](https://gitter.im/openzipkin/zipkin), if you end up making something interesting!
 
 ~~~ bash
@@ -40,6 +40,6 @@ cd zipkin
 # Build the server and also make its dependencies
 ./mvnw -DskipTests --also-make -pl zipkin-server clean install
 # Run the server
-$ java -jar ./zipkin-server/target/zipkin-server-*exec.jar
+java -jar ./zipkin-server/target/zipkin-server-*exec.jar
 ~~~
 
