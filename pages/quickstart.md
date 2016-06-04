@@ -22,7 +22,8 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 ~~~
 
 ## Java
-The quickest way to get started is to fetch the [latest released server](https://search.maven.org/remote_content?g=io.zipkin.java&a=zipkin-server&v=LATEST&c=exec) as a self-contained executable jar. Note that the Zipkin requires minimum JRE 8. For example:
+
+If you have Java 8 or higher installed, the quickest way to get started is to fetch the [latest release](https://search.maven.org/remote_content?g=io.zipkin.java&a=zipkin-server&v=LATEST&c=exec) as a self-contained executable jar:
 
 ~~~ bash
 wget -O zipkin.jar 'https://search.maven.org/remote_content?g=io.zipkin.java&a=zipkin-server&v=LATEST&c=exec'
@@ -32,8 +33,6 @@ java -jar zipkin.jar
 ## Running from Source
 
 Zipkin can be run from source if you are developing new features. To achieve this, you'll need to get [Zipkin's source](https://github.com/openzipkin/zipkin) and build it.
-
-Stop by and socialize with us on [gitter](https://gitter.im/openzipkin/zipkin), if you end up making something interesting!
 
 ~~~ bash
 # get the latest source
@@ -45,3 +44,4 @@ cd zipkin
 java -jar ./zipkin-server/target/zipkin-server-*exec.jar
 ~~~
 
+Stop by and socialize with us on [gitter](https://gitter.im/openzipkin/zipkin), if you end up making something interesting!
