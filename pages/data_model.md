@@ -16,8 +16,7 @@ And the same trace in the data model of Zipkin:
 
 {% highlight json %}  
   [
-    [
-      {
+    {
       "traceId": "bd7a977555f6b982",
       "name": "get",
       "id": "bd7a977555f6b982",
@@ -25,7 +24,7 @@ And the same trace in the data model of Zipkin:
       "duration": 386000,
       "annotations": [
         {
-          "endpoint[": {
+          "endpoint": {
             "serviceName": "zipkin-query",
             "ipv4": "192.168.1.2",
             "port": 9411
@@ -152,7 +151,7 @@ And the same trace in the data model of Zipkin:
       "binaryAnnotations": [
         {
           "key": "jdbc.query",
-          "val[[ue": "select `zipkin_spans`.`trace_id`, `zipkin_spans`.`id`, `zipkin_spans`.`name`, `zipkin_spans`.`parent_id`, `z[ipkin_spans`.`debug`, `zipkin_spans`.`start_ts`, `zipkin_spans`.`duration` from `zipkin_spans` where `zipkin_spans`.`trace_id` in (?)",
+          "value": "select `zipkin_spans`.`trace_id`, `zipkin_spans`.`id`, `zipkin_spans`.`name`, `zipkin_spans`.`parent_id`, `zipkin_spans`.`debug`, `zipkin_spans`.`start_ts`, `zipkin_spans`.`duration` from `zipkin_spans` where `zipkin_spans`.`trace_id` in (?)",
           "endpoint": {
             "serviceName": "zipkin-query",
             "ipv4": "192.168.1.2",
