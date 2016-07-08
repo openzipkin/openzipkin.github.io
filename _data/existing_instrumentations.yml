@@ -2,7 +2,7 @@
   library: >-
     [zipkin-js](https://github.com/openzipkin/zipkin-js)
   framework: >-
-    [cujoJS](http://cujojs.com), [express](http://expressjs.com/)
+    [cujoJS](http://cujojs.com), [express](http://expressjs.com/), [restify](http://restify.com/)
   propagation: Http (B3)
   transports: >-
     [Kafka \\| Scribe](https://github.com/openzipkin/zipkin-js#transports)
