@@ -5,7 +5,7 @@
     [cujoJS](http://cujojs.com), [express](http://expressjs.com/), [restify](http://restify.com/)
   propagation: Http (B3)
   transports: >-
-    [Kafka \\| Scribe](https://github.com/openzipkin/zipkin-js#transports)
+    [Http \\| Kafka \\| Scribe](https://github.com/openzipkin/zipkin-js#transports)
   sampling: >-
     Yes
   notes: >-
