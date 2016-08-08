@@ -34,6 +34,15 @@
 
 - language: Java
   library: >-
+    [htrace](https://github.com/apache/incubator-htrace/tree/master/htrace-zipkin)
+  framework: HDFS, HBase
+  propagation: 
+  transports: Http, Scribe
+  sampling: "Yes"
+  notes: Java 7 or higher
+
+- language: Java
+  library: >-
     [Spring Cloud Sleuth](https://github.com/spring-cloud/spring-cloud-sleuth)
   framework: Spring, Spring Cloud (e.g. Stream, Netflix)
   propagation: Http (B3), Messaging (B3)
