@@ -55,7 +55,7 @@
     [cassandra-zipkin-tracing](https://github.com/thelastpickle/cassandra-zipkin-tracing)
   framework: >-
     [Apache Cassandra](http://cassandra.apache.org)
-  propagation: CQL
+  propagation: CQL (B3)
   transports: Http, Kafka, Scribe
   sampling: "Yes"
   notes: Java 8+
