@@ -98,8 +98,8 @@
 
 - language: Go
   library: >-
-    [Go kit](https://github.com/go-kit/kit)
-  framework: Go kit
+    [zipkin-go-opentracing](https://github.com/openzipkin/zipkin-go-opentracing)
+  framework: [Go kit](https://gokit.io) or roll your own with [OpenTracing](http://opentracing.io)
   propagation: Http (B3), gRPC (B3)
   transports: Kafka, Scribe
   sampling: "Yes"
