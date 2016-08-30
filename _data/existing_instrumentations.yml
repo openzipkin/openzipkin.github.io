@@ -98,6 +98,15 @@
 
 - language: Go
   library: >-
+    [monkit-zipkin](https://github.com/spacemonkeygo/monkit-zipkin/)
+  framework: >-
+    [Monkit](https://github.com/spacemonkeygo/monkit/)
+  propagation: Http (B3), easy to add others
+  transports: Scribe, UDP, easy to add others
+  sampling: "Yes"
+
+- language: Go
+  library: >-
     [zipkin-go-opentracing](https://github.com/openzipkin/zipkin-go-opentracing)
   framework: >-
     [Go kit](https://gokit.io) or roll your own with [OpenTracing](http://opentracing.io)
