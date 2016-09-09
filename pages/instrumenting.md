@@ -58,11 +58,30 @@ information about the RPC. For instance when calling an HTTP service, providing
 the URI of the call will help with later analysis of requests coming into the
 service.
 
+The primary use case of binary annotations is exact match search. That said, it is
+common to have binary annotations for uncontrolled values, such as exception messages.
+
+**Endpoint**
+Annotations and binary annotations have an endpoint associated with them. With two
+exceptions, this endpoint is associated with the traced process. For example, the
+service name drop-down in the Zipkin UI corresponds with Annotation.endpoint.serviceName
+or BinaryAnnotation.endpoint.serviceName. For the sake of usability, the cardinality
+of Endpoint.serviceName should be bounded. For example, it shouldn't include variables
+or random numbers.
+
+
 **Span**
 
 A set of Annotations and BinaryAnnotations that correspond to a particular RPC.
 Spans contain identifying information such as traceId, spandId, parentId, and
 RPC name.
+
+Spans are usually small. For example, the serialized form is often measured in
+KiB or less. When spans grow beyond orders of KiB, other problems occur, such as
+hitting limits like Kafka message size (1MiB). Even if you can raise message
+limits, large spans will increase the cost and decrease the usability of the
+tracing system. For this reason, be conscious to store data that helps explain
+latency, and don't store data that doesn't.
 
 **Trace**
 
