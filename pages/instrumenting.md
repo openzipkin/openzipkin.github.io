@@ -18,7 +18,7 @@ To instrument a library, you'll need to understand and create the following elem
 1. Trace identifiers - what tags for the information are needed so it can be reassembled in a logical order by Zipkin
   * Generating identifiers - how to generate these IDs and which IDs should be inherited
   * Communicating trace information - additional information that is sent to Zipkin along with the traces and their IDs.
-
+1. Timestamps and duration - how to record timing information about an operation.
 
 
 Alright, ready? Here we go.
@@ -41,7 +41,7 @@ annotations used to define the beginning and end of a request:
 * **ss** - Server Send: The server has completed processing and has sent the
   request back to the client. The difference between this and `sr` will be the
   amount of time it took the server to process the request.
-* **cr** - Client Receiver: The client has received the response from the server.
+* **cr** - Client Receive: The client has received the response from the server.
   This sets the end of the span. The RPC is considered complete when this
   annotation is recorded.
 
@@ -175,14 +175,74 @@ BigBrotherBird.
 
 Ids are encoded as [hex strings](https://github.com/twitter/finagle/blob/master/finagle-core/src/main/scala/com/twitter/finagle/tracing/Id.scala):
 
-* X-B3-TraceId: 64 encoded bits
-* X-B3-SpanId: 64 encoded bits
-* X-B3-ParentSpanId: 64 encoded bits
-* X-B3-Sampled: Boolean (either "1" or "0")
-* X-B3-Flags: a Long
+* X-B3-TraceId: 64 lower-hex encoded bits (required)
+* X-B3-SpanId: 64 lower-hex encoded bits (required)
+* X-B3-ParentSpanId: 64 lower-hex encoded bits (absent on root span)
+* X-B3-Sampled: Boolean (either "1" or "0", can be absent)
+* X-B3-Flags: "1" means debug (can be absent)
 
 **Thrift Tracing**
 
 Finagle clients and servers negotate whether they can handle extra information
 in the header of the thrift message when a connection is established. Once
 negotiated trace data is packed into the front of each thrift message.
+
+Timestamps and duration
+=====
+
+Span recording is when timing information or metadata is structured and reported
+to zipkin. One of the most important parts of this process is appropriately
+recording timestamps and duration.
+
+** Timestamps are microseconds **
+All Zipkin timestamps are in epoch microseconds (not milliseconds). This value
+should use the most precise measurement available. For example, `clock_gettime`
+or simply multiply epoch milliseconds by 1000. Timestamps fields are stored as
+64bit signed integers eventhough negative is invalid.
+
+Microsecond precision primarily supports "local spans", which are in-process
+operations. For example, with higher precision, you can tell nuances of what
+happened before something else.
+
+All timestamps have faults, including clock skew between hosts and the chance of
+a time service resetting the clock backwards. For this reason, spans should
+record their duration when possible.
+
+** Span duration is also microseconds **
+While it is possible to get nanosecond-precision timing information, Zipkin uses
+microsecond granularity. Here are some reasons why:
+
+First, using the same unit as timestamps makes math easier. For example, if you
+are troubleshooting a span, it is easier to identify with terms in the same unit.
+
+Next, the overhead of recording a span is often variable and can be microseconds
+or more: suggesting a higher resolution than overhead can be distracting.
+
+Future versions of Zipkin may revisit this topic, but for now, everything is
+microseconds.
+
+** When to set Span.timestamp and duration **
+
+Span.timestamp and duration should only be set by the host that started the span.
+
+Zipkin merges spans together that share the same trace and span ID. The most
+common case of this is to merge a span reported by both the client (cs, cr) and
+the server (sr, ss). For example, the client starts a span, logging "cs" and
+propagates it via B3 headers, the server continueus that span by logging "sr".
+
+In this case, the client started the span, so it should record Span.timestamp and
+duration, and those values should match the difference between "cs" and "cr". The
+server did not start this span, so it should not set Span.timestamp or duration.
+
+Another common case is when a server starts a root span from an uninstrumented
+client, such as a web browser. It knows it should start a trace because none was
+present in B3 headers or similar. Since it started the trace, it should record
+Span.timestamp and duration on the root span.
+
+Note: When a span is incomplete, you could set Span.timestamp, but not duration as
+there's not enough information to do that accurately.
+
+** What happens when Span.timestamp and duration are not set? **
+Span.timestamp and Span.duration are fields added in 2015, 3 years after Zipkin
+started. Not all libraries log these. When these fields are not set, Zipkin adds
+them at query time.
