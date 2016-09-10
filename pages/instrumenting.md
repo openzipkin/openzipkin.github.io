@@ -194,7 +194,8 @@ Span recording is when timing information or metadata is structured and reported
 to zipkin. One of the most important parts of this process is appropriately
 recording timestamps and duration.
 
-** Timestamps are microseconds **
+**Timestamps are microseconds**
+
 All Zipkin timestamps are in epoch microseconds (not milliseconds). This value
 should use the most precise measurement available. For example, `clock_gettime`
 or simply multiply epoch milliseconds by 1000. Timestamps fields are stored as
@@ -208,7 +209,8 @@ All timestamps have faults, including clock skew between hosts and the chance of
 a time service resetting the clock backwards. For this reason, spans should
 record their duration when possible.
 
-** Span duration is also microseconds **
+**Span duration is also microseconds**
+
 While it is possible to get nanosecond-precision timing information, Zipkin uses
 microsecond granularity. Here are some reasons why:
 
@@ -221,7 +223,7 @@ or more: suggesting a higher resolution than overhead can be distracting.
 Future versions of Zipkin may revisit this topic, but for now, everything is
 microseconds.
 
-** When to set Span.timestamp and duration **
+**When to set Span.timestamp and duration**
 
 Span.timestamp and duration should only be set by the host that started the span.
 
@@ -242,7 +244,8 @@ Span.timestamp and duration on the root span.
 Note: When a span is incomplete, you could set Span.timestamp, but not duration as
 there's not enough information to do that accurately.
 
-** What happens when Span.timestamp and duration are not set? **
+**What happens when Span.timestamp and duration are not set?**
+
 Span.timestamp and Span.duration are fields added in 2015, 3 years after Zipkin
 started. Not all libraries log these. When these fields are not set, Zipkin adds
 them at query time.
