@@ -56,10 +56,8 @@ running the calculation.
 Binary annotations do not have a time component. They are meant to provide extra
 information about the RPC. For instance when calling an HTTP service, providing
 the URI of the call will help with later analysis of requests coming into the
-service.
-
-The primary use case of binary annotations is exact match search. That said, it is
-common to have binary annotations for uncontrolled values, such as exception messages.
+service. Binary annotations can also be used for exact match search in the
+Zipkin Api or UI.
 
 **Endpoint**
 Annotations and binary annotations have an endpoint associated with them. With two
@@ -81,7 +79,7 @@ KiB or less. When spans grow beyond orders of KiB, other problems occur, such as
 hitting limits like Kafka message size (1MiB). Even if you can raise message
 limits, large spans will increase the cost and decrease the usability of the
 tracing system. For this reason, be conscious to store data that helps explain
-latency, and don't store data that doesn't.
+system behavior, and don't store data that doesn't.
 
 **Trace**
 
