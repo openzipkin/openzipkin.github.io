@@ -13,6 +13,16 @@
 
 - language: Python
   library: >-
+    [py_zipkin](https://github.com/Yelp/py_zipkin)
+  framework: Any
+  propagation: Http (B3)
+  transports: Pluggable
+  sampling: >-
+    [Yes](https://github.com/Yelp/py_zipkin/blob/2b1218ea6438fa7fd35946092de58496f4f759dd/py_zipkin/zipkin.py#L97)
+  notes: Generic python tracer, used in pyramid-zipkin; py2, py3 support.
+
+- language: Python
+  library: >-
     [pyramid_zipkin](https://github.com/Yelp/pyramid_zipkin)
   framework: >-
     [Pyramid](http://docs.pylonsproject.org/projects/pyramid/en/latest/)
@@ -22,6 +32,18 @@
   sampling: >-
     [Yes](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-tracing-percent)
   notes: py2, py3 support.
+
+- language: Python
+  library: >-
+    [swagger_zipkin](https://github.com/Yelp/swagger_zipkin)
+  framework: >-
+    Swagger ([Bravado](http://bravado.readthedocs.io/en/latest/)), specifically for [Pyramid](http://docs.pylonsproject.org/projects/pyramid/en/latest/)
+  propagation: Http (B3)
+  transports: >-
+    [Kafka \\| Scribe](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-transport-handler)
+  sampling: >-
+    [Yes](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-tracing-percent)
+  notes: Uses pyramid_zipkin; py2, py3 support.
 
 - language: Java
   library: >-
