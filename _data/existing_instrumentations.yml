@@ -37,7 +37,7 @@
   library: >-
     [swagger_zipkin](https://github.com/Yelp/swagger_zipkin)
   framework: >-
-    Swagger ([Bravado](http://bravado.readthedocs.io/en/latest/))
+    Swagger ([Bravado](http://bravado.readthedocs.io/en/latest/)), to be used with [py_zipkin](https://github.com/Yelp/py_zipkin)
   propagation: Http (B3)
   transports: >-
     [Kafka \\| Scribe](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-transport-handler)
