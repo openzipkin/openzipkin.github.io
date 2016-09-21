@@ -43,7 +43,7 @@
     [Kafka \\| Scribe](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-transport-handler)
   sampling: >-
     [Yes](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-tracing-percent)
-  notes: Uses pyramid_zipkin; py2, py3 support.
+  notes: Uses py_zipkin; py2, py3 support.
 
 - language: Java
   library: >-
