@@ -84,12 +84,13 @@
 
 - language: Scala
   library: >-
-    [finagle-zipkin](https://github.com/twitter/finagle/tree/develop/finagle-zipkin)
+    [zipkin-finagle](https://github.com/openzipkin/zipkin-finagle)
   framework: >-
     [Finagle](https://github.com/twitter/finagle)
   propagation: Http (B3), Thrift
-  transports: Scribe
+  transports: Http, Kafka, Scribe
   sampling: "Yes"
+  notes: Propagation is defined in Finagle itself
 
 - language: Ruby
   library: >-
