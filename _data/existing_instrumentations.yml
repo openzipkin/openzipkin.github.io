@@ -37,13 +37,13 @@
   library: >-
     [swagger_zipkin](https://github.com/Yelp/swagger_zipkin)
   framework: >-
-    Swagger ([Bravado](http://bravado.readthedocs.io/en/latest/)), specifically for [Pyramid](http://docs.pylonsproject.org/projects/pyramid/en/latest/)
+    Swagger ([Bravado](http://bravado.readthedocs.io/en/latest/)), to be used with [py_zipkin](https://github.com/Yelp/py_zipkin)
   propagation: Http (B3)
   transports: >-
     [Kafka \\| Scribe](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-transport-handler)
   sampling: >-
     [Yes](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-tracing-percent)
-  notes: Uses pyramid_zipkin; py2, py3 support.
+  notes: Uses py_zipkin; py2, py3 support.
 
 - language: Java
   library: >-
