@@ -134,7 +134,7 @@
   framework: >-
     [Go kit](https://gokit.io) or roll your own with [OpenTracing](http://opentracing.io)
   propagation: Http (B3), gRPC (B3)
-  transports: Kafka, Scribe
+  transports: Http, Kafka, Scribe
   sampling: "Yes"
 
 - language: Scala
