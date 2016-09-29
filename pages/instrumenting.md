@@ -246,4 +246,20 @@ there's not enough information to do that accurately.
 
 Span.timestamp and Span.duration are fields added in 2015, 3 years after Zipkin
 started. Not all libraries log these. When these fields are not set, Zipkin adds
-them at query time.
+them at query time (not collection time); this is not ideal.
+
+The [duration query](http://zipkin.io/zipkin-api/#/paths/%252Ftraces/get/parameters/minDuration)
+will not work as there's no data to query. Also, local (in-process) aren't required
+to have annotations, so they cannot be queried unless their timestamp is set.
+
+When Zipkin tries to derive duration at query time, it has to use the problematic method
+of timestamp math. Ex. NTP updates can make the clock move backwards resulting in a negative duration!
+
+Finally, there's a desire for many to move to single-host spans. The migration path
+for this is to split dual-host RPC spans into two. When instrumentation logs timestamp
+only for spans it owns, converting collectors have a heuristic to distinguish a server-initiated
+root span from a client-initiated, dual-host one.
+
+The bottom-line is that choosing not to record Span.timestamp and duration will result
+in less accurate data and less functionality. Since it is very easy to record these authoritatively
+before reporting, all Zipkin instrumentation should do it or ask someone to help them do it.
