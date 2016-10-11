@@ -225,6 +225,14 @@ microseconds.
 
 Span.timestamp and duration should only be set by the host that started the span.
 
+The simplest logic is generally this:
+
+```
+unless (logging "sr" in an existing span) {
+ set Span.timestamp and duration
+}
+```
+
 Zipkin merges spans together that share the same trace and span ID. The most
 common case of this is to merge a span reported by both the client (cs, cr) and
 the server (sr, ss). For example, the client starts a span, logging "cs" and
