@@ -39,4 +39,9 @@ figure.highlight pre code {
 /* Some tables need to be wide to make sense of them, even if it breaks the design and responsiveness */
 table.wide-table td {
   white-space: nowrap;
+  font-size: 0.8em;
+}
+
+table.wide-table th {
+  font-size: 0.8em;
 }

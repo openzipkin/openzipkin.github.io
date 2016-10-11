@@ -1,0 +1,51 @@
+- language: Go
+  library: >-
+    [zipkin-go-opentracing](https://github.com/openzipkin/zipkin-go-opentracing)
+  framework: >-
+    [Go kit](https://gokit.io), or roll your own with [OpenTracing](http://opentracing.io)
+  propagation: Http (B3), gRPC (B3)
+  transports: Http, Kafka, Scribe
+  sampling: "Yes"
+  notes:
+
+- language: Java
+  library: >-
+    [brave](https://github.com/openzipkin/brave)
+  framework: Jersey, RestEASY, JAXRS2, Apache HttpClient, Mysql
+  propagation: Http (B3), gRPC (B3)
+  transports: Http, Kafka, Scribe
+  sampling: "Yes"
+  notes: Java 6 or higher
+
+- language: JavaScript
+  library: >-
+    [zipkin-js](https://github.com/openzipkin/zipkin-js)
+  framework: >-
+    [cujoJS](http://cujojs.com), [express](http://expressjs.com/), [restify](http://restify.com/)
+  propagation: Http (B3)
+  transports: >-
+    [Http, Kafka, Scribe](https://github.com/openzipkin/zipkin-js#transports)
+  sampling: >-
+    Yes
+  notes: >-
+    Uses continuation-local-storage under to hood, so you don't have to pass around an explicit context
+
+- language: Ruby
+  library: >-
+    [zipkin-tracer](https://github.com/openzipkin/zipkin-tracer)
+  framework: >-
+    [Rack](http://rack.github.io/)
+  propagation: Http (B3)
+  transports: Http, Kafka, Scribe
+  sampling: "Yes"
+  notes: lc support. Ruby 2.0 or higher
+
+- language: Scala
+  library: >-
+    [zipkin-finagle](https://github.com/openzipkin/zipkin-finagle)
+  framework: >-
+    [Finagle](https://github.com/twitter/finagle)
+  propagation: Http (B3), Thrift
+  transports: Http, Kafka, Scribe
+  sampling: "Yes"
+  notes: Propagation is defined in Finagle itself

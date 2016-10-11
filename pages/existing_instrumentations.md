@@ -12,8 +12,20 @@ The following libraries exist to provide instrumentation on various platforms.
 Please refer to their individual documentation for setup and configuration
 guides.
 
+### openzipkin libraries
+
+The following libraries are supported by the OpenZipkin authors.
+
 | Language | Library | Framework | Propagation Supported | Transports Supported | Sampling Supported? | Other notes |
-|:---------|:--------|:----------|:----------------------|:---------------------|:--------------------|:------------|{% for lib in site.data.existing_instrumentations %}
+|:---------|:--------|:----------|:----------------------|:---------------------|:--------------------|:------------|{% for lib in site.data.openzipkin_instrumentations %}
+| {{ lib.language }} | {{ lib.library }} | {{lib.framework}} | {{ lib.propagation }} | {{ lib.transports }} | {{ lib.sampling }} | {{ lib.notes }} |{% endfor %}
+{: .wide-table}
+
+
+### community libraries
+
+| Language | Library | Framework | Propagation Supported | Transports Supported | Sampling Supported? | Other notes |
+|:---------|:--------|:----------|:----------------------|:---------------------|:--------------------|:------------|{% for lib in site.data.community_instrumentations %}
 | {{ lib.language }} | {{ lib.library }} | {{lib.framework}} | {{ lib.propagation }} | {{ lib.transports }} | {{ lib.sampling }} | {{ lib.notes }} |{% endfor %}
 {: .wide-table}
 

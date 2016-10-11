@@ -1,0 +1,119 @@
+- language: "C#"
+  library: >-
+    [ZipkinTracerModule](https://github.com/mdsol/Medidata.ZipkinTracerModule)
+  framework: OWIN, HttpHandler
+  propagation: Http (B3)
+  transports: Http
+  sampling: "Yes"
+  notes: lc support. 4.5.2 or higher
+
+- language: Go
+  library: >-
+    [go-zipkin](https://github.com/elodina/go-zipkin)
+  framework: x/net Context
+  propagation:
+  transports: Kafka
+  sampling: "Yes"
+
+- language: Go
+  library: >-
+    [monkit-zipkin](https://github.com/spacemonkeygo/monkit-zipkin/)
+  framework: >-
+    [Monkit](https://github.com/spacemonkeygo/monkit/)
+  propagation: Http (B3), easy to add others
+  transports: Scribe, UDP, easy to add others
+  sampling: "Yes"
+
+- language: Java
+  library: >-
+    [cassandra-zipkin-tracing](https://github.com/thelastpickle/cassandra-zipkin-tracing)
+  framework: >-
+    [Apache Cassandra](http://cassandra.apache.org)
+  propagation: CQL (B3)
+  transports: Http, Kafka, Scribe
+  sampling: "Yes"
+  notes: Java 8+
+
+- language: Java
+  library: >-
+    [Dropwizard Zipkin](https://github.com/smoketurner/dropwizard-zipkin)
+  framework: >-
+    [Dropwizard](http://www.dropwizard.io)
+  propagation: Http (B3), Thrift
+  transports: Http, Scribe
+  sampling: "Yes"
+  notes: Java 7 or higher
+
+- language: Java
+  library: >-
+    [htrace](https://github.com/apache/incubator-htrace/tree/master/htrace-zipkin)
+  framework: HDFS, HBase
+  propagation:
+  transports: Http, Scribe
+  sampling: "Yes"
+  notes: Java 7 or higher
+
+- language: Java
+  library: >-
+    [Spring Cloud Sleuth](https://github.com/spring-cloud/spring-cloud-sleuth)
+  framework: Spring, Spring Cloud (e.g. Stream, Netflix)
+  propagation: Http (B3), Messaging (B3)
+  transports: Http, Spring Cloud Stream Compatible (e.g. RabbitMQ, Kafka, Redis or anything with a custom Binder)
+  sampling: "Yes"
+  notes: Java 7 or higher
+
+- language: Java
+  library: >-
+    [Wingtips](https://github.com/Nike-Inc/wingtips)
+  framework: >-
+    [Any Servlet API framework](https://github.com/Nike-Inc/wingtips/tree/master/wingtips-servlet-api),
+    [roll-your-own](https://github.com/Nike-Inc/wingtips#generic-application-pseudo-code),
+    [async framework support](https://github.com/Nike-Inc/wingtips#usage-in-reactive-asynchronous-nonblocking-scenarios)
+  propagation: Http (B3)
+  transports: Http
+  sampling: "Yes"
+  notes: Java 7 or higher, [SLF4J MDC support](https://github.com/Nike-Inc/wingtips#mdc_info) for auto-tagging all log messages with tracing info
+
+- language: Python
+  library: >-
+    [py_zipkin](https://github.com/Yelp/py_zipkin)
+  framework: Any
+  propagation: Http (B3)
+  transports: Pluggable
+  sampling: >-
+    [Yes](https://github.com/Yelp/py_zipkin/blob/2b1218ea6438fa7fd35946092de58496f4f759dd/py_zipkin/zipkin.py#L97)
+  notes: Generic python tracer, used in pyramid-zipkin; py2, py3 support.
+
+- language: Python
+  library: >-
+    [pyramid_zipkin](https://github.com/Yelp/pyramid_zipkin)
+  framework: >-
+    [Pyramid](http://docs.pylonsproject.org/projects/pyramid/en/latest/)
+  propagation: Http (B3)
+  transports: >-
+    [Kafka \\| Scribe](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-transport-handler)
+  sampling: >-
+    [Yes](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-tracing-percent)
+  notes: py2, py3 support.
+
+- language: Python
+  library: >-
+    [swagger_zipkin](https://github.com/Yelp/swagger_zipkin)
+  framework: >-
+    Swagger ([Bravado](http://bravado.readthedocs.io/en/latest/)), to be used with [py_zipkin](https://github.com/Yelp/py_zipkin)
+  propagation: Http (B3)
+  transports: >-
+    [Kafka \\| Scribe](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-transport-handler)
+  sampling: >-
+    [Yes](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-tracing-percent)
+  notes: Uses py_zipkin; py2, py3 support.
+
+- language: Scala
+  library: >-
+    [akka-tracing](https://github.com/levkhomich/akka-tracing)
+  framework: >-
+    [Akka](https://akka.io), [Spray](https://spray.io), [Play](https://www.playframework.com)
+  propagation: Http (B3), Thrift
+  transports: Scribe
+  sampling: "Yes"
+  notes: Java 6+, Scala 2.10+, activator templates for [Akka](https://github.com/levkhomich/activator-akka-tracing) and [Play](https://github.com/levkhomich/activator-play-tracing)
