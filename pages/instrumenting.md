@@ -26,7 +26,7 @@ Alright, ready? Here we go.
 Core data structures
 =====
 
-First, there are a core set of structures that we need:
+Core data structures are documented in detail in [Thrift](https://github.com/openzipkin/zipkin-api/blob/master/thrift/zipkinCore.thrift) comments. Here's a high-level description to get you started:
 
 **Annotation**
 
