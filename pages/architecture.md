@@ -3,22 +3,36 @@ title: Architecture
 weight: 2
 ---
 
-
-
-Instrumented libraries
+Architecture Overview
 ----------------------
 
-Tracing information is collected on each host using the instrumented libraries
-and sent to Zipkin. When the host makes a request to another service, it passes
-a few tracing identifiers along with the request so we can later tie the data
-together.
+Tracers live in your applications and record timing and metadata about
+operations that that took place. They often instrument libraries, so that their
+use is transparent to users. For example, an instrumented web server records
+when it received a request and when it sent a response. The trace data collected
+is called a Span.
 
-![Instrumentation architecture]({{ site.github.url }}/public/img/architecture-1.png)
+Instrumentation is written to be safe in production and have little overhead.
+For this reason, they only propagate IDs in-band, to tell the receiver there’s
+a trace in progress. Completed spans are reported to zipkin out-of-band,
+similar to how applications report metrics asynchronously.
+
+For example, when an operation is being traced and it needs to make an outgoing
+http request, a few headers are added to propagate IDs. Headers are not used to
+send details such as the operation name.
+
+The component in an instrumented app that sends data to Zipkin is called a
+Reporter. Reporters send trace data via one of several transports to Zipkin
+collectors, which persist trace data to storage. Later, storage is queried by
+the API to provide data to the UI.
+
+Here's a diagram describing this flow:
+
+![Zipkin architecture]({{ site.github.url }}/public/img/architecture-1.png)
 
 To see if an instrumentation library already exists for your platform, see the
 list of [existing instrumentations]({{ site.github.url}}/pages/existing_instrumentations).
 
-![Architecture overview]({{ site.github.url }}/public/img/architecture-0.png)
 
 Transport
 ---------
