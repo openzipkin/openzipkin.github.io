@@ -32,7 +32,7 @@
 
 - language: Ruby
   library: >-
-    [zipkin-tracer](https://github.com/openzipkin/zipkin-tracer)
+    [zipkin-ruby](https://github.com/openzipkin/zipkin-ruby)
   framework: >-
     [Rack](http://rack.github.io/)
   propagation: Http (B3)
