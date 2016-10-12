@@ -48,4 +48,4 @@
   propagation: Http (B3), Thrift
   transports: Http, Kafka, Scribe
   sampling: "Yes"
-  notes: Propagation is defined in Finagle itself
+  notes: Library is written in Java. Propagation is defined in Finagle itself.
