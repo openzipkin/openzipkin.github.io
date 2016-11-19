@@ -108,6 +108,17 @@
     [Yes](http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-tracing-percent)
   notes: Uses py_zipkin; py2, py3 support.
 
+- language: Python
+  library: >-
+    [flask_zipkin](https://github.com/qiajigou/flask-zipkin)
+  framework: >-
+    [Flask](http://flask.pocoo.org)
+  propagation: Http (B3)
+  transports: Pluggable
+  sampling: >-
+    [Yes](http://qiajigou.click/flask-zipkin/)
+  notes: Uses py_zipkin; py2, py3 support.
+
 - language: Scala
   library: >-
     [akka-tracing](https://github.com/levkhomich/akka-tracing)
