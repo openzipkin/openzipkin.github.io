@@ -146,7 +146,7 @@ we can tell downstream services that this is a "debug" request.
 
 Check [here](https://github.com/openzipkin/brave/blob/e474ed1e1cd291c7ebc6830c58fdba0a6318fdd2/brave-http/src/main/java/com/github/kristofa/brave/http/BraveHttpHeaders.java) for the format.
 
-Finagle provides mechanisms for passing this information with HTTP and Thrift
+[Finagle](https://twitter.github.io/finagle/) provides mechanisms for passing this information with HTTP and Thrift
 requests. Other protocols will need to be augmented with the information for
 tracing to be effective.
 
