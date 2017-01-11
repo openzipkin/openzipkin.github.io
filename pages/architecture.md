@@ -33,6 +33,64 @@ Here's a diagram describing this flow:
 To see if an instrumentation library already exists for your platform, see the
 list of [existing instrumentations]({{ site.github.url}}/pages/existing_instrumentations).
 
+Example flow
+-----------------------
+
+As mentioned in the overview, identifiers are sent in-band and details are sent
+out-of-band to Zipkin. In both cases, trace instrumentation is responsible for
+creating valid traces and rendering them properly. For example, a tracer ensures
+parity between the data it sends in-band (downstream) and out-of-band (async to
+Zipkin).
+
+Here's an example sequence of http tracing where user code calls the resource
+/foo. This results in a single span, sent asynchronously to Zipkin after user
+code receives the http response.
+
+```
+┌─────────────┐ ┌───────────────────────┐  ┌─────────────┐  ┌──────────────────┐
+│ User Code   │ │ Trace Instrumentation │  │ Http Client │  │ Zipkin Collector │
+└─────────────┘ └───────────────────────┘  └─────────────┘  └──────────────────┘
+       │                 │                         │                 │
+           ┌─────────┐
+       │ ──┤GET /foo ├─▶ │ ────┐                   │                 │
+           └─────────┘         │ record tags
+       │                 │ ◀───┘                   │                 │
+                           ────┐
+       │                 │     │ add trace headers │                 │
+                           ◀───┘
+       │                 │ ────┐                   │                 │
+                               │ record timestamp
+       │                 │ ◀───┘                   │                 │
+                             ┌─────────────────┐
+       │                 │ ──┤GET /foo         ├─▶ │                 │
+                             │X-B3-TraceId: aa │     ────┐
+       │                 │   │X-B3-SpanId: 6b  │   │     │           │
+                             └─────────────────┘         │ invoke
+       │                 │                         │     │ request   │
+                                                         │
+       │                 │                         │     │           │
+                                 ┌────────┐          ◀───┘
+       │                 │ ◀─────┤200 OK  ├─────── │                 │
+                           ────┐ └────────┘
+       │                 │     │ record duration   │                 │
+            ┌────────┐     ◀───┘
+       │ ◀──┤200 OK  ├── │                         │                 │
+            └────────┘       ┌────────────────────────────────┐
+       │                 │ ──┤ asynchronously report span     ├────▶ │
+                             │                                │
+                             │{                               │
+                             │  "traceId": "ab",              │
+                             │  "id": "6b",                   │
+                             │  "name": "get",                │
+                             │  "timestamp": 1483945573944000,│
+                             │  "duration": 386000,           │
+                             │  "annotations": [              │
+                             │--snip--                        │
+                             └────────────────────────────────┘
+```
+
+Trace instrumentation report spans asynchronously to prevent delays or failures
+relating to the tracing system from delaying or breaking user code.
 
 Transport
 ---------
