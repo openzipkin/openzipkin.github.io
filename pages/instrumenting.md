@@ -92,11 +92,12 @@ Trace identifiers
 =====
 
 In order to reassemble a set of spans into a full trace three pieces of
-information are required. These are all 64 bits long.
+information are required. Trace identifiers can be 128-bit, but span identifiers
+within a trace are always 64-bit.
 
 **Trace Id**
 
-The overall ID of the trace. Every span in a trace will share this ID.
+The overall 64 or 128-bit ID of the trace. Every span in a trace shares this ID.
 
 **Span Id**
 
@@ -113,9 +114,9 @@ Generating identifiers
 
 Let's walk through how Spans are identified.
 
-For the initial receipt of a request no trace information exists. So we create a
-trace id and span id. These should be 64 random bits. The span id can be the same
-as the trace id.
+When an incoming request has no trace information attached, we generate a random
+trace ID and span ID. The span ID can be reused as the lower 64-bits of the
+trace ID, but it can also be completely different.
 
 If the request already has trace information attached to it, the service should
 use that information as server receive and server send events are part of the
@@ -144,7 +145,7 @@ information for the request.
 * Flags - Provides the ability to create and communicate feature flags. This is how
 we can tell downstream services that this is a "debug" request.
 
-Check [here](https://github.com/openzipkin/brave/blob/e474ed1e1cd291c7ebc6830c58fdba0a6318fdd2/brave-http/src/main/java/com/github/kristofa/brave/http/BraveHttpHeaders.java) for the format.
+Check [here](https://github.com/openzipkin/b3-propagation) for the format.
 
 [Finagle](https://twitter.github.io/finagle/) provides mechanisms for passing this information with HTTP and Thrift
 requests. Other protocols will need to be augmented with the information for
@@ -173,11 +174,13 @@ BigBrotherBird.
 
 Ids are encoded as [hex strings](https://github.com/twitter/finagle/blob/master/finagle-core/src/main/scala/com/twitter/finagle/tracing/Id.scala):
 
-* X-B3-TraceId: 64 lower-hex encoded bits (required)
+* X-B3-TraceId: 128 or 64 lower-hex encoded bits (required)
 * X-B3-SpanId: 64 lower-hex encoded bits (required)
 * X-B3-ParentSpanId: 64 lower-hex encoded bits (absent on root span)
 * X-B3-Sampled: Boolean (either "1" or "0", can be absent)
 * X-B3-Flags: "1" means debug (can be absent)
+
+For more information on B3, please see its [specification](https://github.com/openzipkin/b3-propagation).
 
 **Thrift Tracing**
 
