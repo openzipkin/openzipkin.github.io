@@ -7,6 +7,14 @@
   sampling: "Yes"
   notes: lc support. 4.5.2 or higher
 
+- language: "C#"
+  library: >-
+    [Zipkin4net](https://github.com/criteo/zipkin4net)
+  framework: Any
+  propagation: Http (B3)
+  transports: Any
+  sampling: "Yes"
+
 - language: Go
   library: >-
     [go-zipkin](https://github.com/elodina/go-zipkin)
