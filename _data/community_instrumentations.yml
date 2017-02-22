@@ -136,3 +136,13 @@
   transports: Scribe
   sampling: "Yes"
   notes: Java 6+, Scala 2.10+, activator templates for [Akka](https://github.com/levkhomich/activator-akka-tracing) and [Play](https://github.com/levkhomich/activator-play-tracing)
+
+- language: Scala
+  library: >-
+    [play-zipkin-tracing](https://github.com/bizreach/play-zipkin-tracing)
+  framework: >-
+    [Play](https://www.playframework.com)
+  propagation: Http (B3)
+  transports: Http
+  sampling: "Yes"
+  notes: Uses Brave4; Play 2.3, 2.4 and 2.5 support.
