@@ -79,7 +79,7 @@ code receives the http response.
        │                 │ ──┤ asynchronously report span     ├────▶ │
                              │                                │
                              │{                               │
-                             │  "traceId": "ab",              │
+                             │  "traceId": "aa",              │
                              │  "id": "6b",                   │
                              │  "name": "get",                │
                              │  "timestamp": 1483945573944000,│
