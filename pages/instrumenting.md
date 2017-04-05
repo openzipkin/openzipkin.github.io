@@ -275,3 +275,73 @@ root span from a client-initiated, dual-host one.
 The bottom-line is that choosing not to record Span.timestamp and duration will result
 in less accurate data and less functionality. Since it is very easy to record these authoritatively
 before reporting, all Zipkin instrumentation should do it or ask someone to help them do it.
+
+One-way Tracing
+===============
+
+One-way is the same as normal RPC tracing, except there is no response anticipated.
+
+In normal RPC tracing 4 annotations are used: "cs" "sr" (request) then "ss" "cr" (response).
+In one-way tracing, the first two are used "cs" "sr" as there is no response returned to the caller.
+
+So, the producer adds "cs" to a span and reports it to zipkin. Then, the consumer adds "sr" to the
+same span and reports it. Neither side add Span.timestamp or duration because neither side know both
+when the span started and finished.
+
+Here's a diagram of this applied to single-producer single-consumer model:
+
+```
+   Producer Tracer                                    Consumer Tracer     
++------------------+                               +------------------+
+| +--------------+ |     +-----------------+       | +--------------+ |
+| | TraceContext |======>| Message Headers |========>| TraceContext | |
+| +--------------+ |     +-----------------+       | +--------------+ |
++--------||--------+                               +--------||--------+
+   start ||                                                 ||
+         \/                                          finish ||
+span(context).annotate("cs")                                \/
+             .address("sa", broker)          span(context).annotate("sr")
+                                                          .address("ca", broker)
+```
+
+Here's an example of this process using the [Brave Tracer](https://github.com/openzipkin/brave/blob/master/brave/src/test/java/brave/features/async/OneWaySpanTest.java):
+
+Producer side:
+```java
+// Add trace identifiers to the outbound span
+Propagation.B3_STRING.injector(Message::addHeader)
+    .inject(span.context(), message);
+
+producer.send(message);
+
+// start the client side and flush instead of processing a response
+span.kind(Span.Kind.CLIENT)
+    .remoteEndpoint(broker.endpoint())
+    .start().flush();
+
+// The above will report to zipkin trace identifiers, a "cs" annotation with the
+// endpoint of the producer, and a "sa" (Server Address) with the endpoint of
+// the broker
+```
+
+Consumer side:
+```java
+// Parse the span from message headers
+TraceContextOrSamplingFlags result =
+    Propagation.B3_STRING.extractor(Message::getHeader).extract(message);
+
+// Reuse the same span ids by joining that context
+span = tracer.joinSpan(result.context())
+
+// start the server side and flush instead of processing a response
+span.kind(Span.Kind.SERVER)
+    .remoteEndpoint(broker.endpoint())
+    .start().flush();
+
+// The above will report to zipkin trace identifiers, a "sr" annotation with the
+// endpoint of the consumer, and a "ca" (Client Address) with the endpoint of
+// the broker.
+```
+
+The above flow assumes a tracer can "flush" a span, which simply sends the span
+to Zipkin without attempting to calculate duration locally.
