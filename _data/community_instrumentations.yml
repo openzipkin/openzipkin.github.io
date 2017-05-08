@@ -151,7 +151,7 @@
   library: >-
     [phpkin](https://github.com/whitemerry/phpkin)
   framework: Any
-  propagation: User implementation (B3 Storage provided)
-  transports: Manual bind to existing clients
+  propagation: "B3, custom (depends on user implementation)"
+  transports: "http, log file"
   sampling: "Yes"
   notes: Simple and full implementation without dependencies. Very flexible.
