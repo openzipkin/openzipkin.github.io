@@ -146,3 +146,12 @@
   transports: Http
   sampling: "Yes"
   notes: Uses Brave4; Play 2.3, 2.4 and 2.5 support.
+
+- language: PHP
+  library: >-
+    [phpkin](https://github.com/whitemerry/phpkin)
+  framework: Any
+  propagation: "B3, custom (depends on user implementation)"
+  transports: "http, log file"
+  sampling: "Yes"
+  notes: Simple and full implementation without dependencies. Very flexible.
