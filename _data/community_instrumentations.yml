@@ -18,12 +18,12 @@
 - language: Elixir
   library: >-
     [Tapper](https://github.com/Financial-Times/tapper)
-   framework: >-
+  framework: >-
     Any, [Plug](https://github.com/elixir-lang/plug) supported via [Tapper Plug](https://github.com/Financial-Times/tapper_plug)
-   propagation: Http (B3)
-   transports: Http
-   sampling: [Yes](https://github.com/Financial-Times/tapper_plug#sampling)
-   notes: >-
+  propagation: Http (B3)
+  transports: Http
+  sampling: "[Yes](https://github.com/Financial-Times/tapper_plug#sampling)"
+  notes: >-
     Comprises tracing and reporting OTP-application [Tapper](https://github.com/Financial-Times/tapper), 
     with server integration via [Tapper Plug](https://github.com/Financial-Times/tapper_plug), and support for tracing
     [Absinthe](http://absinthe-graphql.org/) via [Tapper Absinthe Plug](https://github.com/Financial-Times/tapper_absinthe_plug)
