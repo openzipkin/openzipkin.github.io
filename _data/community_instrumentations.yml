@@ -1,3 +1,12 @@
+- language: "C,C++"
+  library: >-
+    [zipkin-cpp](https://github.com/flier/zipkin-cpp)
+  framework: gRPC
+  propagation: Http (B3)
+  transports: Http, Kafka, Scribe, X-Ray
+  sampling: "Yes"
+  notes: includes benchmarks
+
 - language: "C#"
   library: >-
     [ZipkinTracerModule](https://github.com/mdsol/Medidata.ZipkinTracerModule)
