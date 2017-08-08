@@ -177,8 +177,8 @@
   transports: "http, log file"
   sampling: "Yes"
   notes: Simple and full implementation without dependencies. Very flexible.
-  
-  - language: PHP
+
+- language: PHP
   library: >-
     [Molten](https://github.com/chuan-yun/Molten)
   framework: Any
