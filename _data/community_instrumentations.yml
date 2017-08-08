@@ -177,3 +177,12 @@
   transports: "http, log file"
   sampling: "Yes"
   notes: Simple and full implementation without dependencies. Very flexible.
+  
+  - language: PHP
+  library: >-
+    [Molten](https://github.com/chuan-yun/Molten)
+  framework: Any
+  propagation: "B3"
+  transports: "http, log file, syslog"
+  sampling: "Yes"
+  notes: Application transparent;php5.6 or higher;auto trace pdo/mysqli/curl/memcached/redis;auto add http B3 header.
