@@ -30,7 +30,7 @@ Core data structures are documented in detail in [Thrift](https://github.com/ope
 
 **Annotation**
 
-An Annotation is used to record an occurance in time. There's a set of core
+An Annotation is used to record an occurrence in time. There's a set of core
 annotations used to define the beginning and end of an RPC request:
 
 * **cs** - Client Send. The client has made the request. This sets the
