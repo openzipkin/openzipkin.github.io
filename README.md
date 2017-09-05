@@ -9,7 +9,8 @@ This means that everything on the `master` branch is immediately and
 automatically published.
 
 It uses the static site generator [Jekyll](http://jekyllrb.com/). Jekyll is
-implemented in [Ruby](https://www.ruby-lang.org/en/).
+implemented in [Ruby](https://www.ruby-lang.org/en/) and requires Ruby
+version >= 2.1.
 
 ## Contributing
 
