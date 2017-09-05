@@ -1,3 +1,13 @@
+- language: "C#"
+  library: >-
+    [Zipkin4net](https://github.com/openzipkin/zipkin4net)
+  framework: >-
+    Asp.net core, Owin
+  propagation: Http (B3)
+  transports: Any
+  sampling: "Yes"
+  notes:
+
 - language: Go
   library: >-
     [zipkin-go-opentracing](https://github.com/openzipkin/zipkin-go-opentracing)
