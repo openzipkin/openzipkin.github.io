@@ -73,14 +73,14 @@ Annotations and binary annotations have an endpoint associated with them. With t
 exceptions, this endpoint is associated with the traced process. For example, the
 service name drop-down in the Zipkin UI corresponds with Annotation.endpoint.serviceName
 or BinaryAnnotation.endpoint.serviceName. For the sake of usability, the cardinality
-of Endpoint.serviceName should be bounded. For example, it shouldn't include variables
+of Endpoint.serviceName should be bound. For example, it shouldn't include variables
 or random numbers.
 
 
 **Span**
 
 A set of Annotations and BinaryAnnotations that correspond to a particular RPC.
-Spans contain identifying information such as traceId, spandId, parentId, and
+Spans contain identifying information such as traceId, spanId, parentId, and
 RPC name.
 
 Spans are usually small. For example, the serialized form is often measured in
@@ -248,7 +248,7 @@ unless (logging "sr" in an existing span) {
 Zipkin merges spans together that share the same trace and span ID. The most
 common case of this is to merge a span reported by both the client (cs, cr) and
 the server (sr, ss). For example, the client starts a span, logging "cs" and
-propagates it via B3 headers, the server continueus that span by logging "sr".
+propagates it via B3 headers, the server continues that span by logging "sr".
 
 In this case, the client started the span, so it should record Span.timestamp and
 duration, and those values should match the difference between "cs" and "cr". The
