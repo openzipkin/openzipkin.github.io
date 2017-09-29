@@ -178,3 +178,13 @@
   transports: "http, log file, syslog"
   sampling: "Yes"
   notes: Application transparent;php5.6 or higher;auto trace pdo/mysqli/curl/memcached/redis;auto add http B3 header.
+
+- language: PHP
+  library: >-
+    [zipkin-php](https://github.com/jcchavezs/zipkin-php)
+  framework: Any
+  propagation: "B3"
+  transports: "http, log file"
+  sampling: "Yes"
+  notes: V2 native based on brave's model, compatible with PHP 5.6 and PHP 7. Check [this](https://github.com/openzipkin/zipkin-php-example) out for an example.
+
