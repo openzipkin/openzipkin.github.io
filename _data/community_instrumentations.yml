@@ -25,7 +25,7 @@
   transports: Http
   sampling: "[Yes](https://github.com/Financial-Times/tapper_plug#sampling)"
   notes: >-
-    Comprises tracing and reporting OTP-application [Tapper](https://github.com/Financial-Times/tapper), 
+    Comprises tracing and reporting OTP-application [Tapper](https://github.com/Financial-Times/tapper),
     with server integration via [Tapper Plug](https://github.com/Financial-Times/tapper_plug), and support for tracing
     [Absinthe](http://absinthe-graphql.org/) via [Tapper Absinthe Plug](https://github.com/Financial-Times/tapper_absinthe_plug)
 
@@ -95,6 +95,15 @@
   transports: Http
   sampling: "Yes"
   notes: Java 7 or higher, [SLF4J MDC support](https://github.com/Nike-Inc/wingtips#mdc_info) for auto-tagging all log messages with tracing info
+
+- language: JavaScript
+  library: >-
+    [appmetrics-zipkin](https://github.com/RuntimeTools/appmetrics-zipkin)
+  framework: Express, Koa
+  propagation: Http (B3)
+  transports: Http
+  sampling: "Yes"
+  notes: Provides zipkin support with addition of a single line of code
 
 - language: Python
   library: >-
@@ -187,4 +196,3 @@
   transports: "http, log file"
   sampling: "Yes"
   notes: V2 native based on brave's model, compatible with PHP 5.6 and PHP 7. Check [this](https://github.com/openzipkin/zipkin-php-example) out for an example.
-
