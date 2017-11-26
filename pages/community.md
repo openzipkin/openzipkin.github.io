@@ -35,3 +35,19 @@ features are intentionally absent, usually with rationale documented in an issue
 Regardless, the best advice is to join the community before proposing change, and
 read one of our [HACKING](https://github.com/openzipkin/brave/blob/master/HACKING.md) files
 which explains important aspects of change culture.
+
+### Logos
+**[Zipkin Logo SVG (plain)]({{ site.github.url}}/public/img/zipkin.svg)**
+
+Use the plain logo for web sites and for printing.
+As it is a vector image, it can be scaled without creating pixel artifacts.
+
+It can also be used to print transfer stickers. 
+A minimum size for transfer stickers would be 12.5 cm x 7.42 cm. 
+Smaller sizes might break the delicate design of the logo.
+
+**[Zipkin Logo SVG (with a cut-line)]({{ site.github.url}}/public/img/zipkin-cutline.svg)**
+
+Use the logo with a cut-line for printing kiss-cut stickers.
+A minimum size for kiss-cut stickers would be 7.5 cm x 4.62 cm. 
+Smaller sizes might give you problems with the inner corners when you want to peel-off the sticker.
