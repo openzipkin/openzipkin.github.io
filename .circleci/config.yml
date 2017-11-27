@@ -1,0 +1,8 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: bundle install
+      - run: bundle exec jekyll build
