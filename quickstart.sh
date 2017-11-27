@@ -2,9 +2,55 @@
 
 set -euo pipefail
 
+usage() {
+    cat <<EOF
+$0
+Downloads the latest version of the Zipkin Server executable jar
+
+$0 GROUP:ARTIFACT:CLASSIFIER TARGET
+Downloads the latest version of GROUP:ARTIFACT with classifier "CLASSIFIER"
+to path "TARGET" on the local file system. For example:
+
+$0 io.zipkin.java:zipkin-autoconfigure-collector-kafka10:module kafka10.jar
+downloads the latest version of the artifact with group "io.zipkin.java",
+artifact id "zipkin-autoconfigure-collector-kafka10", and classifier "module"
+to PWD/kafka10.jar
+EOF
+}
+
+welcome() {
+    cat <<EOF
+Thank you for trying OpenZipkin!
+
+This installer is provided as a quick-start helper, so you can try Zipkin out
+without a lengthy installation process.
+
+EOF
+}
+
+farewell() {
+    local artifact_classifier="$1"; shift
+    local filename="$1"; shift
+    if [ "$artifact_classifier" = 'exec' ]; then
+        cat <<EOF
+
+You can now run the downloaded executable jar:
+
+    java -jar $filename
+
+EOF
+    else
+        cat << EOF
+
+The downloaded artifact is now available at $filename.
+EOF
+    fi
+}
+
 handle_shutdown() {
-    if [ $? -eq 0 ]; then
-        local base_filename="$1"; shift
+    local status=$?
+    local base_filename="$1"; shift
+    if [ $status -eq 0 ]; then
         rm -f "$base_filename"{.asc,.md5,.md5.asc}
     else
         cat <<EOF
@@ -14,7 +60,7 @@ with the debug flag like below, and open an issue on
 https://github.com/openzipkin/zipkin/issues/new. Make sure to include the
 full output of the run.
 
-    \curl -sSL http://zipkin.io/quickstart.sh | bash -sx
+    \curl -sSL http://zipkin.io/quickstart.sh | bash -sx $@
 
 In the meanwhile, you can manually download and run the latest executable jar
 from the following URL:
@@ -32,6 +78,11 @@ extract_latest_version() {
     else
         echo "$package_data" | sed 's/^.*"latest_version" *: *"*\([^"]*\)".*$/\1/'
     fi
+}
+
+artifact_part() {
+    local index="$1"; shift
+    local default="$1"; shift
 }
 
 verify_version_number() {
@@ -91,33 +142,48 @@ EOF
 }
 
 main() {
-    local filename="zipkin.jar"
-    trap "handle_shutdown $filename" EXIT
-    cat <<EOF
-Thank you for trying OpenZipkin!
+    local artifact_group=io.zipkin.java
+    local artifact_id=zipkin-server
+    local artifact_classifier=exec
+    if [ $# -eq 0 ]; then
+        local filename="zipkin.jar"
+        trap "handle_shutdown \"$filename\" $*" EXIT
+    elif [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
+        usage
+        exit
+    elif [ $# -eq 2 ]; then
+        local filename="$2"
+        trap "handle_shutdown \"$filename\" $*" EXIT
+        local artifact_parts=(${1//:/ })
+        local artifact_group="${artifact_parts[0]}"
+        local artifact_id="${artifact_parts[1]}"
+        local artifact_classifier="${artifact_parts[2]}"
+    else
+        usage
+        exit 1
+    fi
 
-This installer is provided as a quick-start helper, so you can try Zipkin out
-without a lengthy installation process.
+    if [ -n "$artifact_classifier" ]; then
+        artifact_classifier_suffix="-$artifact_classifier"
+    else
+        artifact_classifier_suffix=''
+    fi
 
-EOF
+    welcome
     echo 'Fetching version number of latest Zipkin release...'
     local package_data="$(curl -fsL  https://bintray.com/api/v1/packages/openzipkin/maven/zipkin)"
     local latest_version="$(extract_latest_version "$package_data")"
     verify_version_number "$latest_version"
 
-    echo "Downloading executable jar for Zipkin $latest_version..."
-    local url="https://dl.bintray.com/openzipkin/maven/io/zipkin/java/zipkin-server/$latest_version/zipkin-server-$latest_version-exec.jar"
+    echo "Downloading $artifact_group:$artifact_id:$latest_version:$artifact_classifier to $filename..."
+    local url="https://dl.bintray.com/openzipkin/maven/${artifact_group//./\/}/${artifact_id}/$latest_version/${artifact_id}-${latest_version}${artifact_classifier_suffix}.jar"
     curl -sL -o "$filename" "$url"
     verify_checksum "$url" "$filename"
     verify_signature "$url" "$filename"
     verify_signature "$url.md5" "$filename.md5"
 
-    cat <<EOF
+    farewell "$artifact_classifier" "$filename"
 
-You can now run the Zipkin Server:
-
-    java -jar $filename
-EOF
 }
 
 main "$@"
