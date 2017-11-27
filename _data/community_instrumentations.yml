@@ -150,6 +150,17 @@
     [Yes](http://qiajigou.click/flask-zipkin/)
   notes: Uses py_zipkin; py2, py3 support.
 
+- language: Python
+  library: >-
+    [aiozipkin](https://github.com/aio-libs/aiozipkin)
+  framework: >-
+    [asyncio](https://docs.python.org/3/library/asyncio.html)
+  propagation: Http (B3)
+  transports: Http
+  sampling: >-
+    [Yes](https://github.com/aio-libs/aiozipkin/blob/a1a239d6f5a42fce35ecc9810c09eb4ac1d89780/aiozipkin/tracer.py#L9-L10)
+  notes: Supported python 3.5+ and native coroutines.
+  
 - language: Scala
   library: >-
     [akka-tracing](https://github.com/levkhomich/akka-tracing)
