@@ -2,8 +2,12 @@
 
 set -euo pipefail
 
-handle_error() {
-    cat <<EOF
+handle_shutdown() {
+    if [ $? -eq 0 ]; then
+        local base_filename="$1"; shift
+        rm -f "$base_filename"{.asc,.md5,.md5.asc}
+    else
+        cat <<EOF
 
 It looks like quick-start setup has failed. Please run the command again
 with the debug flag like below, and open an issue on
@@ -12,11 +16,17 @@ full output of the run.
 
     \curl -sSL http://zipkin.io/quickstart.sh | bash -sx
 
+In the meanwhile, you can manually download and run the latest executable jar
+from the following URL:
+
+https://dl.bintray.com/openzipkin/maven/io/zipkin/java/zipkin-server/
+
 EOF
+    fi
 }
 
 extract_latest_version() {
-    package_data="$1"
+    local package_data="$1"
     if \which jq >/dev/null 2>&1; then
         echo "$package_data" | jq '.latest_version' -r
     else
@@ -36,36 +46,41 @@ EOF
 }
 
 verify_checksum() {
-    url="$1"; shift
-    filename="$1"; shift
+    local url="$1"; shift
+    local filename="$1"; shift
 
     if \which md5sum >/dev/null 2>&1; then
+        echo
         echo "Verifying checksum..."
-        echo "$(curl -s "$url.md5")  $filename" > "$filename.md5"
-        md5sum --check "$filename.md5"
+        curl -sL -o "$filename.md5" "$url.md5"
+        echo "$(cat $filename.md5)  $filename" | md5sum --check
     else
         echo "md5sum not found on path, skipping checksum verification"
     fi
 }
 
 verify_signature() {
-    url="$1"; shift
-    filename="$1"; shift
+    local url="$1"; shift
+    local filename="$1"; shift
 
-    bintray_gpg_key='D401AB61'
+    local bintray_gpg_key='D401AB61'
 
     if \which gpg >/dev/null 2>&1; then
+        echo
         echo "Verifying signature of $filename..."
-        curl -s -o "$filename.asc" "$url.asc"
+        curl -sL -o "$filename.asc" "$url.asc"
         if gpg --list-keys "$bintray_gpg_key" >/dev/null 2>&1; then
             gpg --verify "$filename.asc" "$filename"
         else
             cat <<EOF
+
 JFrog BinTray GPG signing key is not known, skipping signature verification.
 You can import it, then verify the signature of $filename, using the following
 commands:
 
-    gpg --keyserver keyserver.ubuntu.com --recv D401AB61
+    gpg --keyserver keyserver.ubuntu.com --recv $bintray_gpg_key
+    # Optionally trust the key via 'gpg --edit-key $bintray_gpg_key', then typing 'trust',
+    # choosing a trust level, and exiting the interactive GPG session by 'quit'
     gpg --verify $filename.asc $filename
 
 EOF
@@ -76,7 +91,8 @@ EOF
 }
 
 main() {
-    trap '[ $? -ne 0 ] && handle_error' EXIT
+    local filename="zipkin.jar"
+    trap "handle_shutdown $filename" EXIT
     cat <<EOF
 Thank you for trying OpenZipkin!
 
@@ -85,14 +101,13 @@ without a lengthy installation process.
 
 EOF
     echo 'Fetching version number of latest Zipkin release...'
-    package_data="$(curl -fs  https://bintray.com/api/v1/packages/openzipkin/maven/zipkin)"
-    latest_version="$(extract_latest_version "$package_data")"
+    local package_data="$(curl -fsL  https://bintray.com/api/v1/packages/openzipkin/maven/zipkin)"
+    local latest_version="$(extract_latest_version "$package_data")"
     verify_version_number "$latest_version"
 
     echo "Downloading executable jar for Zipkin $latest_version..."
-    url="https://dl.bintray.com/openzipkin/maven/io/zipkin/java/zipkin-server/$latest_version/zipkin-server-$latest_version-exec.jar"
-    filename="zipkin-server-$latest_version-exec.jar"
-    curl -s -o "$filename" "$url"
+    local url="https://dl.bintray.com/openzipkin/maven/io/zipkin/java/zipkin-server/$latest_version/zipkin-server-$latest_version-exec.jar"
+    curl -sL -o "$filename" "$url"
     verify_checksum "$url" "$filename"
     verify_signature "$url" "$filename"
     verify_signature "$url.md5" "$filename.md5"
