@@ -177,7 +177,7 @@ main() {
 
     echo "Downloading $artifact_group:$artifact_id:$latest_version:$artifact_classifier to $filename..."
     local url="https://dl.bintray.com/openzipkin/maven/${artifact_group//./\/}/${artifact_id}/$latest_version/${artifact_id}-${latest_version}${artifact_classifier_suffix}.jar"
-    curl -sL -o "$filename" "$url"
+    curl -L -o "$filename" "$url"
     verify_checksum "$url" "$filename"
     verify_signature "$url" "$filename"
     verify_signature "$url.md5" "$filename.md5"
