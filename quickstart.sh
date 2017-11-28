@@ -7,11 +7,12 @@ usage() {
 $0
 Downloads the latest version of the Zipkin Server executable jar
 
-$0 GROUP:ARTIFACT:CLASSIFIER TARGET
-Downloads the latest version of GROUP:ARTIFACT with classifier "CLASSIFIER"
-to path "TARGET" on the local file system. For example:
+$0 GROUP:ARTIFACT:VERSION:CLASSIFIER TARGET
+Downloads the "VERSION" version of GROUP:ARTIFACT with classifier "CLASSIFIER"
+to path "TARGET" on the local file system. "VERSION" can take the special value
+"LATEST", in which case the latest Zipkin release will be used. For example:
 
-$0 io.zipkin.java:zipkin-autoconfigure-collector-kafka10:module kafka10.jar
+$0 io.zipkin.java:zipkin-autoconfigure-collector-kafka10:LATEST:module kafka10.jar
 downloads the latest version of the artifact with group "io.zipkin.java",
 artifact id "zipkin-autoconfigure-collector-kafka10", and classifier "module"
 to PWD/kafka10.jar
@@ -88,8 +89,8 @@ artifact_part() {
 verify_version_number() {
     if ! echo "$1" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' >/dev/null 2>&1; then
         cat <<EOF
-It looks like the current version number is "$1". That doesn't look like a
-valid Zipkin release version number; this script is confused. Bailing out.
+The target version is "$1". That doesn't look like a valid Zipkin release version
+number; this script is confused. Bailing out.
 
 EOF
         exit 1
@@ -144,6 +145,7 @@ EOF
 main() {
     local artifact_group=io.zipkin.java
     local artifact_id=zipkin-server
+    local artifact_version=LATEST
     local artifact_classifier=exec
     if [ $# -eq 0 ]; then
         local filename="zipkin.jar"
@@ -157,7 +159,8 @@ main() {
         local artifact_parts=(${1//:/ })
         local artifact_group="${artifact_parts[0]}"
         local artifact_id="${artifact_parts[1]}"
-        local artifact_classifier="${artifact_parts[2]}"
+        local artifact_version="${artifact_parts[2]}"
+        local artifact_classifier="${artifact_parts[3]}"
     else
         usage
         exit 1
@@ -170,14 +173,17 @@ main() {
     fi
 
     welcome
-    echo 'Fetching version number of latest Zipkin release...'
-    local package_data="$(curl -fsL  https://bintray.com/api/v1/packages/openzipkin/maven/zipkin)"
-    local latest_version="$(extract_latest_version "$package_data")"
-    verify_version_number "$latest_version"
 
-    echo "Downloading $artifact_group:$artifact_id:$latest_version:$artifact_classifier to $filename..."
-    local url="https://dl.bintray.com/openzipkin/maven/${artifact_group//./\/}/${artifact_id}/$latest_version/${artifact_id}-${latest_version}${artifact_classifier_suffix}.jar"
-    echo "$url -> $filename"
+    if [ "${artifact_version,,}" = 'latest' ]; then
+        echo 'Fetching version number of latest Zipkin release...'
+        local package_data="$(curl -fsL  https://bintray.com/api/v1/packages/openzipkin/maven/zipkin)"
+        artifact_version="$(extract_latest_version "$package_data")"
+    fi
+    verify_version_number "$artifact_version"
+
+    echo "Downloading $artifact_group:$artifact_id:$artifact_version:$artifact_classifier to $filename..."
+    local url="https://dl.bintray.com/openzipkin/maven/${artifact_group//./\/}/${artifact_id}/$artifact_version/${artifact_id}-${artifact_version}${artifact_classifier_suffix}.jar"
+    echo "$url -> $url"
     curl -L -o "$filename" "$url"
     verify_checksum "$url" "$filename"
     verify_signature "$url" "$filename"
