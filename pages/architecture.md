@@ -98,8 +98,9 @@ Transport
 Spans sent by the instrumented library must be transported from the services
 being traced to Zipkin collectors. There are three primary transports: HTTP,
 Kafka and Scribe.
-See [Span Receivers]({{ site.github.url }}/pages/span_receivers) for more
-information.
+
+Components
+----------
 
 There are 4 components that make up Zipkin:
 
