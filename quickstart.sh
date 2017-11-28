@@ -61,7 +61,7 @@ with the debug flag like below, and open an issue on
 https://github.com/openzipkin/zipkin/issues/new. Make sure to include the
 full output of the run.
 
-    \curl -sSL http://zipkin.io/quickstart.sh | bash -sx $@
+    \curl -sSL http://zipkin.io/quickstart.sh | bash -sx -- $@
 
 In the meanwhile, you can manually download and run the latest executable jar
 from the following URL:
