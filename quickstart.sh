@@ -83,7 +83,7 @@ extract_latest_version() {
 
 artifact_part() {
     local index="$1"; shift
-    local default="$1"; shift
+    cut -f "$index" -d:
 }
 
 verify_version_number() {
@@ -156,11 +156,10 @@ main() {
     elif [ $# -eq 2 ]; then
         local filename="$2"
         trap "handle_shutdown \"$filename\" $*" EXIT
-        local artifact_parts=(${1//:/ })
-        local artifact_group="${artifact_parts[0]}"
-        local artifact_id="${artifact_parts[1]}"
-        local artifact_version="${artifact_parts[2]}"
-        local artifact_classifier="${artifact_parts[3]}"
+        local artifact_group="$(echo "$1" | artifact_part 1)"
+        local artifact_id="$(echo "$1" | artifact_part 2)"
+        local artifact_version="$(echo "$1" | artifact_part 3)"
+        local artifact_classifier="$(echo "$1" | artifact_part 4)"
     else
         usage
         exit 1
@@ -174,7 +173,8 @@ main() {
 
     welcome
 
-    if [ "${artifact_version,,}" = 'latest' ]; then
+    local artifact_version_lowercase="$(echo "${artifact_version}" | tr '[:upper:]' '[:lower:]')"
+    if [  "${artifact_version_lowercase}" = 'latest' ]; then
         echo 'Fetching version number of latest Zipkin release...'
         local package_data="$(curl -fsL  https://bintray.com/api/v1/packages/openzipkin/maven/zipkin)"
         artifact_version="$(extract_latest_version "$package_data")"
@@ -182,7 +182,8 @@ main() {
     verify_version_number "$artifact_version"
 
     echo "Downloading $artifact_group:$artifact_id:$artifact_version:$artifact_classifier to $filename..."
-    local url="https://dl.bintray.com/openzipkin/maven/${artifact_group//./\/}/${artifact_id}/$artifact_version/${artifact_id}-${artifact_version}${artifact_classifier_suffix}.jar"
+    local artifact_group_with_slashes="$(echo "${artifact_group}" | tr '.' '/')"
+    local url="https://dl.bintray.com/openzipkin/maven/${artifact_group_with_slashes}/${artifact_id}/$artifact_version/${artifact_id}-${artifact_version}${artifact_classifier_suffix}.jar"
     echo "$url -> $url"
     curl -L -o "$filename" "$url"
     verify_checksum "$url" "$filename"
