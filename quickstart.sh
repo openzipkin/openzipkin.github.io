@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+# This will be set to 1 if we instruct the user to manually verify signatures,
+# when they have GPG but don't have the BinTray public key. Would be super confusing
+# to tell the user to use files that we've cleaned up.
+DO_CLEANUP=0
+
 usage() {
     cat <<EOF
 $0
@@ -52,7 +57,9 @@ handle_shutdown() {
     local status=$?
     local base_filename="$1"; shift
     if [ $status -eq 0 ]; then
-        rm -f "$base_filename"{.asc,.md5,.md5.asc}
+        if [ "$DO_CLEANUP" -eq 0 ]; then
+            rm -f "$base_filename"{.md5,.asc,.md5.asc}
+        fi
     else
         cat <<EOF
 
@@ -136,6 +143,7 @@ commands:
     gpg --verify $filename.asc $filename
 
 EOF
+            DO_CLEANUP=1
         fi
     else
         echo "gpg not found on path, skipping checksum verification"
