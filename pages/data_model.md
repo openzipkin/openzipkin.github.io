@@ -2,6 +2,8 @@
 title: Data Model
 ---
 
+*Note* this page is out-of-date. Please view the [Zipkin Api](https://zipkin.io/zipkin-api/#/default/post_spans) doc which elaborates the fields in the model until this page is updated.
+
 In order to illustrate the tracing data that Zipkin displays, let's relate it to the equivalent information in the Zipkin data model. By comparing these, we see that
 
 + inbound and outbound requests are in different spans
