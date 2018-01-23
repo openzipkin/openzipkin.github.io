@@ -210,7 +210,7 @@
 
 - language: PHP
   library: >-
-    [zipkin-opentracing-php](https://github.com/jcchavezs/zipkin-opentracing-php)
+    [zipkin-php-opentracing](https://github.com/jcchavezs/zipkin-php-opentracing)
   framework: Any
   propagation: "B3"
   transports: "http, log file"
