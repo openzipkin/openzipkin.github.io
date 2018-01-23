@@ -10,6 +10,16 @@
 
 - language: Go
   library: >-
+    [zipkin-go](https://github.com/openzipkin/zipkin-go)
+  framework: >-
+    standard Go middlewares
+  propagation: Http (B3), gRPC (B3)
+  transports: Http (v2), Kafka (v2), Log
+  sampling: "Yes"
+  notes: Uses Zipkin V2 API
+
+- language: Go
+  library: >-
     [zipkin-go-opentracing](https://github.com/openzipkin/zipkin-go-opentracing)
   framework: >-
     [Go kit](https://gokit.io), or roll your own with [OpenTracing](http://opentracing.io)
