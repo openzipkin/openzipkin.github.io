@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link href="style.css" rel="stylesheet" type="text/css"/>
+<title>Thrift module: zipkinCore</title></head><body>
+<div class="container-fluid">
+<h1>Thrift module: zipkinCore</h1>
+<table class="table-bordered table-striped table-condensed"><thead><th>Module</th><th>Services</th><th>Data types</th><th>Constants</th></thead>
+<tr>
+<td>zipkinCore</td><td></td>
+<td><a href="#Struct_Annotation">Annotation</a><br/>
+<a href="#Enum_AnnotationType">AnnotationType</a><br/>
+<a href="#Struct_BinaryAnnotation">BinaryAnnotation</a><br/>
+<a href="#Struct_Endpoint">Endpoint</a><br/>
+<a href="#Struct_Span">Span</a><br/>
+</td>
+<td><code><a href="#Const_CLIENT_ADDR">CLIENT_ADDR</a></code><br/>
+<code><a href="#Const_CLIENT_RECV">CLIENT_RECV</a></code><br/>
+<code><a href="#Const_CLIENT_RECV_FRAGMENT">CLIENT_RECV_FRAGMENT</a></code><br/>
+<code><a href="#Const_CLIENT_SEND">CLIENT_SEND</a></code><br/>
+<code><a href="#Const_CLIENT_SEND_FRAGMENT">CLIENT_SEND_FRAGMENT</a></code><br/>
+<code><a href="#Const_ERROR">ERROR</a></code><br/>
+<code><a href="#Const_HTTP_HOST">HTTP_HOST</a></code><br/>
+<code><a href="#Const_HTTP_METHOD">HTTP_METHOD</a></code><br/>
+<code><a href="#Const_HTTP_PATH">HTTP_PATH</a></code><br/>
+<code><a href="#Const_HTTP_REQUEST_SIZE">HTTP_REQUEST_SIZE</a></code><br/>
+<code><a href="#Const_HTTP_RESPONSE_SIZE">HTTP_RESPONSE_SIZE</a></code><br/>
+<code><a href="#Const_HTTP_STATUS_CODE">HTTP_STATUS_CODE</a></code><br/>
+<code><a href="#Const_HTTP_URL">HTTP_URL</a></code><br/>
+<code><a href="#Const_LOCAL_COMPONENT">LOCAL_COMPONENT</a></code><br/>
+<code><a href="#Const_MESSAGE_ADDR">MESSAGE_ADDR</a></code><br/>
+<code><a href="#Const_MESSAGE_RECV">MESSAGE_RECV</a></code><br/>
+<code><a href="#Const_MESSAGE_SEND">MESSAGE_SEND</a></code><br/>
+<code><a href="#Const_SERVER_ADDR">SERVER_ADDR</a></code><br/>
+<code><a href="#Const_SERVER_RECV">SERVER_RECV</a></code><br/>
+<code><a href="#Const_SERVER_RECV_FRAGMENT">SERVER_RECV_FRAGMENT</a></code><br/>
+<code><a href="#Const_SERVER_SEND">SERVER_SEND</a></code><br/>
+<code><a href="#Const_SERVER_SEND_FRAGMENT">SERVER_SEND_FRAGMENT</a></code><br/>
+<code><a href="#Const_WIRE_RECV">WIRE_RECV</a></code><br/>
+<code><a href="#Const_WIRE_SEND">WIRE_SEND</a></code><br/>
+</code></td>
+</tr></table>
+<hr/><h2 id="Constants">Constants</h2>
+<table class="table-bordered table-striped table-condensed"><thead><th>Constant</th><th>Type</th><th>Value</th></thead>
+<tr id="Const_CLIENT_SEND"><td><code>CLIENT_SEND</code></td><td><code>string</code></td><td><code>"cs"</code></td></tr><tr><td colspan="3"><blockquote>The client sent ("cs") a request to a server. There is only one send per
+span. For example, if there's a transport error, each attempt can be logged
+as a WIRE_SEND annotation.
+<p/>
+If chunking is involved, each chunk could be logged as a separate
+CLIENT_SEND_FRAGMENT in the same span.
+<p/>
+Annotation.host is not the server. It is the host which logged the send
+event, almost always the client. When logging CLIENT_SEND, instrumentation
+should also log the SERVER_ADDR.
+<br/></blockquote></td></tr><tr id="Const_CLIENT_RECV"><td><code>CLIENT_RECV</code></td><td><code>string</code></td><td><code>"cr"</code></td></tr><tr><td colspan="3"><blockquote>The client received ("cr") a response from a server. There is only one
+receive per span. For example, if duplicate responses were received, each
+can be logged as a WIRE_RECV annotation.
+<p/>
+If chunking is involved, each chunk could be logged as a separate
+CLIENT_RECV_FRAGMENT in the same span.
+<p/>
+Annotation.host is not the server. It is the host which logged the receive
+event, almost always the client. The actual endpoint of the server is
+recorded separately as SERVER_ADDR when CLIENT_SEND is logged.
+<br/></blockquote></td></tr><tr id="Const_SERVER_SEND"><td><code>SERVER_SEND</code></td><td><code>string</code></td><td><code>"ss"</code></td></tr><tr><td colspan="3"><blockquote>The server sent ("ss") a response to a client. There is only one response
+per span. If there's a transport error, each attempt can be logged as a
+WIRE_SEND annotation.
+<p/>
+Typically, a trace ends with a server send, so the last timestamp of a trace
+is often the timestamp of the root span's server send.
+<p/>
+If chunking is involved, each chunk could be logged as a separate
+SERVER_SEND_FRAGMENT in the same span.
+<p/>
+Annotation.host is not the client. It is the host which logged the send
+event, almost always the server. The actual endpoint of the client is
+recorded separately as CLIENT_ADDR when SERVER_RECV is logged.
+<br/></blockquote></td></tr><tr id="Const_SERVER_RECV"><td><code>SERVER_RECV</code></td><td><code>string</code></td><td><code>"sr"</code></td></tr><tr><td colspan="3"><blockquote>The server received ("sr") a request from a client. There is only one
+request per span.  For example, if duplicate responses were received, each
+can be logged as a WIRE_RECV annotation.
+<p/>
+Typically, a trace starts with a server receive, so the first timestamp of a
+trace is often the timestamp of the root span's server receive.
+<p/>
+If chunking is involved, each chunk could be logged as a separate
+SERVER_RECV_FRAGMENT in the same span.
+<p/>
+Annotation.host is not the client. It is the host which logged the receive
+event, almost always the server. When logging SERVER_RECV, instrumentation
+should also log the CLIENT_ADDR.
+<br/></blockquote></td></tr><tr id="Const_MESSAGE_SEND"><td><code>MESSAGE_SEND</code></td><td><code>string</code></td><td><code>"ms"</code></td></tr><tr><td colspan="3"><blockquote>Message send ("ms") is a request to send a message to a destination, usually
+a broker. This may be the only annotation in a messaging span. If WIRE_SEND
+exists in the same span, it follows this moment and clarifies delays sending
+the message, such as batching.
+<p/>
+Unlike RPC annotations like CLIENT_SEND, messaging spans never share a span
+ID. For example, "ms" should always be the parent of "mr".
+<p/>
+Annotation.host is not the destination, it is the host which logged the send
+event: the producer. When annotating MESSAGE_SEND, instrumentation should
+also tag the MESSAGE_ADDR.
+<br/></blockquote></td></tr><tr id="Const_MESSAGE_RECV"><td><code>MESSAGE_RECV</code></td><td><code>string</code></td><td><code>"mr"</code></td></tr><tr><td colspan="3"><blockquote>A consumer received ("mr") a message from a broker. This may be the only
+annotation in a messaging span. If WIRE_RECV exists in the same span, it
+precedes this moment and clarifies any local queuing delay.
+<p/>
+Unlike RPC annotations like SERVER_RECV, messaging spans never share a span
+ID. For example, "mr" should always be a child of "ms" unless it is a root
+span.
+<p/>
+Annotation.host is not the broker, it is the host which logged the receive
+event: the consumer.  When annotating MESSAGE_RECV, instrumentation should
+also tag the MESSAGE_ADDR.
+<br/></blockquote></td></tr><tr id="Const_WIRE_SEND"><td><code>WIRE_SEND</code></td><td><code>string</code></td><td><code>"ws"</code></td></tr><tr><td colspan="3"><blockquote>Optionally logs an attempt to send a message on the wire. Multiple wire send
+events could indicate network retries. A lag between client or server send
+and wire send might indicate queuing or processing delay.
+<br/></blockquote></td></tr><tr id="Const_WIRE_RECV"><td><code>WIRE_RECV</code></td><td><code>string</code></td><td><code>"wr"</code></td></tr><tr><td colspan="3"><blockquote>Optionally logs an attempt to receive a message from the wire. Multiple wire
+receive events could indicate network retries. A lag between wire receive
+and client or server receive might indicate queuing or processing delay.
+<br/></blockquote></td></tr><tr id="Const_CLIENT_SEND_FRAGMENT"><td><code>CLIENT_SEND_FRAGMENT</code></td><td><code>string</code></td><td><code>"csf"</code></td></tr><tr><td colspan="3"><blockquote>Optionally logs progress of a (CLIENT_SEND, WIRE_SEND). For example, this
+could be one chunk in a chunked request.
+<br/></blockquote></td></tr><tr id="Const_CLIENT_RECV_FRAGMENT"><td><code>CLIENT_RECV_FRAGMENT</code></td><td><code>string</code></td><td><code>"crf"</code></td></tr><tr><td colspan="3"><blockquote>Optionally logs progress of a (CLIENT_RECV, WIRE_RECV). For example, this
+could be one chunk in a chunked response.
+<br/></blockquote></td></tr><tr id="Const_SERVER_SEND_FRAGMENT"><td><code>SERVER_SEND_FRAGMENT</code></td><td><code>string</code></td><td><code>"ssf"</code></td></tr><tr><td colspan="3"><blockquote>Optionally logs progress of a (SERVER_SEND, WIRE_SEND). For example, this
+could be one chunk in a chunked response.
+<br/></blockquote></td></tr><tr id="Const_SERVER_RECV_FRAGMENT"><td><code>SERVER_RECV_FRAGMENT</code></td><td><code>string</code></td><td><code>"srf"</code></td></tr><tr><td colspan="3"><blockquote>Optionally logs progress of a (SERVER_RECV, WIRE_RECV). For example, this
+could be one chunk in a chunked request.
+<br/></blockquote></td></tr><tr id="Const_HTTP_HOST"><td><code>HTTP_HOST</code></td><td><code>string</code></td><td><code>"http.host"</code></td></tr><tr><td colspan="3"><blockquote>The domain portion of the URL or host header. Ex. "mybucket.s3.amazonaws.com"
+<p/>
+Used to filter by host as opposed to ip address.
+<br/></blockquote></td></tr><tr id="Const_HTTP_METHOD"><td><code>HTTP_METHOD</code></td><td><code>string</code></td><td><code>"http.method"</code></td></tr><tr><td colspan="3"><blockquote>The HTTP method, or verb, such as "GET" or "POST".
+<p/>
+Used to filter against an http route.
+<br/></blockquote></td></tr><tr id="Const_HTTP_PATH"><td><code>HTTP_PATH</code></td><td><code>string</code></td><td><code>"http.path"</code></td></tr><tr><td colspan="3"><blockquote>The absolute http path, without any query parameters. Ex. "/objects/abcd-ff"
+<p/>
+Used to filter against an http route, portably with zipkin v1.
+<p/>
+In zipkin v1, only equals filters are supported. Dropping query parameters makes the number
+of distinct URIs less. For example, one can query for the same resource, regardless of signing
+parameters encoded in the query line. This does not reduce cardinality to a HTTP single route.
+For example, it is common to express a route as an http URI template like
+"/resource/{resource_id}". In systems where only equals queries are available, searching for
+http/path=/resource won't match if the actual request was /resource/abcd-ff.
+<p/>
+Historical note: This was commonly expressed as "http.uri" in zipkin, even though it was most
+often just a path.
+<br/></blockquote></td></tr><tr id="Const_HTTP_URL"><td><code>HTTP_URL</code></td><td><code>string</code></td><td><code>"http.url"</code></td></tr><tr><td colspan="3"><blockquote>The entire URL, including the scheme, host and query parameters if available. Ex.
+"https://mybucket.s3.amazonaws.com/objects/abcd-ff?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Algorithm=AWS4-HMAC-SHA256..."
+<p/>
+Combined with HTTP_METHOD, you can understand the fully-qualified request line.
+<p/>
+This is optional as it may include private data or be of considerable length.
+<br/></blockquote></td></tr><tr id="Const_HTTP_STATUS_CODE"><td><code>HTTP_STATUS_CODE</code></td><td><code>string</code></td><td><code>"http.status_code"</code></td></tr><tr><td colspan="3"><blockquote>The HTTP status code, when not in 2xx range. Ex. "503"
+<p/>
+Used to filter for error status.
+<br/></blockquote></td></tr><tr id="Const_HTTP_REQUEST_SIZE"><td><code>HTTP_REQUEST_SIZE</code></td><td><code>string</code></td><td><code>"http.request.size"</code></td></tr><tr><td colspan="3"><blockquote>The size of the non-empty HTTP request body, in bytes. Ex. "16384"
+<p/>
+Large uploads can exceed limits or contribute directly to latency.
+<br/></blockquote></td></tr><tr id="Const_HTTP_RESPONSE_SIZE"><td><code>HTTP_RESPONSE_SIZE</code></td><td><code>string</code></td><td><code>"http.response.size"</code></td></tr><tr><td colspan="3"><blockquote>The size of the non-empty HTTP response body, in bytes. Ex. "16384"
+<p/>
+Large downloads can exceed limits or contribute directly to latency.
+<br/></blockquote></td></tr><tr id="Const_LOCAL_COMPONENT"><td><code>LOCAL_COMPONENT</code></td><td><code>string</code></td><td><code>"lc"</code></td></tr><tr><td colspan="3"><blockquote>The value of "lc" is the component or namespace of a local span.
+<p/>
+BinaryAnnotation.host adds service context needed to support queries.
+<p/>
+Local Component("lc") supports three key features: flagging, query by
+service and filtering Span.name by namespace.
+<p/>
+While structurally the same, local spans are fundamentally different than
+RPC spans in how they should be interpreted. For example, zipkin v1 tools
+center on RPC latency and service graphs. Root local-spans are neither
+indicative of critical path RPC latency, nor have impact on the shape of a
+service graph. By flagging with "lc", tools can special-case local spans.
+<p/>
+Zipkin v1 Spans are unqueryable unless they can be indexed by service name.
+The only path to a service name is by (Binary)?Annotation.host.serviceName.
+By logging "lc", a local span can be queried even if no other annotations
+are logged.
+<p/>
+The value of "lc" is the namespace of Span.name. For example, it might be
+"finatra2", for a span named "bootstrap". "lc" allows you to resolves
+conflicts for the same Span.name, for example "finatra/bootstrap" vs
+"finch/bootstrap". Using local component, you'd search for spans named
+"bootstrap" where "lc=finch"
+<br/></blockquote></td></tr><tr id="Const_ERROR"><td><code>ERROR</code></td><td><code>string</code></td><td><code>"error"</code></td></tr><tr><td colspan="3"><blockquote>When an annotation value, this indicates when an error occurred. When a
+binary annotation key, the value is a human readable message associated
+with an error.
+<p/>
+Due to transient errors, an ERROR annotation should not be interpreted
+as a span failure, even the annotation might explain additional latency.
+Instrumentation should add the ERROR binary annotation when the operation
+failed and couldn't be recovered.
+<p/>
+Here's an example: A span has an ERROR annotation, added when a WIRE_SEND
+failed. Another WIRE_SEND succeeded, so there's no ERROR binary annotation
+on the span because the overall operation succeeded.
+<p/>
+Note that RPC spans often include both client and server hosts: It is
+possible that only one side perceived the error.
+<br/></blockquote></td></tr><tr id="Const_CLIENT_ADDR"><td><code>CLIENT_ADDR</code></td><td><code>string</code></td><td><code>"ca"</code></td></tr><tr><td colspan="3"><blockquote>Indicates a client address ("ca") in a span. Most likely, there's only one.
+Multiple addresses are possible when a client changes its ip or port within
+a span.
+<br/></blockquote></td></tr><tr id="Const_SERVER_ADDR"><td><code>SERVER_ADDR</code></td><td><code>string</code></td><td><code>"sa"</code></td></tr><tr><td colspan="3"><blockquote>Indicates a server address ("sa") in a span. Most likely, there's only one.
+Multiple addresses are possible when a client is redirected, or fails to a
+different server ip or port.
+<br/></blockquote></td></tr><tr id="Const_MESSAGE_ADDR"><td><code>MESSAGE_ADDR</code></td><td><code>string</code></td><td><code>"ma"</code></td></tr><tr><td colspan="3"><blockquote>Indicates the remote address of a messaging span, usually the broker.
+<br/></blockquote></td></tr></table><hr/><h2 id="Enumerations">Enumerations</h2>
+<div class="definition"><h3 id="Enum_AnnotationType">Enumeration: AnnotationType</h3>
+A subset of thrift base types, except BYTES.
+<br/><br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>BOOL</code></td><td><code>0</code></td><td>
+Set to 0x01 when key is CLIENT_ADDR or SERVER_ADDR
+<br/></td></tr>
+<tr><td><code>BYTES</code></td><td><code>1</code></td><td>
+No encoding, or type is unknown.
+<br/></td></tr>
+<tr><td><code>I16</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>I32</code></td><td><code>3</code></td><td>
+</td></tr>
+<tr><td><code>I64</code></td><td><code>4</code></td><td>
+</td></tr>
+<tr><td><code>DOUBLE</code></td><td><code>5</code></td><td>
+</td></tr>
+<tr><td><code>STRING</code></td><td><code>6</code></td><td>
+the only type zipkin v1 supports search against.
+<br/></td></tr>
+</table></div>
+<hr/><h2 id="Structs">Data structures</h2>
+<div class="definition"><h3 id="Struct_Endpoint">Struct: Endpoint</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>ipv4</td><td><code>i32</code></td><td>IPv4 host address packed into 4 bytes.<br/><br/>Ex for the ip 1.2.3.4, it would be (1 << 24) | (2 << 16) | (3 << 8) | 4<br/></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>port</td><td><code>i16</code></td><td>IPv4 port or 0, if unknown.<br/><br/>Note: this is to be treated as an unsigned integer, so watch for negatives.<br/></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>service_name</td><td><code>string</code></td><td>Classifier of a source or destination in lowercase, such as "zipkin-web".<br/><br/>This is the primary parameter for trace lookup, so should be intuitive as<br/>possible, for example, matching names in service discovery.<br/><br/>Conventionally, when the service name isn't known, service_name = "unknown".<br/>However, it is also permissible to set service_name = "" (empty string).<br/>The difference in the latter usage is that the span will not be queryable<br/>by service name unless more information is added to the span with non-empty<br/>service name, e.g. an additional annotation from the server.<br/><br/>Particularly clients may not have a reliable service name at ingest. One<br/>approach is to set service_name to "" at ingest, and later assign a<br/>better label based on binary annotations, such as user agent.<br/></td><td>default</td><td></td></tr>
+<tr><td>4</td><td>ipv6</td><td><code>binary</code></td><td>IPv6 host address packed into 16 bytes. Ex Inet6Address.getBytes()<br/></td><td>optional</td><td></td></tr>
+</table><br/>Indicates the network context of a service recording an annotation with two
+exceptions.
+<p/>
+When a BinaryAnnotation, and key is CLIENT_ADDR or SERVER_ADDR,
+the endpoint indicates the source or destination of an RPC. This exception
+allows zipkin to display network context of uninstrumented services, or
+clients such as web browsers.
+<br/></div><div class="definition"><h3 id="Struct_Annotation">Struct: Annotation</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>timestamp</td><td><code>i64</code></td><td>Microseconds from epoch.<br/><br/>This value should use the most precise value possible. For example,<br/>gettimeofday or multiplying currentTimeMillis by 1000.<br/></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>value</td><td><code>string</code></td><td>Usually a short tag indicating an event, like "sr" or "finagle.retry".<br/></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>host</td><td><code><a href="zipkinCore.html#Struct_Endpoint">Endpoint</a></code></td><td>The host that recorded the value, primarily for query by service name.<br/></td><td>optional</td><td></td></tr>
+</table><br/>Associates an event that explains latency with a timestamp.
+<p/>
+Unlike log statements, annotations are often codes: for example "sr".
+<br/></div><div class="definition"><h3 id="Struct_BinaryAnnotation">Struct: BinaryAnnotation</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>key</td><td><code>string</code></td><td>Name used to lookup spans, such as "http.path" or "finagle.version".<br/></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>value</td><td><code>binary</code></td><td>Serialized thrift bytes, in TBinaryProtocol format.<br/><br/>For legacy reasons, byte order is big-endian. See THRIFT-3217.<br/></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>annotation_type</td><td><code><a href="zipkinCore.html#Enum_AnnotationType">AnnotationType</a></code></td><td>The thrift type of value, most often STRING.<br/><br/>annotation_type shouldn't vary for the same key.<br/></td><td>default</td><td></td></tr>
+<tr><td>4</td><td>host</td><td><code><a href="zipkinCore.html#Struct_Endpoint">Endpoint</a></code></td><td>The host that recorded value, allowing query by service name or address.<br/><br/>There are two exceptions: when key is "ca" or "sa", this is the source or<br/>destination of an RPC. This exception allows zipkin to display network<br/>context of uninstrumented services, such as browsers or databases.<br/></td><td>optional</td><td></td></tr>
+</table><br/>Binary annotations are tags applied to a Span to give it context. For
+example, a binary annotation of HTTP_PATH ("http.path") could the path
+to a resource in a RPC call.
+<p/>
+Binary annotations of type STRING are always queryable, though more a
+historical implementation detail than a structural concern.
+<p/>
+Binary annotations can repeat, and vary on the host. Similar to Annotation,
+the host indicates who logged the event. This allows you to tell the
+difference between the client and server side of the same key. For example,
+the key "http.path" might be different on the client and server side due to
+rewriting, like "/api/v1/myresource" vs "/myresource. Via the host field,
+you can see the different points of view, which often help in debugging.
+<br/></div><div class="definition"><h3 id="Struct_Span">Struct: Span</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>trace_id</td><td><code>i64</code></td><td>Unique 8-byte identifier for a trace, set on all spans within it.<br/></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>name</td><td><code>string</code></td><td>Span name in lowercase, rpc method for example. Conventionally, when the<br/>span name isn't known, name = "unknown".<br/></td><td>default</td><td></td></tr>
+<tr><td>4</td><td>id</td><td><code>i64</code></td><td>Unique 8-byte identifier of this span within a trace. A span is uniquely<br/>identified in storage by (trace_id, id).<br/></td><td>default</td><td></td></tr>
+<tr><td>5</td><td>parent_id</td><td><code>i64</code></td><td>The parent's Span.id; absent if this the root span in a trace.<br/></td><td>optional</td><td></td></tr>
+<tr><td>6</td><td>annotations</td><td><code>list&lt;<code><a href="zipkinCore.html#Struct_Annotation">Annotation</a></code>&gt;</code></td><td>Associates events that explain latency with a timestamp. Unlike log<br/>statements, annotations are often codes: for example SERVER_RECV("sr").<br/>Annotations are sorted ascending by timestamp.<br/></td><td>default</td><td></td></tr>
+<tr><td>8</td><td>binary_annotations</td><td><code>list&lt;<code><a href="zipkinCore.html#Struct_BinaryAnnotation">BinaryAnnotation</a></code>&gt;</code></td><td>Tags a span with context, usually to support query or aggregation. For<br/>example, a binary annotation key could be "http.path".<br/></td><td>default</td><td></td></tr>
+<tr><td>9</td><td>debug</td><td><code>bool</code></td><td>True is a request to store this span even if it overrides sampling policy.<br/></td><td>optional</td><td>0</td></tr>
+<tr><td>10</td><td>timestamp</td><td><code>i64</code></td><td>Epoch microseconds of the start of this span, absent if this an incomplete<br/>span.<br/><br/>This value should be set directly by instrumentation, using the most<br/>precise value possible. For example, gettimeofday or syncing nanoTime<br/>against a tick of currentTimeMillis.<br/><br/>For compatibility with instrumentation that precede this field, collectors<br/>or span stores can derive this via Annotation.timestamp.<br/>For example, SERVER_RECV.timestamp or CLIENT_SEND.timestamp.<br/><br/>Timestamp is nullable for input only. Spans without a timestamp cannot be<br/>presented in a timeline: Span stores should not output spans missing a<br/>timestamp.<br/><br/>There are two known edge-cases where this could be absent: both cases<br/>exist when a collector receives a span in parts and a binary annotation<br/>precedes a timestamp. This is possible when..<br/> - The span is in-flight (ex not yet received a timestamp)<br/> - The span's start event was lost<br/></td><td>optional</td><td></td></tr>
+<tr><td>11</td><td>duration</td><td><code>i64</code></td><td>Measurement in microseconds of the critical path, if known. Durations of<br/>less than one microsecond must be rounded up to 1 microsecond.<br/><br/>This value should be set directly, as opposed to implicitly via annotation<br/>timestamps. Doing so encourages precision decoupled from problems of<br/>clocks, such as skew or NTP updates causing time to move backwards.<br/><br/>For compatibility with instrumentation that precede this field, collectors<br/>or span stores can derive this by subtracting Annotation.timestamp.<br/>For example, SERVER_SEND.timestamp - SERVER_RECV.timestamp.<br/><br/>If this field is persisted as unset, zipkin will continue to work, except<br/>duration query support will be implementation-specific. Similarly, setting<br/>this field non-atomically is implementation-specific.<br/><br/>This field is i64 vs i32 to support spans longer than 35 minutes.<br/></td><td>optional</td><td></td></tr>
+<tr><td>12</td><td>trace_id_high</td><td><code>i64</code></td><td>Optional unique 8-byte additional identifier for a trace. If non zero, this<br/>means the trace uses 128 bit traceIds instead of 64 bit.<br/></td><td>optional</td><td></td></tr>
+</table><br/>A trace is a series of spans (often RPC calls) which form a latency tree.
+<p/>
+Spans are usually created by instrumentation in RPC clients or servers, but
+can also represent in-process activity. Annotations in spans are similar to
+log statements, and are sometimes created directly by application developers
+to indicate events of interest, such as a cache miss.
+<p/>
+The root span is where parent_id = Nil; it usually has the longest duration
+in the trace.
+<p/>
+Span identifiers are packed into i64s, but should be treated opaquely.
+String encoding is fixed-width lower-hex, to avoid signed interpretation.
+<br/></div></div></body></html>
