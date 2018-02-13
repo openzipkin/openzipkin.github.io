@@ -105,6 +105,15 @@
   sampling: "Yes"
   notes: Provides zipkin support with addition of a single line of code
 
+- language: JavaScript
+  library: >-
+    [zipkin-instrumentation-vue-resource](https://github.com/elgris/zipkin-instrumentation-vue-resource)
+  framework: VueJS
+  propagation: Http (B3)
+  transports: Http
+  sampling: "Yes"
+  notes: An interceptor for vue-resource that instruments outgoing HTTP requests.
+  
 - language: Python
   library: >-
     [py_zipkin](https://github.com/Yelp/py_zipkin)
