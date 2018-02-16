@@ -5,4 +5,5 @@ jobs:
     steps:
       - checkout
       - run: bundle install
+      - run: yaml-lint -i -q .
       - run: bundle exec jekyll build
