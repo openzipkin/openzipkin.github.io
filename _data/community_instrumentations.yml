@@ -190,6 +190,17 @@
   sampling: "Yes"
   notes: Uses Brave4; Play 2.3, 2.4 and 2.5 support.
 
+- language: Scala
+  library: >-
+    [sttp](https://github.com/softwaremill/sttp)
+  framework: >-
+    [akka-http](https://doc.akka.io/docs/akka-http/current/index.html), 
+    [async-http-client](https://github.com/AsyncHttpClient/async-http-client)
+  propagation: Http (B3)
+  transports: Http
+  sampling: "Yes"
+  notes: Brave-based wrapper for any http backend implemented using sttp's interface
+
 - language: PHP
   library: >-
     [phpkin](https://github.com/whitemerry/phpkin)
