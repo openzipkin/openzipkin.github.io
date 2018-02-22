@@ -27,6 +27,7 @@
 <code><a href="#Const_HTTP_PATH">HTTP_PATH</a></code><br/>
 <code><a href="#Const_HTTP_REQUEST_SIZE">HTTP_REQUEST_SIZE</a></code><br/>
 <code><a href="#Const_HTTP_RESPONSE_SIZE">HTTP_RESPONSE_SIZE</a></code><br/>
+<code><a href="#Const_HTTP_ROUTE">HTTP_ROUTE</a></code><br/>
 <code><a href="#Const_HTTP_STATUS_CODE">HTTP_STATUS_CODE</a></code><br/>
 <code><a href="#Const_HTTP_URL">HTTP_URL</a></code><br/>
 <code><a href="#Const_LOCAL_COMPONENT">LOCAL_COMPONENT</a></code><br/>
@@ -134,17 +135,25 @@ Used to filter by host as opposed to ip address.
 Used to filter against an http route.
 <br/></blockquote></td></tr><tr id="Const_HTTP_PATH"><td><code>HTTP_PATH</code></td><td><code>string</code></td><td><code>"http.path"</code></td></tr><tr><td colspan="3"><blockquote>The absolute http path, without any query parameters. Ex. "/objects/abcd-ff"
 <p/>
-Used to filter against an http route, portably with zipkin v1.
+Used as a filter or to clarify the request path for a given route. For example, the path for
+a route "/objects/:objectId" could be "/objects/abdc-ff". This does not limit cardinality like
+HTTP_ROUTE("http.route") can, so is not a good input to a span name.
 <p/>
-In zipkin v1, only equals filters are supported. Dropping query parameters makes the number
+The Zipkin query api only supports equals filters. Dropping query parameters makes the number
 of distinct URIs less. For example, one can query for the same resource, regardless of signing
-parameters encoded in the query line. This does not reduce cardinality to a HTTP single route.
-For example, it is common to express a route as an http URI template like
-"/resource/{resource_id}". In systems where only equals queries are available, searching for
-http/path=/resource won't match if the actual request was /resource/abcd-ff.
+parameters encoded in the query line. Dropping query parameters also limits the security impact
+of this tag.
 <p/>
 Historical note: This was commonly expressed as "http.uri" in zipkin, even though it was most
-often just a path.
+<br/></blockquote></td></tr><tr id="Const_HTTP_ROUTE"><td><code>HTTP_ROUTE</code></td><td><code>string</code></td><td><code>"http.route"</code></td></tr><tr><td colspan="3"><blockquote>The route which a request matched or "" (empty string) if routing is supported, but there was no
+match. Ex "/objects/{objectId}"
+<p/>
+Often used as a span name when known, with empty routes coercing to "not_found" or "redirected"
+based on HTTP_STATUS_CODE("http.status_code").
+<p/>
+Unlike HTTP_PATH("http.path"), this value is fixed cardinality, so is a safe input to a span
+name function or a metrics dimension. Different formats are possible. For example, the following
+are all valid route templates: "/objects" "/objects/:objectId" "/objects/*"
 <br/></blockquote></td></tr><tr id="Const_HTTP_URL"><td><code>HTTP_URL</code></td><td><code>string</code></td><td><code>"http.url"</code></td></tr><tr><td colspan="3"><blockquote>The entire URL, including the scheme, host and query parameters if available. Ex.
 "https://mybucket.s3.amazonaws.com/objects/abcd-ff?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Algorithm=AWS4-HMAC-SHA256..."
 <p/>
