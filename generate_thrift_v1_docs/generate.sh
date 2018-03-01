@@ -4,16 +4,19 @@ set -euo pipefail
 set -x
 
 # Where's Waldo?
-me="$(readlink -f ${BASH_SOURCE[0]})"
-[ $? -gt 0 ] && me="${BASH_SOURCE[0]}"
-mydir="$(cd "$(dirname "$me")" && pwd -P)"
-rootdir="$(cd $(dirname "$mydir") && pwd -P)"
+[ ! -d ./generate_thrift_v1_docs ] && cd ..
+if [ ! -d ./generate_thrift_v1_docs ]; then
+    echo "Please run this script either from the root of the openzipkin.github.io repository"
+    echo "or from the generate_thrift_v1_docs folder in that repository."
+    exit 1
+fi
+
+rootdir="$(pwd -P)"
 target_root="${rootdir}/public"
 target_dir="${target_root}/thrift/v1"
 
 # Prepare clean output space
 rm -rfv "$target_dir"
-mkdir -p "$target_dir"
 
 # Prepare clean workspace
 cd "$(mktemp -d)"
@@ -25,20 +28,25 @@ rm -fv wrapper.thrift
 for source in *.thrift; do
     echo "include \"$source\"" >> wrapper.thrift
 done
-thrift -r --gen html -I . -out "$target_dir" wrapper.thrift
+mkdir html
+docker run --rm -v "$PWD:/workspace" -u "$(id -u)" thrift:0.11 \
+       thrift -r --gen html -I /workspace -out "/workspace/html" /workspace/wrapper.thrift
 
 # Turn Thrift-output index.html into valid XML
 # HTML Tidy exists with 1 on warnings, and we _will_ have warnings
 set +e
-tidy -indent -asxml -output "$target_dir/index.tidy.html" "$target_dir/index.html"
+docker run --rm -v "$PWD:/workspace" -u "$(id -u)" imega/tidy \
+       -indent -asxml -output "/workspace/html/index.tidy.html" "/workspace/html/index.html"
 tidy_status=$?
 [ $tidy_status -gt 1 ] && exit $tidy_status
 set -e
 
 # Apply some transforms to the generated HTML
-java -jar /usr/share/java/Saxon-HE.jar \
-     -s:"$target_dir/index.tidy.html" \
-     -xsl:"$mydir/transform.xslt" \
-     -o:"$target_dir/index.baked.html"
-mv -v "$target_dir/index.baked.html" "$target_dir/index.html"
-rm -v "$target_dir/index.tidy.html"
+cp "$rootdir/generate_thrift_v1_docs/transform.xslt" ./
+docker run --rm -v "$PWD:/workspace" -u "$(id -u)" klakegg/saxon \
+       -s:/workspace/html/index.tidy.html \
+       -xsl:/workspace/transform.xslt \
+       -o:/workspace/html/index.baked.html
+mv -v html/index.baked.html html/index.html
+rm -v html/index.tidy.html
+mv html "$target_dir"
