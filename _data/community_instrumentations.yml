@@ -113,7 +113,16 @@
   transports: Http
   sampling: "Yes"
   notes: An interceptor for vue-resource that instruments outgoing HTTP requests.
-  
+
+- language: Lua
+  library: >-
+    [kong-plugin-zipkin](https://github.com/Kong/kong-plugin-zipkin)
+  framework: Kong
+  propagation: Http (B3)
+  transports: Http
+  sampling: "Yes"
+  notes: A [Kong](http://konghq.com/) plugin to enable tracing to a zipkin server.
+
 - language: Python
   library: >-
     [py_zipkin](https://github.com/Yelp/py_zipkin)
