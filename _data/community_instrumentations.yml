@@ -230,15 +230,6 @@
 
 - language: PHP
   library: >-
-    [zipkin-php](https://github.com/jcchavezs/zipkin-php)
-  framework: Any
-  propagation: "B3"
-  transports: "http, log file"
-  sampling: "Yes"
-  notes: V2 native based on brave's model, compatible with PHP 5.6 and PHP 7. Check [this](https://github.com/openzipkin/zipkin-php-example) out for an example.
-
-- language: PHP
-  library: >-
     [zipkin-php-opentracing](https://github.com/jcchavezs/zipkin-php-opentracing)
   framework: Any
   propagation: "B3"
