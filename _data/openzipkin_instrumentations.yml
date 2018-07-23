@@ -69,3 +69,13 @@
   transports: Http, Kafka, Scribe
   sampling: "Yes"
   notes: Library is written in Java. Propagation is defined in Finagle itself.
+  
+- language: PHP
+  library: >-
+    [zipkin-php](https://github.com/openzipkin/zipkin-php)
+  framework: Any
+  propagation: "B3"
+  transports: "http, log file"
+  sampling: "Yes"
+  notes: V2 native based on brave's model, compatible with PHP 5.6 and PHP 7.x. Check [this](https://github.com/openzipkin/zipkin-php-example) out for an example.
+
