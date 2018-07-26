@@ -31,6 +31,16 @@
 
 - language: Go
   library: >-
+    [zipkin-go-opentracing](https://github.com/openzipkin/zipkin-go-opentracing)
+  framework: >-
+    [Go kit](https://gokit.io), or roll your own with [OpenTracing](http://opentracing.io)
+  propagation: Http (B3), gRPC (B3)
+  transports: Http, Kafka, Scribe
+  sampling: "Yes"
+  notes:
+
+- language: Go
+  library: >-
     [go-zipkin](https://github.com/elodina/go-zipkin)
   framework: x/net Context
   propagation:
@@ -178,7 +188,7 @@
   sampling: >-
     [Yes](https://github.com/aio-libs/aiozipkin/blob/a1a239d6f5a42fce35ecc9810c09eb4ac1d89780/aiozipkin/tracer.py#L9-L10)
   notes: Supported python 3.5+ and native coroutines.
-  
+
 - language: Scala
   library: >-
     [akka-tracing](https://github.com/levkhomich/akka-tracing)
@@ -203,7 +213,7 @@
   library: >-
     [sttp](https://github.com/softwaremill/sttp)
   framework: >-
-    [akka-http](https://doc.akka.io/docs/akka-http/current/index.html), 
+    [akka-http](https://doc.akka.io/docs/akka-http/current/index.html),
     [async-http-client](https://github.com/AsyncHttpClient/async-http-client)
   propagation: Http (B3)
   transports: Http
