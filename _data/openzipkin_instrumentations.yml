@@ -18,16 +18,6 @@
   sampling: "Yes"
   notes: Uses Zipkin V2 API
 
-- language: Go
-  library: >-
-    [zipkin-go-opentracing](https://github.com/openzipkin/zipkin-go-opentracing)
-  framework: >-
-    [Go kit](https://gokit.io), or roll your own with [OpenTracing](http://opentracing.io)
-  propagation: Http (B3), gRPC (B3)
-  transports: Http, Kafka, Scribe
-  sampling: "Yes"
-  notes:
-
 - language: Java
   library: >-
     [brave](https://github.com/openzipkin/brave)
@@ -69,7 +59,7 @@
   transports: Http, Kafka, Scribe
   sampling: "Yes"
   notes: Library is written in Java. Propagation is defined in Finagle itself.
-  
+
 - language: PHP
   library: >-
     [zipkin-php](https://github.com/openzipkin/zipkin-php)
@@ -78,4 +68,3 @@
   transports: "http, log file"
   sampling: "Yes"
   notes: V2 native based on brave's model, compatible with PHP 5.6 and PHP 7.x. Check [this](https://github.com/openzipkin/zipkin-php-example) out for an example.
-
