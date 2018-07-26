@@ -31,7 +31,7 @@
 
 - language: Go
   library: >-
-    [zipkin-go-opentracing](https://github.com/openzipkin/zipkin-go-opentracing)
+    [zipkin-go-opentracing](https://github.com/openzipkin-contrib/zipkin-go-opentracing)
   framework: >-
     [Go kit](https://gokit.io), or roll your own with [OpenTracing](http://opentracing.io)
   propagation: Http (B3), gRPC (B3)
