@@ -124,6 +124,16 @@
   sampling: "Yes"
   notes: An interceptor for vue-resource that instruments outgoing HTTP requests.
 
+- language: JavaScript
+  library: >-
+    [zipkin-instrumentation-mysql](https://github.com/juspay/zipkin-instrumentation-mysql)
+  framework: >-
+    [NodeJS MySQL](https://github.com/mysqljs/mysql)
+  propagation: Http (B3)
+  transports: Http, Kafka, Scribe
+  sampling: "Yes"
+  notes: Provides zipkin support for NodeJS MySQL
+
 - language: Lua
   library: >-
     [kong-plugin-zipkin](https://github.com/Kong/kong-plugin-zipkin)
