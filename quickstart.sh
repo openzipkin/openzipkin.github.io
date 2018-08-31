@@ -82,7 +82,7 @@ EOF
 fetch_latest_version() {
     local artifact_group="$1"; shift
     local artifact_id="$1"; shift
-    local url="https://api.bintray.com/search/packages/maven?g=${artifact_group}&a=${artifact_id}"
+    local url="https://api.bintray.com/search/packages/maven?g=${artifact_group}&a=${artifact_id}&subject=openzipkin"
     local package_data="$(curl -fsL "$url")"
     local package_count
     local have_jq
