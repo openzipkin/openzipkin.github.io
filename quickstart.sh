@@ -7,27 +7,33 @@ set -euo pipefail
 # to tell the user to use files that we've cleaned up.
 DO_CLEANUP=0
 
+color_title=$(tput setaf 7; tput bold)
+color_dim=$(tput setaf 8)
+color_good=$(tput setaf 2)
+color_bad=$(tput setaf 1)
+color_warn=$(tput setaf 3)
+color_reset=$(tput sgr0)
+
 usage() {
     cat <<EOF
-$0
+${color_title}$0${color_reset}
 Downloads the latest version of the Zipkin Server executable jar
 
-$0 GROUP:ARTIFACT:VERSION:CLASSIFIER TARGET
+${color_title}$0 GROUP:ARTIFACT:VERSION:CLASSIFIER TARGET${color_reset}
 Downloads the "VERSION" version of GROUP:ARTIFACT with classifier "CLASSIFIER"
 to path "TARGET" on the local file system. "VERSION" can take the special value
 "LATEST", in which case the latest Zipkin release will be used. For example:
 
-$0 io.zipkin.java:zipkin-autoconfigure-collector-kafka10:LATEST:module kafka10.jar
-downloads the latest version of the artifact with group "io.zipkin.java",
-artifact id "zipkin-autoconfigure-collector-kafka10", and classifier "module"
-to PWD/kafka10.jar
+${color_title}$0 io.zipkin.aws:zipkin-autoconfigure-collector-kinesis:LATEST:module kinesis.jar${color_reset}
+downloads the latest version of the artifact with group "io.zipkin.aws",
+artifact id "zipkin-autoconfigure-collector-kinesis", and classifier "module"
+to PWD/kinesis.jar
 EOF
 }
 
 welcome() {
     cat <<EOF
-Thank you for trying OpenZipkin!
-
+${color_title}Thank you for trying OpenZipkin!${color_reset}
 This installer is provided as a quick-start helper, so you can try Zipkin out
 without a lengthy installation process.
 
@@ -37,6 +43,7 @@ EOF
 farewell() {
     local artifact_classifier="$1"; shift
     local filename="$1"; shift
+    echo -n "$color_good"
     if [ "$artifact_classifier" = 'exec' ]; then
         cat <<EOF
 
@@ -51,6 +58,7 @@ EOF
 The downloaded artifact is now available at $filename.
 EOF
     fi
+    echo -n "$color_reset"
 }
 
 handle_shutdown() {
@@ -62,28 +70,39 @@ handle_shutdown() {
         fi
     else
         cat <<EOF
-
+${color_bad}
 It looks like quick-start setup has failed. Please run the command again
 with the debug flag like below, and open an issue on
 https://github.com/openzipkin/zipkin/issues/new. Make sure to include the
 full output of the run.
-
+${color_reset}
     \curl -sSL http://zipkin.io/quickstart.sh | bash -sx -- $@
 
 In the meanwhile, you can manually download and run the latest executable jar
 from the following URL:
 
 https://dl.bintray.com/openzipkin/maven/io/zipkin/java/zipkin-server/
-
 EOF
     fi
+}
+
+execute_and_log() {
+    local command=("$@")
+    echo >&2 "${color_dim}> ${command[*]}${color_reset}"
+    eval "${command[@]}"
+}
+
+fetch() {
+    url="$1"; shift
+    target="$1"; shift
+    execute_and_log curl -fL -o "'$target'" "'$url'"
 }
 
 fetch_latest_version() {
     local artifact_group="$1"; shift
     local artifact_id="$1"; shift
     local url="https://api.bintray.com/search/packages/maven?g=${artifact_group}&a=${artifact_id}&subject=openzipkin"
-    local package_data="$(curl -fsL "$url")"
+    local package_data="$(execute_and_log curl -SL "'$url'")"
     local package_count
     local have_jq
 
@@ -92,6 +111,8 @@ fetch_latest_version() {
         have_jq=true
     else
         have_jq=false
+        echo >&2 "${color_warn}jq not found on path. This script will still do its best, but installing jq"
+        echo >&2 "will allow it to parse data from Bintray in a more robust fashion.${color_reset}"
     fi
 
     # Count how many packages we got from the search
@@ -102,12 +123,10 @@ fetch_latest_version() {
     fi
     # We want exactly one result.
     if [ "$package_count" -eq 0 ]; then
-        echo >&2 "No package information found; the provided group or artifact ID may be invalid."
-        echo >&2 "Used search URL: ${url}"
+        echo >&2 "${color_bad}No package information found; the provided group or artifact ID may be invalid.${color_reset}"
         exit 1
     elif [ "$package_count" -gt 1 ]; then
-        echo >&2 "More than one package returned from search by Maven group and artifact ID."
-        echo >&2 "Used search URL: ${url}"
+        echo >&2 "${color_bad}More than one package returned from search by Maven group and artifact ID.${color_reset}"
         exit 1
     fi
 
@@ -127,9 +146,9 @@ artifact_part() {
 verify_version_number() {
     if ! echo "$1" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' >/dev/null 2>&1; then
         cat <<EOF
-The target version is "$1". That doesn't look like a valid Zipkin release version
+${color_bad}The target version is "$1". That doesn't look like a valid Zipkin release version
 number; this script is confused. Bailing out.
-
+${color_reset}
 EOF
         exit 1
     fi
@@ -139,13 +158,17 @@ verify_checksum() {
     local url="$1"; shift
     local filename="$1"; shift
 
+    # Fetch the .md5 file even if md5sum is not on the path
+    # This lets us verify its GPG signature later on, and the user might have another way of checksum verification
+    fetch "$url.md5" "$filename.md5"
+
     if \which md5sum >/dev/null 2>&1; then
         echo
-        echo "Verifying checksum..."
-        curl -sL -o "$filename.md5" "$url.md5"
-        echo "$(cat $filename.md5)  $filename" | md5sum --check
+        echo "${color_title}Verifying checksum...${color_reset}"
+        execute_and_log "echo \"\$(cat $filename.md5)  $filename\" | md5sum --check"
+        echo "${color_good}Checksum for ${filename} passes verification${color_reset}"
     else
-        echo "md5sum not found on path, skipping checksum verification"
+        echo "${color_warn}md5sum not found on path, skipping checksum verification${color_reset}"
     fi
 }
 
@@ -157,13 +180,14 @@ verify_signature() {
 
     if \which gpg >/dev/null 2>&1; then
         echo
-        echo "Verifying signature of $filename..."
-        curl -sL -o "$filename.asc" "$url.asc"
+        echo "${color_title}Verifying GPG signature of $filename...${color_reset}"
+        fetch "$url.asc" "$filename.asc"
         if gpg --list-keys "$bintray_gpg_key" >/dev/null 2>&1; then
-            gpg --verify "$filename.asc" "$filename"
+            execute_and_log gpg --verify "$filename.asc" "$filename"
+            echo "${color_good}Signature for ${filename} passes verification${color_reset}"
         else
             cat <<EOF
-
+${color_warn}
 JFrog BinTray GPG signing key is not known, skipping signature verification.
 You can import it, then verify the signature of $filename, using the following
 commands:
@@ -172,12 +196,12 @@ commands:
     # Optionally trust the key via 'gpg --edit-key $bintray_gpg_key', then typing 'trust',
     # choosing a trust level, and exiting the interactive GPG session by 'quit'
     gpg --verify $filename.asc $filename
-
+${color_reset}
 EOF
             DO_CLEANUP=1
         fi
     else
-        echo "gpg not found on path, skipping checksum verification"
+        echo "${color_warn}gpg not found on path, skipping checksum verification${color_reset}"
     fi
 }
 
@@ -214,22 +238,22 @@ main() {
 
     local artifact_version_lowercase="$(echo "${artifact_version}" | tr '[:upper:]' '[:lower:]')"
     if [  "${artifact_version_lowercase}" = 'latest' ]; then
-        echo "Fetching version number of latest ${artifact_group}:${artifact_id} release..."
+        echo "${color_title}Fetching version number of latest ${artifact_group}:${artifact_id} release...${color_reset}"
         artifact_version="$(fetch_latest_version "$artifact_group" "$artifact_id")"
     fi
     verify_version_number "$artifact_version"
+    echo "${color_good}Latest release of ${artifact_group}:${artifact_id} seems to be ${artifact_version}${color_reset}"
+    echo
 
-    echo "Downloading $artifact_group:$artifact_id:$artifact_version:$artifact_classifier to $filename..."
+    echo "${color_title}Downloading $artifact_group:$artifact_id:$artifact_version:$artifact_classifier to $filename...${color_reset}"
     local artifact_group_with_slashes="$(echo "${artifact_group}" | tr '.' '/')"
     local url="https://dl.bintray.com/openzipkin/maven/${artifact_group_with_slashes}/${artifact_id}/$artifact_version/${artifact_id}-${artifact_version}${artifact_classifier_suffix}.jar"
-    echo "$url -> $url"
-    curl -L -o "$filename" "$url"
+    fetch "$url" "$filename"
     verify_checksum "$url" "$filename"
     verify_signature "$url" "$filename"
     verify_signature "$url.md5" "$filename.md5"
 
     farewell "$artifact_classifier" "$filename"
-
 }
 
 main "$@"
