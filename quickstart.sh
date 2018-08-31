@@ -79,12 +79,43 @@ EOF
     fi
 }
 
-extract_latest_version() {
-    local package_data="$1"
+fetch_latest_version() {
+    local artifact_group="$1"; shift
+    local artifact_id="$1"; shift
+    local url="https://api.bintray.com/search/packages/maven?g=${artifact_group}&a=${artifact_id}"
+    local package_data="$(curl -fsL "$url")"
+    local package_count
+    local have_jq
+
+    # We'll have more robustness if jq is present, but will do our best without it as well
     if \which jq >/dev/null 2>&1; then
-        echo "$package_data" | jq '.latest_version' -r
+        have_jq=true
     else
-        echo "$package_data" | sed 's/^.*"latest_version" *: *"*\([^"]*\)".*$/\1/'
+        have_jq=false
+    fi
+
+    # Count how many packages we got from the search
+    if $have_jq; then
+        package_count="$(echo "$package_data" | jq length)"
+    else
+        package_count="$(echo "$package_data" | tr , '\n' | grep -c latest_version)"
+    fi
+    # We want exactly one result.
+    if [ "$package_count" -eq 0 ]; then
+        echo >&2 "No package information found; the provided group or artifact ID may be invalid."
+        echo >&2 "Used search URL: ${url}"
+        exit 1
+    elif [ "$package_count" -gt 1 ]; then
+        echo >&2 "More than one package returned from search by Maven group and artifact ID."
+        echo >&2 "Used search URL: ${url}"
+        exit 1
+    fi
+
+    # Finally, extract the actual package version
+    if $have_jq; then
+        echo "$package_data" | jq '.[0].latest_version' -r
+    else
+        echo "$package_data" | tr , '\n' | grep latest_version | sed 's/^.*"latest_version" *: *"*\([^"]*\)".*$/\1/'
     fi
 }
 
@@ -183,9 +214,8 @@ main() {
 
     local artifact_version_lowercase="$(echo "${artifact_version}" | tr '[:upper:]' '[:lower:]')"
     if [  "${artifact_version_lowercase}" = 'latest' ]; then
-        echo 'Fetching version number of latest Zipkin release...'
-        local package_data="$(curl -fsL  https://bintray.com/api/v1/packages/openzipkin/maven/zipkin)"
-        artifact_version="$(extract_latest_version "$package_data")"
+        echo "Fetching version number of latest ${artifact_group}:${artifact_id} release..."
+        artifact_version="$(fetch_latest_version "$artifact_group" "$artifact_id")"
     fi
     verify_version_number "$artifact_version"
 
