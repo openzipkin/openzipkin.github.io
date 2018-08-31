@@ -76,7 +76,7 @@ with the debug flag like below, and open an issue on
 https://github.com/openzipkin/zipkin/issues/new. Make sure to include the
 full output of the run.
 ${color_reset}
-    \curl -sSL http://zipkin.io/quickstart.sh | bash -sx -- $@
+    \\curl -sSL http://zipkin.io/quickstart.sh | bash -sx -- $@
 
 In the meanwhile, you can manually download and run the latest executable jar
 from the following URL:
@@ -102,18 +102,21 @@ fetch_latest_version() {
     local artifact_group="$1"; shift
     local artifact_id="$1"; shift
     local url="https://api.bintray.com/search/packages/maven?g=${artifact_group}&a=${artifact_id}&subject=openzipkin"
-    local package_data="$(execute_and_log curl -SL "'$url'")"
+    local package_data
     local package_count
     local have_jq
 
     # We'll have more robustness if jq is present, but will do our best without it as well
-    if \which jq >/dev/null 2>&1; then
+    if command -v jq >/dev/null 2>&1; then
         have_jq=true
     else
         have_jq=false
         echo >&2 "${color_warn}jq not found on path. This script will still do its best, but installing jq"
         echo >&2 "will allow it to parse data from Bintray in a more robust fashion.${color_reset}"
     fi
+
+    # Call the Bintray API to search for releases
+    package_data="$(execute_and_log curl -SL "'$url'")"
 
     # Count how many packages we got from the search
     if $have_jq; then
@@ -162,7 +165,7 @@ verify_checksum() {
     # This lets us verify its GPG signature later on, and the user might have another way of checksum verification
     fetch "$url.md5" "$filename.md5"
 
-    if \which md5sum >/dev/null 2>&1; then
+    if command -v md5sum >/dev/null 2>&1; then
         echo
         echo "${color_title}Verifying checksum...${color_reset}"
         execute_and_log "echo \"\$(cat $filename.md5)  $filename\" | md5sum --check"
@@ -178,13 +181,13 @@ verify_signature() {
 
     local bintray_gpg_key='D401AB61'
 
-    if \which gpg >/dev/null 2>&1; then
+    if command -v gpg >/dev/null 2>&1; then
         echo
         echo "${color_title}Verifying GPG signature of $filename...${color_reset}"
         fetch "$url.asc" "$filename.asc"
         if gpg --list-keys "$bintray_gpg_key" >/dev/null 2>&1; then
             execute_and_log gpg --verify "$filename.asc" "$filename"
-            echo "${color_good}Signature for ${filename} passes verification${color_reset}"
+            echo "${color_good}GPG signature for ${filename} passes verification${color_reset}"
         else
             cat <<EOF
 ${color_warn}
@@ -209,20 +212,26 @@ main() {
     local artifact_group=io.zipkin.java
     local artifact_id=zipkin-server
     local artifact_version=LATEST
+    local artifact_version_lowercase=latest
     local artifact_classifier=exec
+    local artifact_group_with_slashes
+    local artifact_url
+
     if [ $# -eq 0 ]; then
         local filename="zipkin.jar"
+        # shellcheck disable=SC2064
         trap "handle_shutdown \"$filename\" $*" EXIT
     elif [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
         usage
         exit
     elif [ $# -eq 2 ]; then
         local filename="$2"
+        # shellcheck disable=SC2064
         trap "handle_shutdown \"$filename\" $*" EXIT
-        local artifact_group="$(echo "$1" | artifact_part 1)"
-        local artifact_id="$(echo "$1" | artifact_part 2)"
-        local artifact_version="$(echo "$1" | artifact_part 3)"
-        local artifact_classifier="$(echo "$1" | artifact_part 4)"
+        artifact_group="$(echo "$1" | artifact_part 1)"
+        artifact_id="$(echo "$1" | artifact_part 2)"
+        artifact_version="$(echo "$1" | artifact_part 3)"
+        artifact_classifier="$(echo "$1" | artifact_part 4)"
     else
         usage
         exit 1
@@ -236,7 +245,7 @@ main() {
 
     welcome
 
-    local artifact_version_lowercase="$(echo "${artifact_version}" | tr '[:upper:]' '[:lower:]')"
+    artifact_version_lowercase="$(echo "${artifact_version}" | tr '[:upper:]' '[:lower:]')"
     if [  "${artifact_version_lowercase}" = 'latest' ]; then
         echo "${color_title}Fetching version number of latest ${artifact_group}:${artifact_id} release...${color_reset}"
         artifact_version="$(fetch_latest_version "$artifact_group" "$artifact_id")"
@@ -246,12 +255,12 @@ main() {
     echo
 
     echo "${color_title}Downloading $artifact_group:$artifact_id:$artifact_version:$artifact_classifier to $filename...${color_reset}"
-    local artifact_group_with_slashes="$(echo "${artifact_group}" | tr '.' '/')"
-    local url="https://dl.bintray.com/openzipkin/maven/${artifact_group_with_slashes}/${artifact_id}/$artifact_version/${artifact_id}-${artifact_version}${artifact_classifier_suffix}.jar"
-    fetch "$url" "$filename"
-    verify_checksum "$url" "$filename"
-    verify_signature "$url" "$filename"
-    verify_signature "$url.md5" "$filename.md5"
+    artifact_group_with_slashes="$(echo "${artifact_group}" | tr '.' '/')"
+    artifact_url="https://dl.bintray.com/openzipkin/maven/${artifact_group_with_slashes}/${artifact_id}/$artifact_version/${artifact_id}-${artifact_version}${artifact_classifier_suffix}.jar"
+    fetch "$artifact_url" "$filename"
+    verify_checksum "$artifact_url" "$filename"
+    verify_signature "$artifact_url" "$filename"
+    verify_signature "$artifact_url.md5" "$filename.md5"
 
     farewell "$artifact_classifier" "$filename"
 }
