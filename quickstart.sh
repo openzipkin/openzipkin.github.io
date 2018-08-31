@@ -161,13 +161,14 @@ verify_checksum() {
     local url="$1"; shift
     local filename="$1"; shift
 
+    echo
+    echo "${color_title}Verifying checksum...${color_reset}"
+
     # Fetch the .md5 file even if md5sum is not on the path
     # This lets us verify its GPG signature later on, and the user might have another way of checksum verification
     fetch "$url.md5" "$filename.md5"
 
     if command -v md5sum >/dev/null 2>&1; then
-        echo
-        echo "${color_title}Verifying checksum...${color_reset}"
         execute_and_log "echo \"\$(cat $filename.md5)  $filename\" | md5sum --check"
         echo "${color_good}Checksum for ${filename} passes verification${color_reset}"
     else
@@ -179,11 +180,12 @@ verify_signature() {
     local url="$1"; shift
     local filename="$1"; shift
 
+    echo
+    echo "${color_title}Verifying GPG signature of $filename...${color_reset}"
+
     local bintray_gpg_key='D401AB61'
 
     if command -v gpg >/dev/null 2>&1; then
-        echo
-        echo "${color_title}Verifying GPG signature of $filename...${color_reset}"
         fetch "$url.asc" "$filename.asc"
         if gpg --list-keys "$bintray_gpg_key" >/dev/null 2>&1; then
             execute_and_log gpg --verify "$filename.asc" "$filename"
