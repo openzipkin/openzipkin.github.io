@@ -43,29 +43,26 @@ EOF
 farewell() {
     local artifact_classifier="$1"; shift
     local filename="$1"; shift
-    echo -n "$color_good"
     if [[ "$artifact_classifier" = 'exec' ]]; then
         cat <<EOF
-
+${color_good}
 You can now run the downloaded executable jar:
 
     java -jar $filename
-
+${color_reset}
 EOF
     else
         cat << EOF
-
-The downloaded artifact is now available at $filename.
+${color_good}
+The downloaded artifact is now available at $filename.${color_reset}
 EOF
     fi
-    echo -n "$color_reset"
 }
 
 cleanup() {
     local base_filename="$1"; shift
     if [[ "$DO_CLEANUP" -eq 0 ]]; then
-        echo
-        echo "${color_title}Cleaning up checksum and signature files${color_reset}"
+        printf '\n%s\n' "${color_title}Cleaning up checksum and signature files${color_reset}"
         execute_and_log rm -f "$base_filename"{.md5,.asc,.md5.asc}
         DO_CLEANUP=1
     fi
@@ -96,7 +93,7 @@ EOF
 
 execute_and_log() {
     local command=("$@")
-    echo >&2 "${color_dim}> ${command[*]}${color_reset}"
+    printf >&2 '%s\n' "${color_dim}> ${command[*]}${color_reset}"
     eval "${command[@]}"
 }
 
@@ -119,8 +116,9 @@ fetch_latest_version() {
         have_jq=0
     else
         have_jq=1
-        echo >&2 "${color_warn}jq not found on path. This script will still do its best, but installing jq"
-        echo >&2 "will allow it to parse data from Bintray in a more robust fashion.${color_reset}"
+        printf >&2 '%s\n' \
+                   "${color_warn}jq not found on path. This script will still do its best, but installing jq" \
+                   "will allow it to parse data from Bintray in a more robust fashion.${color_reset}"
     fi
 
     # Call the Bintray API to search for releases
@@ -128,30 +126,40 @@ fetch_latest_version() {
 
     # Count how many packages we got from the search
     if [[ $have_jq -eq 0 ]]; then
-        package_count="$(echo "$package_data" | jq length)"
+        package_count="$(jq length <<< "$package_data")"
     else
-        package_count="$(echo "$package_data" | tr , '\n' | grep -c latest_version)"
+        package_count="$(grep -c latest_version <<< "${package_data//,/$'\n'}")"
     fi
     # We want exactly one result.
     if [[ "$package_count" -eq 0 ]]; then
-        echo >&2 "${color_bad}No package information found; the provided group or artifact ID may be invalid.${color_reset}"
+        printf >&2 '%s%s%s\n' \
+                   "${color_bad}" \
+                   'No package information found; the provided group or artifact ID may be invalid.' \
+                   "${color_reset}"
         exit 1
     elif [[ "$package_count" -gt 1 ]]; then
-        echo >&2 "${color_bad}More than one package returned from search by Maven group and artifact ID.${color_reset}"
+        printf >&2 '%s\n' "${color_bad}More than one package returned from search by Maven group and artifact ID.${color_reset}"
         exit 1
     fi
 
     # Finally, extract the actual package version
     if [[ $have_jq -eq 0 ]]; then
-        echo "$package_data" | jq '.[0].latest_version' -r
+        jq '.[0].latest_version' -r <<< "$package_data"
     else
-        echo "$package_data" | tr , '\n' | grep latest_version | sed 's/^.*"latest_version" *: *"*\([^"]*\)".*$/\1/'
+        grep latest_version <<< "${package_data//,/$'\n'}" | sed 's/^.*"latest_version" *: *"*\([^"]*\)".*$/\1/'
     fi
 }
 
 artifact_part() {
     local index="$1"; shift
-    cut -f "$index" -d:
+    local artifact="$1"; shift
+    local parts
+    IFS=':' read -ra parts <<< "$artifact"
+    if [[ "${#parts[@]}" -lt $((index + 1)) ]]; then
+        printf ''
+    else
+        printf '%s' "${parts[$index]}"
+    fi
 }
 
 verify_version_number() {
@@ -169,18 +177,17 @@ verify_checksum() {
     local url="$1"; shift
     local filename="$1"; shift
 
-    echo
-    echo "${color_title}Verifying checksum...${color_reset}"
+    printf '\n%s\n' "${color_title}Verifying checksum...${color_reset}"
 
     # Fetch the .md5 file even if md5sum is not on the path
     # This lets us verify its GPG signature later on, and the user might have another way of checksum verification
     fetch "$url.md5" "$filename.md5"
 
     if command -v md5sum >/dev/null 2>&1; then
-        execute_and_log "echo \"\$(cat $filename.md5)  $filename\" | md5sum --check"
-        echo "${color_good}Checksum for ${filename} passes verification${color_reset}"
+        execute_and_log "md5sum --check <<< \"\$(cat $filename.md5)  $filename\""
+        printf '%s\n' "${color_good}Checksum for ${filename} passes verification${color_reset}"
     else
-        echo "${color_warn}md5sum not found on path, skipping checksum verification${color_reset}"
+        printf '%s\n' "${color_warn}md5sum not found on path, skipping checksum verification${color_reset}"
     fi
 }
 
@@ -188,8 +195,7 @@ verify_signature() {
     local url="$1"; shift
     local filename="$1"; shift
 
-    echo
-    echo "${color_title}Verifying GPG signature of $filename...${color_reset}"
+    printf '\n%s\n' "${color_title}Verifying GPG signature of $filename...${color_reset}"
 
     local bintray_gpg_key='D401AB61'
 
@@ -197,7 +203,7 @@ verify_signature() {
         fetch "$url.asc" "$filename.asc"
         if gpg --list-keys "$bintray_gpg_key" >/dev/null 2>&1; then
             execute_and_log gpg --verify "$filename.asc" "$filename"
-            echo "${color_good}GPG signature for ${filename} passes verification${color_reset}"
+            printf '%s\n' "${color_good}GPG signature for ${filename} passes verification${color_reset}"
         else
             cat <<EOF
 ${color_warn}
@@ -214,7 +220,7 @@ EOF
             DO_CLEANUP=1
         fi
     else
-        echo "${color_warn}gpg not found on path, skipping checksum verification${color_reset}"
+        printf '%s\n' "${color_warn}gpg not found on path, skipping checksum verification${color_reset}"
     fi
 }
 
@@ -235,13 +241,14 @@ main() {
         usage
         exit
     elif [[ $# -eq 2 ]]; then
+        local artifact="$1"
         local filename="$2"
         # shellcheck disable=SC2064
         trap "handle_shutdown \"$filename\" $*" EXIT
-        artifact_group="$(echo "$1" | artifact_part 1)"
-        artifact_id="$(echo "$1" | artifact_part 2)"
-        artifact_version="$(echo "$1" | artifact_part 3)"
-        artifact_classifier="$(echo "$1" | artifact_part 4)"
+        artifact_group="$(artifact_part 0 "$artifact")"
+        artifact_id="$(artifact_part 1 "$artifact")"
+        artifact_version="$(artifact_part 2 "$artifact")"
+        artifact_classifier="$(artifact_part 3 "$artifact")"
     else
         usage
         exit 1
@@ -255,17 +262,16 @@ main() {
 
     welcome
 
-    artifact_version_lowercase="$(echo "${artifact_version}" | tr '[:upper:]' '[:lower:]')"
+    artifact_version_lowercase="${artifact_version,,}"
     if [  "${artifact_version_lowercase}" = 'latest' ]; then
-        echo "${color_title}Fetching version number of latest ${artifact_group}:${artifact_id} release...${color_reset}"
+        printf '%s\n' "${color_title}Fetching version number of latest ${artifact_group}:${artifact_id} release...${color_reset}"
         artifact_version="$(fetch_latest_version "$artifact_group" "$artifact_id")"
     fi
     verify_version_number "$artifact_version"
-    echo "${color_good}Latest release of ${artifact_group}:${artifact_id} seems to be ${artifact_version}${color_reset}"
-    echo
+    printf '%s\n\n' "${color_good}Latest release of ${artifact_group}:${artifact_id} seems to be ${artifact_version}${color_reset}"
 
-    echo "${color_title}Downloading $artifact_group:$artifact_id:$artifact_version:$artifact_classifier to $filename...${color_reset}"
-    artifact_group_with_slashes="$(echo "${artifact_group}" | tr '.' '/')"
+    printf '%s\n' "${color_title}Downloading $artifact_group:$artifact_id:$artifact_version:$artifact_classifier to $filename...${color_reset}"
+    artifact_group_with_slashes="${artifact_group//.//}"
     artifact_url="https://dl.bintray.com/openzipkin/maven/${artifact_group_with_slashes}/${artifact_id}/$artifact_version/${artifact_id}-${artifact_version}${artifact_classifier_suffix}.jar"
     fetch "$artifact_url" "$filename"
     verify_checksum "$artifact_url" "$filename"
