@@ -61,13 +61,21 @@ EOF
     echo -n "$color_reset"
 }
 
+cleanup() {
+    local base_filename="$1"; shift
+    if [ "$DO_CLEANUP" -eq 0 ]; then
+        echo
+        echo "${color_title}Cleaning up checksum and signature files${color_reset}"
+        execute_and_log rm -f "$base_filename"{.md5,.asc,.md5.asc}
+        DO_CLEANUP=1
+    fi
+}
+
 handle_shutdown() {
     local status=$?
     local base_filename="$1"; shift
     if [ $status -eq 0 ]; then
-        if [ "$DO_CLEANUP" -eq 0 ]; then
-            rm -f "$base_filename"{.md5,.asc,.md5.asc}
-        fi
+        cleanup "$base_filename"
     else
         cat <<EOF
 ${color_bad}
@@ -264,6 +272,7 @@ main() {
     verify_signature "$artifact_url" "$filename"
     verify_signature "$artifact_url.md5" "$filename.md5"
 
+    cleanup "$filename"
     farewell "$artifact_classifier" "$filename"
 }
 
