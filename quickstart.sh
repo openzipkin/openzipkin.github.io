@@ -44,7 +44,7 @@ farewell() {
     local artifact_classifier="$1"; shift
     local filename="$1"; shift
     echo -n "$color_good"
-    if [ "$artifact_classifier" = 'exec' ]; then
+    if [[ "$artifact_classifier" = 'exec' ]]; then
         cat <<EOF
 
 You can now run the downloaded executable jar:
@@ -63,7 +63,7 @@ EOF
 
 cleanup() {
     local base_filename="$1"; shift
-    if [ "$DO_CLEANUP" -eq 0 ]; then
+    if [[ "$DO_CLEANUP" -eq 0 ]]; then
         echo
         echo "${color_title}Cleaning up checksum and signature files${color_reset}"
         execute_and_log rm -f "$base_filename"{.md5,.asc,.md5.asc}
@@ -74,7 +74,7 @@ cleanup() {
 handle_shutdown() {
     local status=$?
     local base_filename="$1"; shift
-    if [ $status -eq 0 ]; then
+    if [[ $status -eq 0 ]]; then
         cleanup "$base_filename"
     else
         cat <<EOF
@@ -155,7 +155,7 @@ artifact_part() {
 }
 
 verify_version_number() {
-    if ! echo "$1" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' >/dev/null 2>&1; then
+    if [[ ! "$1" =~ ^[[:digit:]+\.[[:digit:]]+\.[[:digit:]]+$ ]]; then
         cat <<EOF
 ${color_bad}The target version is "$1". That doesn't look like a valid Zipkin release version
 number; this script is confused. Bailing out.
@@ -227,14 +227,14 @@ main() {
     local artifact_group_with_slashes
     local artifact_url
 
-    if [ $# -eq 0 ]; then
+    if [[ $# -eq 0 ]]; then
         local filename="zipkin.jar"
         # shellcheck disable=SC2064
         trap "handle_shutdown \"$filename\" $*" EXIT
-    elif [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
+    elif [[ "$1" = '-h' || "$1" = '--help' ]]; then
         usage
         exit
-    elif [ $# -eq 2 ]; then
+    elif [[ $# -eq 2 ]]; then
         local filename="$2"
         # shellcheck disable=SC2064
         trap "handle_shutdown \"$filename\" $*" EXIT
@@ -247,7 +247,7 @@ main() {
         exit 1
     fi
 
-    if [ -n "$artifact_classifier" ]; then
+    if [[ -n "$artifact_classifier" ]]; then
         artifact_classifier_suffix="-$artifact_classifier"
     else
         artifact_classifier_suffix=''
