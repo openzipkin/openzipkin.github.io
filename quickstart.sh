@@ -116,9 +116,9 @@ fetch_latest_version() {
 
     # We'll have more robustness if jq is present, but will do our best without it as well
     if command -v jq >/dev/null 2>&1; then
-        have_jq=true
+        have_jq=0
     else
-        have_jq=false
+        have_jq=1
         echo >&2 "${color_warn}jq not found on path. This script will still do its best, but installing jq"
         echo >&2 "will allow it to parse data from Bintray in a more robust fashion.${color_reset}"
     fi
@@ -127,22 +127,22 @@ fetch_latest_version() {
     package_data="$(execute_and_log curl -SL "'$url'")"
 
     # Count how many packages we got from the search
-    if $have_jq; then
+    if [[ $have_jq -eq 0 ]]; then
         package_count="$(echo "$package_data" | jq length)"
     else
         package_count="$(echo "$package_data" | tr , '\n' | grep -c latest_version)"
     fi
     # We want exactly one result.
-    if [ "$package_count" -eq 0 ]; then
+    if [[ "$package_count" -eq 0 ]]; then
         echo >&2 "${color_bad}No package information found; the provided group or artifact ID may be invalid.${color_reset}"
         exit 1
-    elif [ "$package_count" -gt 1 ]; then
+    elif [[ "$package_count" -gt 1 ]]; then
         echo >&2 "${color_bad}More than one package returned from search by Maven group and artifact ID.${color_reset}"
         exit 1
     fi
 
     # Finally, extract the actual package version
-    if $have_jq; then
+    if [[ $have_jq -eq 0 ]]; then
         echo "$package_data" | jq '.[0].latest_version' -r
     else
         echo "$package_data" | tr , '\n' | grep latest_version | sed 's/^.*"latest_version" *: *"*\([^"]*\)".*$/\1/'
