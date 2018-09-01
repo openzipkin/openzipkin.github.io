@@ -24,10 +24,10 @@ Downloads the "VERSION" version of GROUP:ARTIFACT with classifier "CLASSIFIER"
 to path "TARGET" on the local file system. "VERSION" can take the special value
 "LATEST", in which case the latest Zipkin release will be used. For example:
 
-${color_title}$0 io.zipkin.aws:zipkin-autoconfigure-collector-kinesis:LATEST:module kinesis.jar${color_reset}
+${color_title}$0 io.zipkin.java:zipkin-autoconfigure-collector-scribe:LATEST:module scribe.jar${color_reset}
 downloads the latest version of the artifact with group "io.zipkin.aws",
-artifact id "zipkin-autoconfigure-collector-kinesis", and classifier "module"
-to PWD/kinesis.jar
+artifact id "zipkin-autoconfigure-collector-scribe", and classifier "module"
+to PWD/scribe.jar
 EOF
 }
 
