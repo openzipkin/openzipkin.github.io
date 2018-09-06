@@ -7,12 +7,13 @@ set -euo pipefail
 # to tell the user to use files that we've cleaned up.
 DO_CLEANUP=0
 
-color_title=$(tput setaf 7; tput bold)
-color_dim=$(tput setaf 8)
-color_good=$(tput setaf 2)
-color_bad=$(tput setaf 1)
-color_warn=$(tput setaf 3)
-color_reset=$(tput sgr0)
+# shellcheck disable=SC2015
+color_title=$(tput setaf 7 && tput bold || true)
+color_dim=$(tput setaf 8 || true)
+color_good=$(tput setaf 2 || true)
+color_bad=$(tput setaf 1 || true)
+color_warn=$(tput setaf 3 || true)
+color_reset=$(tput sgr0 || true)
 
 usage() {
     cat <<EOF
