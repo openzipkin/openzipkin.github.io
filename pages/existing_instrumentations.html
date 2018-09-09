@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Existing instrumentations &middot; OpenZipkin
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/zipkin.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="shortcut icon" href="/public/favicon.ico">
+</head>
+
+
+  <body class="theme-base-0d">
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="">
+        <img alt="OpenZipkin logo" src="/public/img/zipkin-logo-200x119.jpg"
+             class="sidebar-logo">
+      </a>
+      
+      <a href="https://github.com/openzipkin/zipkin" target="_blank" title="openzipkin/zipkin">
+        <img class="sidebar-social-icon" alt="openzipkin/zipkin" src="/public/img/GitHub-Mark-Light-32px.png">
+      </a>
+      
+      <a href="https://twitter.com/zipkinproject" target="_blank" title="@zipkinproject">
+        <img class="sidebar-social-icon" alt="@zipkinproject" src="/public/img/TwitterLogo_white.png">
+      </a>
+      
+      <a href="https://gitter.im/openzipkin/zipkin/" target="_blank" title="openzipkin/zipkin">
+        <img class="sidebar-social-icon" alt="openzipkin/zipkin" src="/public/img/gitter.png">
+      </a>
+      
+    </div>
+
+    <nav class="sidebar-nav">
+      
+      
+        
+          
+            <a class="sidebar-nav-item" href="/">Home</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/quickstart.html">Quickstart</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/architecture.html">Architecture</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item active" href="/pages/existing_instrumentations.html">Existing instrumentations</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/community.html">Zipkin Community</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/data_model.html">Data Model</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/instrumenting.html">Instrumenting a library</a>
+          
+        
+      
+
+    </nav>
+
+    <p>&copy; 2018. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title">
+      
+       Existing instrumentations
+      
+  </h1>
+  <p>Tracing information is collected on each host using the instrumented libraries
+and sent to Zipkin. When the host makes a request to another application, it passes
+a few tracing identifiers along with the request to Zipkin so we can later tie the data
+together into spans.</p>
+
+<p>The following libraries exist to provide instrumentation on various platforms.
+Please refer to their individual documentation for setup and configuration
+guides.</p>
+
+<h3 id="openzipkin-libraries">OpenZipkin libraries</h3>
+
+<p>The following libraries are supported by the OpenZipkin authors and are hosted at
+the <a href="https://github.com/openzipkin/">OpenZipkin GitHub</a> group. You can reach out to
+the authors at the <a href="https://gitter.im/openzipkin/zipkin/">Zipkin Gitter</a> chat.</p>
+
+<table class="wide-table">
+  <thead>
+    <tr>
+      <th style="text-align: left">Language</th>
+      <th style="text-align: left">Library</th>
+      <th style="text-align: left">Framework</th>
+      <th style="text-align: left">Propagation Supported</th>
+      <th style="text-align: left">Transports Supported</th>
+      <th style="text-align: left">Sampling Supported?</th>
+      <th style="text-align: left">Other notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">C#</td>
+      <td style="text-align: left"><a href="https://github.com/openzipkin/zipkin4net">Zipkin4net</a></td>
+      <td style="text-align: left">Asp.net core, Owin</td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Any</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Go</td>
+      <td style="text-align: left"><a href="https://github.com/openzipkin/zipkin-go">zipkin-go</a></td>
+      <td style="text-align: left">standard Go middlewares</td>
+      <td style="text-align: left">Http (B3), gRPC (B3)</td>
+      <td style="text-align: left">Http (v2), Kafka (v2), Log</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Uses Zipkin V2 API</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Java</td>
+      <td style="text-align: left"><a href="https://github.com/openzipkin/brave">brave</a></td>
+      <td style="text-align: left">Jersey, RestEASY, JAXRS2, Apache HttpClient, Mysql</td>
+      <td style="text-align: left">Http (B3), gRPC (B3)</td>
+      <td style="text-align: left">Http, Kafka, Scribe</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Java 6 or higher</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">JavaScript</td>
+      <td style="text-align: left"><a href="https://github.com/openzipkin/zipkin-js">zipkin-js</a></td>
+      <td style="text-align: left"><a href="http://cujojs.com">cujoJS</a>, <a href="http://expressjs.com/">express</a>, <a href="http://restify.com/">restify</a></td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left"><a href="https://github.com/openzipkin/zipkin-js#transports">Http, Kafka, Scribe</a></td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Uses continuation-local-storage under to hood, so you don’t have to pass around an explicit context</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Ruby</td>
+      <td style="text-align: left"><a href="https://github.com/openzipkin/zipkin-ruby">zipkin-ruby</a></td>
+      <td style="text-align: left"><a href="http://rack.github.io/">Rack</a></td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Http, Kafka, Scribe</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">lc support. Ruby 2.0 or higher</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Scala</td>
+      <td style="text-align: left"><a href="https://github.com/openzipkin/zipkin-finagle">zipkin-finagle</a></td>
+      <td style="text-align: left"><a href="https://github.com/twitter/finagle">Finagle</a></td>
+      <td style="text-align: left">Http (B3), Thrift</td>
+      <td style="text-align: left">Http, Kafka, Scribe</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Library is written in Java. Propagation is defined in Finagle itself.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">PHP</td>
+      <td style="text-align: left"><a href="https://github.com/openzipkin/zipkin-php">zipkin-php</a></td>
+      <td style="text-align: left">Any</td>
+      <td style="text-align: left">B3</td>
+      <td style="text-align: left">http, log file</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">V2 native based on brave’s model, compatible with PHP 5.6 and PHP 7.x. Check <a href="https://github.com/openzipkin/zipkin-php-example">this</a> out for an example.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="community-libraries">Community libraries</h3>
+
+<table class="wide-table">
+  <thead>
+    <tr>
+      <th style="text-align: left">Language</th>
+      <th style="text-align: left">Library</th>
+      <th style="text-align: left">Framework</th>
+      <th style="text-align: left">Propagation Supported</th>
+      <th style="text-align: left">Transports Supported</th>
+      <th style="text-align: left">Sampling Supported?</th>
+      <th style="text-align: left">Other notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">C,C++</td>
+      <td style="text-align: left"><a href="https://github.com/flier/zipkin-cpp">zipkin-cpp</a></td>
+      <td style="text-align: left">gRPC</td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Http, Kafka, Scribe, X-Ray</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">includes benchmarks</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">C#</td>
+      <td style="text-align: left"><a href="https://github.com/mdsol/Medidata.ZipkinTracerModule">ZipkinTracerModule</a></td>
+      <td style="text-align: left">OWIN, HttpHandler</td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Http</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">lc support. 4.5.2 or higher</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Elixir</td>
+      <td style="text-align: left"><a href="https://github.com/Financial-Times/tapper">Tapper</a></td>
+      <td style="text-align: left">Any, <a href="https://github.com/elixir-lang/plug">Plug</a> supported via <a href="https://github.com/Financial-Times/tapper_plug">Tapper Plug</a></td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Http</td>
+      <td style="text-align: left"><a href="https://github.com/Financial-Times/tapper_plug#sampling">Yes</a></td>
+      <td style="text-align: left">Comprises tracing and reporting OTP-application <a href="https://github.com/Financial-Times/tapper">Tapper</a>, with server integration via <a href="https://github.com/Financial-Times/tapper_plug">Tapper Plug</a>, and support for tracing <a href="http://absinthe-graphql.org/">Absinthe</a> via <a href="https://github.com/Financial-Times/tapper_absinthe_plug">Tapper Absinthe Plug</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Go</td>
+      <td style="text-align: left"><a href="https://github.com/openzipkin-contrib/zipkin-go-opentracing">zipkin-go-opentracing</a></td>
+      <td style="text-align: left"><a href="https://gokit.io">Go kit</a>, or roll your own with <a href="http://opentracing.io">OpenTracing</a></td>
+      <td style="text-align: left">Http (B3), gRPC (B3)</td>
+      <td style="text-align: left">Http, Kafka, Scribe</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Go</td>
+      <td style="text-align: left"><a href="https://github.com/elodina/go-zipkin">go-zipkin</a></td>
+      <td style="text-align: left">x/net Context</td>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">Kafka</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Go</td>
+      <td style="text-align: left"><a href="https://github.com/spacemonkeygo/monkit-zipkin/">monkit-zipkin</a></td>
+      <td style="text-align: left"><a href="https://github.com/spacemonkeygo/monkit/">Monkit</a></td>
+      <td style="text-align: left">Http (B3), easy to add others</td>
+      <td style="text-align: left">Scribe, UDP, easy to add others</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Java</td>
+      <td style="text-align: left"><a href="https://github.com/thelastpickle/cassandra-zipkin-tracing">cassandra-zipkin-tracing</a></td>
+      <td style="text-align: left"><a href="http://cassandra.apache.org">Apache Cassandra</a></td>
+      <td style="text-align: left">CQL (B3)</td>
+      <td style="text-align: left">Http, Kafka, Scribe</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Java 8+</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Java</td>
+      <td style="text-align: left"><a href="https://github.com/smoketurner/dropwizard-zipkin">Dropwizard Zipkin</a></td>
+      <td style="text-align: left"><a href="http://www.dropwizard.io">Dropwizard</a></td>
+      <td style="text-align: left">Http (B3), Thrift</td>
+      <td style="text-align: left">Http, Scribe</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Java 7 or higher</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Java</td>
+      <td style="text-align: left"><a href="https://github.com/apache/incubator-htrace/tree/master/htrace-zipkin">htrace</a></td>
+      <td style="text-align: left">HDFS, HBase</td>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">Http, Scribe</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Java 7 or higher</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Java</td>
+      <td style="text-align: left"><a href="https://github.com/spring-cloud/spring-cloud-sleuth">Spring Cloud Sleuth</a></td>
+      <td style="text-align: left">Spring, Spring Cloud (e.g. Stream, Netflix)</td>
+      <td style="text-align: left">Http (B3), Messaging (B3)</td>
+      <td style="text-align: left">Http, Spring Cloud Stream Compatible (e.g. RabbitMQ, Kafka, Redis or anything with a custom Binder)</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Java 7 or higher</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Java</td>
+      <td style="text-align: left"><a href="https://github.com/Nike-Inc/wingtips">Wingtips</a></td>
+      <td style="text-align: left"><a href="https://github.com/Nike-Inc/wingtips/tree/master/wingtips-servlet-api">Any Servlet API framework</a>, <a href="https://github.com/Nike-Inc/wingtips#generic-application-pseudo-code">roll-your-own</a>, <a href="https://github.com/Nike-Inc/wingtips#usage-in-reactive-asynchronous-nonblocking-scenarios">async framework support</a></td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Http</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Java 7 or higher, <a href="https://github.com/Nike-Inc/wingtips#mdc_info">SLF4J MDC support</a> for auto-tagging all log messages with tracing info</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">JavaScript</td>
+      <td style="text-align: left"><a href="https://github.com/RuntimeTools/appmetrics-zipkin">appmetrics-zipkin</a></td>
+      <td style="text-align: left">Express, Koa</td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Http</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Provides zipkin support with addition of a single line of code</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">JavaScript</td>
+      <td style="text-align: left"><a href="https://github.com/elgris/zipkin-instrumentation-vue-resource">zipkin-instrumentation-vue-resource</a></td>
+      <td style="text-align: left">VueJS</td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Http</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">An interceptor for vue-resource that instruments outgoing HTTP requests.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">JavaScript</td>
+      <td style="text-align: left"><a href="https://github.com/juspay/zipkin-instrumentation-mysql">zipkin-instrumentation-mysql</a></td>
+      <td style="text-align: left"><a href="https://github.com/mysqljs/mysql">NodeJS MySQL</a></td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Http, Kafka, Scribe</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Provides zipkin support for NodeJS MySQL</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Lua</td>
+      <td style="text-align: left"><a href="https://github.com/Kong/kong-plugin-zipkin">kong-plugin-zipkin</a></td>
+      <td style="text-align: left">Kong</td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Http</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">A <a href="http://konghq.com/">Kong</a> plugin to enable tracing to a zipkin server.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Python</td>
+      <td style="text-align: left"><a href="https://github.com/Yelp/py_zipkin">py_zipkin</a></td>
+      <td style="text-align: left">Any</td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Pluggable</td>
+      <td style="text-align: left"><a href="https://github.com/Yelp/py_zipkin/blob/2b1218ea6438fa7fd35946092de58496f4f759dd/py_zipkin/zipkin.py#L97">Yes</a></td>
+      <td style="text-align: left">Generic python tracer, used in pyramid-zipkin; py2, py3 support.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Python</td>
+      <td style="text-align: left"><a href="https://github.com/Yelp/pyramid_zipkin">pyramid_zipkin</a></td>
+      <td style="text-align: left"><a href="http://docs.pylonsproject.org/projects/pyramid/en/latest/">Pyramid</a></td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left"><a href="http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-transport-handler">Kafka | Scribe</a></td>
+      <td style="text-align: left"><a href="http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-tracing-percent">Yes</a></td>
+      <td style="text-align: left">py2, py3 support.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Python</td>
+      <td style="text-align: left"><a href="https://github.com/Yelp/swagger_zipkin">swagger_zipkin</a></td>
+      <td style="text-align: left">Swagger (<a href="http://bravado.readthedocs.io/en/latest/">Bravado</a>), to be used with <a href="https://github.com/Yelp/py_zipkin">py_zipkin</a></td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left"><a href="http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-transport-handler">Kafka | Scribe</a></td>
+      <td style="text-align: left"><a href="http://pyramid-zipkin.readthedocs.org/en/latest/configuring_zipkin.html#zipkin-tracing-percent">Yes</a></td>
+      <td style="text-align: left">Uses py_zipkin; py2, py3 support.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Python</td>
+      <td style="text-align: left"><a href="https://github.com/qiajigou/flask-zipkin">flask_zipkin</a></td>
+      <td style="text-align: left"><a href="http://flask.pocoo.org">Flask</a></td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Pluggable</td>
+      <td style="text-align: left"><a href="http://qiajigou.click/flask-zipkin/">Yes</a></td>
+      <td style="text-align: left">Uses py_zipkin; py2, py3 support.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Python</td>
+      <td style="text-align: left"><a href="https://github.com/aio-libs/aiozipkin">aiozipkin</a></td>
+      <td style="text-align: left"><a href="https://docs.python.org/3/library/asyncio.html">asyncio</a></td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Http</td>
+      <td style="text-align: left"><a href="https://github.com/aio-libs/aiozipkin/blob/a1a239d6f5a42fce35ecc9810c09eb4ac1d89780/aiozipkin/tracer.py#L9-L10">Yes</a></td>
+      <td style="text-align: left">Supported python 3.5+ and native coroutines.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Scala</td>
+      <td style="text-align: left"><a href="https://github.com/levkhomich/akka-tracing">akka-tracing</a></td>
+      <td style="text-align: left"><a href="https://akka.io">Akka</a>, <a href="https://spray.io">Spray</a>, <a href="https://www.playframework.com">Play</a></td>
+      <td style="text-align: left">Http (B3), Thrift</td>
+      <td style="text-align: left">Scribe</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Java 6+, Scala 2.10+, activator templates for <a href="https://github.com/levkhomich/activator-akka-tracing">Akka</a> and <a href="https://github.com/levkhomich/activator-play-tracing">Play</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Scala</td>
+      <td style="text-align: left"><a href="https://github.com/bizreach/play-zipkin-tracing">play-zipkin-tracing</a></td>
+      <td style="text-align: left"><a href="https://www.playframework.com">Play</a></td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Http</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Uses Brave4; Play 2.3, 2.4 and 2.5 support.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Scala</td>
+      <td style="text-align: left"><a href="https://github.com/softwaremill/sttp">sttp</a></td>
+      <td style="text-align: left"><a href="https://doc.akka.io/docs/akka-http/current/index.html">akka-http</a>, <a href="https://github.com/AsyncHttpClient/async-http-client">async-http-client</a></td>
+      <td style="text-align: left">Http (B3)</td>
+      <td style="text-align: left">Http</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Brave-based wrapper for any http backend implemented using sttp’s interface</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">PHP</td>
+      <td style="text-align: left"><a href="https://github.com/whitemerry/phpkin">phpkin</a></td>
+      <td style="text-align: left">Any</td>
+      <td style="text-align: left">B3, custom (depends on user implementation)</td>
+      <td style="text-align: left">http, log file</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Simple and full implementation without dependencies. Very flexible.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">PHP</td>
+      <td style="text-align: left"><a href="https://github.com/chuan-yun/Molten">Molten</a></td>
+      <td style="text-align: left">Any</td>
+      <td style="text-align: left">B3</td>
+      <td style="text-align: left">http, log file, syslog</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Application transparent;php5.6 or higher;auto trace pdo/mysqli/curl/memcached/redis;auto add http B3 header.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">PHP</td>
+      <td style="text-align: left"><a href="https://github.com/jcchavezs/zipkin-php-opentracing">zipkin-php-opentracing</a></td>
+      <td style="text-align: left">Any</td>
+      <td style="text-align: left">B3</td>
+      <td style="text-align: left">http, log file</td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">Zipkin V2 client with OpenTracing API</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Did we miss a library? Please open a pull-request to
+<a href="https://github.com/openzipkin/openzipkin.github.io">openzipkin.github.io</a>.</p>
+
+<p>Want to create instrumentation for another framework or platform? We have documentation on <a href="/pages/instrumenting">instrumenting a library</a>.</p>
+
+</div>
+
+    </div>
+
+  </body>
+</html>

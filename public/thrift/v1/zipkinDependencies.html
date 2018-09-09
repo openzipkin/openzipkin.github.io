@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link href="style.css" rel="stylesheet" type="text/css"/>
+<title>Thrift module: zipkinDependencies</title></head><body>
+<div class="container-fluid">
+<h1>Thrift module: zipkinDependencies</h1>
+<table class="table-bordered table-striped table-condensed"><thead><th>Module</th><th>Services</th><th>Data types</th><th>Constants</th></thead>
+<tr>
+<td>zipkinDependencies</td><td></td>
+<td><a href="#Struct_Dependencies">Dependencies</a><br/>
+<a href="#Struct_DependencyLink">DependencyLink</a><br/>
+</td>
+<td></code></td>
+</tr></table>
+<hr/><h2 id="Structs">Data structures</h2>
+<div class="definition"><h3 id="Struct_DependencyLink">Struct: DependencyLink</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>parent</td><td><code>string</code></td><td>parent service name (caller)
+</td><td>default</td><td></td></tr>
+<tr><td>2</td><td>child</td><td><code>string</code></td><td>child service name (callee)
+</td><td>default</td><td></td></tr>
+<tr><td>4</td><td>callCount</td><td><code>i64</code></td><td>total traced calls made from parent to child
+</td><td>default</td><td></td></tr>
+<tr><td>5</td><td>errorCount</td><td><code>i64</code></td><td>how many calls are known to be errors
+</td><td>default</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_Dependencies">Struct: Dependencies</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>start_ts</td><td><code>i64</code></td><td>milliseconds from epoch
+</td><td>default</td><td></td></tr>
+<tr><td>2</td><td>end_ts</td><td><code>i64</code></td><td>milliseconds from epoch
+</td><td>default</td><td></td></tr>
+<tr><td>3</td><td>links</td><td><code>list&lt;<code><a href="#Struct_DependencyLink">DependencyLink</a></code>&gt;</code></td><td></td><td>default</td><td></td></tr>
+</table><br/></div></div></body></html>

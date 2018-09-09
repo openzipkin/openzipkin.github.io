@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Architecture &middot; OpenZipkin
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/zipkin.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="shortcut icon" href="/public/favicon.ico">
+</head>
+
+
+  <body class="theme-base-0d">
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="">
+        <img alt="OpenZipkin logo" src="/public/img/zipkin-logo-200x119.jpg"
+             class="sidebar-logo">
+      </a>
+      
+      <a href="https://github.com/openzipkin/zipkin" target="_blank" title="openzipkin/zipkin">
+        <img class="sidebar-social-icon" alt="openzipkin/zipkin" src="/public/img/GitHub-Mark-Light-32px.png">
+      </a>
+      
+      <a href="https://twitter.com/zipkinproject" target="_blank" title="@zipkinproject">
+        <img class="sidebar-social-icon" alt="@zipkinproject" src="/public/img/TwitterLogo_white.png">
+      </a>
+      
+      <a href="https://gitter.im/openzipkin/zipkin/" target="_blank" title="openzipkin/zipkin">
+        <img class="sidebar-social-icon" alt="openzipkin/zipkin" src="/public/img/gitter.png">
+      </a>
+      
+    </div>
+
+    <nav class="sidebar-nav">
+      
+      
+        
+          
+            <a class="sidebar-nav-item" href="/">Home</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/quickstart.html">Quickstart</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item active" href="/pages/architecture.html">Architecture</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/existing_instrumentations.html">Existing instrumentations</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/community.html">Zipkin Community</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/data_model.html">Data Model</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/instrumenting.html">Instrumenting a library</a>
+          
+        
+      
+
+    </nav>
+
+    <p>&copy; 2018. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title">
+      
+       Architecture
+      
+  </h1>
+  <h2 id="architecture-overview">Architecture Overview</h2>
+
+<p>Tracers live in your applications and record timing and metadata about
+operations that took place. They often instrument libraries, so that their use
+is transparent to users. For example, an instrumented web server records when it
+received a request and when it sent a response. The trace data collected is
+called a Span.</p>
+
+<p>Instrumentation is written to be safe in production and have little overhead.
+For this reason, they only propagate IDs in-band, to tell the receiver there’s
+a trace in progress. Completed spans are reported to Zipkin out-of-band,
+similar to how applications report metrics asynchronously.</p>
+
+<p>For example, when an operation is being traced and it needs to make an outgoing
+http request, a few headers are added to propagate IDs. Headers are not used to
+send details such as the operation name.</p>
+
+<p>The component in an instrumented app that sends data to Zipkin is called a
+Reporter. Reporters send trace data via one of several transports to Zipkin
+collectors, which persist trace data to storage. Later, storage is queried by
+the API to provide data to the UI.</p>
+
+<p>Here’s a diagram describing this flow:</p>
+
+<p><img src="/public/img/architecture-1.png" alt="Zipkin architecture" /></p>
+
+<p>To see if an instrumentation library already exists for your platform, see the
+list of <a href="/pages/existing_instrumentations">existing instrumentations</a>.</p>
+
+<h2 id="example-flow">Example flow</h2>
+
+<p>As mentioned in the overview, identifiers are sent in-band and details are sent
+out-of-band to Zipkin. In both cases, trace instrumentation is responsible for
+creating valid traces and rendering them properly. For example, a tracer ensures
+parity between the data it sends in-band (downstream) and out-of-band (async to
+Zipkin).</p>
+
+<p>Here’s an example sequence of http tracing where user code calls the resource
+/foo. This results in a single span, sent asynchronously to Zipkin after user
+code receives the http response.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌─────────────┐ ┌───────────────────────┐  ┌─────────────┐  ┌──────────────────┐
+│ User Code   │ │ Trace Instrumentation │  │ Http Client │  │ Zipkin Collector │
+└─────────────┘ └───────────────────────┘  └─────────────┘  └──────────────────┘
+       │                 │                         │                 │
+           ┌─────────┐
+       │ ──┤GET /foo ├─▶ │ ────┐                   │                 │
+           └─────────┘         │ record tags
+       │                 │ ◀───┘                   │                 │
+                           ────┐
+       │                 │     │ add trace headers │                 │
+                           ◀───┘
+       │                 │ ────┐                   │                 │
+                               │ record timestamp
+       │                 │ ◀───┘                   │                 │
+                             ┌─────────────────┐
+       │                 │ ──┤GET /foo         ├─▶ │                 │
+                             │X-B3-TraceId: aa │     ────┐
+       │                 │   │X-B3-SpanId: 6b  │   │     │           │
+                             └─────────────────┘         │ invoke
+       │                 │                         │     │ request   │
+                                                         │
+       │                 │                         │     │           │
+                                 ┌────────┐          ◀───┘
+       │                 │ ◀─────┤200 OK  ├─────── │                 │
+                           ────┐ └────────┘
+       │                 │     │ record duration   │                 │
+            ┌────────┐     ◀───┘
+       │ ◀──┤200 OK  ├── │                         │                 │
+            └────────┘       ┌────────────────────────────────┐
+       │                 │ ──┤ asynchronously report span     ├────▶ │
+                             │                                │
+                             │{                               │
+                             │  "traceId": "aa",              │
+                             │  "id": "6b",                   │
+                             │  "name": "get",                │
+                             │  "timestamp": 1483945573944000,│
+                             │  "duration": 386000,           │
+                             │  "annotations": [              │
+                             │--snip--                        │
+                             └────────────────────────────────┘
+</code></pre></div></div>
+
+<p>Trace instrumentation report spans asynchronously to prevent delays or failures
+relating to the tracing system from delaying or breaking user code.</p>
+
+<h2 id="transport">Transport</h2>
+
+<p>Spans sent by the instrumented library must be transported from the services
+being traced to Zipkin collectors. There are three primary transports: HTTP,
+Kafka and Scribe.</p>
+
+<h2 id="components">Components</h2>
+
+<p>There are 4 components that make up Zipkin:</p>
+
+<ul>
+  <li>collector</li>
+  <li>storage</li>
+  <li>search</li>
+  <li>web UI</li>
+</ul>
+
+<h3 id="zipkin-collector">Zipkin Collector</h3>
+
+<p>Once the trace data arrives at the Zipkin collector daemon, it is validated,
+stored, and indexed for lookups by the Zipkin collector.</p>
+
+<h3 id="storage">Storage</h3>
+
+<p>Zipkin was initially built to store data on Cassandra since Cassandra is
+scalable, has a flexible schema, and is heavily used within Twitter. However, we
+made this component pluggable. In addition to Cassandra, we natively support
+ElasticSearch and MySQL. Other back-ends might be offered as third party
+extensions.</p>
+
+<h3 id="zipkin-query-service">Zipkin Query Service</h3>
+
+<p>Once the data is stored and indexed, we need a way to extract it. The query
+daemon provides a simple JSON API for finding and retrieving traces. The primary
+consumer of this API is the Web UI.</p>
+
+<h3 id="web-ui">Web UI</h3>
+
+<p>We created a GUI that presents a nice interface for viewing traces. The web UI
+provides a method for viewing traces based on service, time, and annotations.
+Note: there is no built-in authentication in the UI!</p>
+
+</div>
+
+    </div>
+
+  </body>
+</html>

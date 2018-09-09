@@ -1,0 +1,53 @@
+/**
+ * Styles not part of the standard Hyde distribution, used to customize
+ * the Zipkin documentation site
+ */
+
+img.sidebar-social-icon {
+  width: 32px;
+  float: left;
+  display: inline;
+  margin-left: 7px;
+}
+
+img.sidebar-logo {
+  float: left;
+  border: 10px solid white;
+}
+
+div.sidebar-social-icons a {
+  text-decoration: none;
+}
+
+nav.sidebar-nav {
+  clear: both;
+}
+
+/* Code examples need a bit more space */
+figure.highlight {
+  margin-left: 0;
+}
+
+/* Make code snippets scrollable, as seen in https://monicagranbois.com/blog/webdev/formatting-code-with-pygments-and-jekyll/ */
+figure.highlight pre code {
+  white-space: pre;
+  display: block;
+  overflow-x: auto;
+  word-wrap: normal;
+}
+pre {
+  white-space: pre;
+  display: block;
+  overflow-x: auto;
+  word-wrap: normal;
+}
+
+/* Some tables need to be wide to make sense of them, even if it breaks the design and responsiveness */
+table.wide-table td {
+  white-space: nowrap;
+  font-size: 0.8em;
+}
+
+table.wide-table th {
+  font-size: 0.8em;
+}

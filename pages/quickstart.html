@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Quickstart &middot; OpenZipkin
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/zipkin.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="shortcut icon" href="/public/favicon.ico">
+</head>
+
+
+  <body class="theme-base-0d">
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="">
+        <img alt="OpenZipkin logo" src="/public/img/zipkin-logo-200x119.jpg"
+             class="sidebar-logo">
+      </a>
+      
+      <a href="https://github.com/openzipkin/zipkin" target="_blank" title="openzipkin/zipkin">
+        <img class="sidebar-social-icon" alt="openzipkin/zipkin" src="/public/img/GitHub-Mark-Light-32px.png">
+      </a>
+      
+      <a href="https://twitter.com/zipkinproject" target="_blank" title="@zipkinproject">
+        <img class="sidebar-social-icon" alt="@zipkinproject" src="/public/img/TwitterLogo_white.png">
+      </a>
+      
+      <a href="https://gitter.im/openzipkin/zipkin/" target="_blank" title="openzipkin/zipkin">
+        <img class="sidebar-social-icon" alt="openzipkin/zipkin" src="/public/img/gitter.png">
+      </a>
+      
+    </div>
+
+    <nav class="sidebar-nav">
+      
+      
+        
+          
+            <a class="sidebar-nav-item" href="/">Home</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item active" href="/pages/quickstart.html">Quickstart</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/architecture.html">Architecture</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/existing_instrumentations.html">Existing instrumentations</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/community.html">Zipkin Community</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/data_model.html">Data Model</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/instrumenting.html">Instrumenting a library</a>
+          
+        
+      
+
+    </nav>
+
+    <p>&copy; 2018. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title">
+      
+       Quickstart
+      
+  </h1>
+  <p>In this section we’ll walk through building and starting an instance of Zipkin
+for checking out Zipkin locally. There are three options: using Java, Docker or running from source.</p>
+
+<p>If you are familiar with Docker, this is the preferred method to start. If you are unfamiliar with Docker, try running via Java or from source.</p>
+
+<p class="message">Regardless of how you start Zipkin, browse to http://your_host:9411 to find traces!</p>
+
+<h2 id="docker">Docker</h2>
+
+<p>The <a href="https://github.com/openzipkin/docker-zipkin">Docker Zipkin</a> project is able to build docker images, provide scripts and a <a href="https://github.com/openzipkin/docker-zipkin/blob/master/docker-compose.yml"><code class="highlighter-rouge">docker-compose.yml</code></a>
+for launching pre-built images. The quickest start is to run the latest image directly:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-d</span> <span class="nt">-p</span> 9411:9411 openzipkin/zipkin
+</code></pre></div></div>
+
+<h2 id="java">Java</h2>
+
+<p>If you have Java 8 or higher installed, the quickest way to get started is to fetch the <a href="https://search.maven.org/remote_content?g=io.zipkin.java&amp;a=zipkin-server&amp;v=LATEST&amp;c=exec">latest release</a> as a self-contained executable jar:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-sSL</span> https://zipkin.io/quickstart.sh | bash <span class="nt">-s</span>
+java <span class="nt">-jar</span> zipkin.jar
+</code></pre></div></div>
+
+<h2 id="running-from-source">Running from Source</h2>
+
+<p>Zipkin can be run from source if you are developing new features. To achieve this, you’ll need to get <a href="https://github.com/openzipkin/zipkin">Zipkin’s source</a> and build it.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># get the latest source</span>
+git clone https://github.com/openzipkin/zipkin
+<span class="nb">cd </span>zipkin
+<span class="c"># Build the server and also make its dependencies</span>
+./mvnw <span class="nt">-DskipTests</span> <span class="nt">--also-make</span> <span class="nt">-pl</span> zipkin-server clean install
+<span class="c"># Run the server</span>
+java <span class="nt">-jar</span> ./zipkin-server/target/zipkin-server-<span class="k">*</span>exec.jar
+</code></pre></div></div>
+
+<p>Stop by and socialize with us on <a href="https://gitter.im/openzipkin/zipkin">gitter</a>, if you end up making something interesting!</p>
+
+</div>
+
+    </div>
+
+  </body>
+</html>

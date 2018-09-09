@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Instrumenting a library &middot; OpenZipkin
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/zipkin.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="shortcut icon" href="/public/favicon.ico">
+</head>
+
+
+  <body class="theme-base-0d">
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="">
+        <img alt="OpenZipkin logo" src="/public/img/zipkin-logo-200x119.jpg"
+             class="sidebar-logo">
+      </a>
+      
+      <a href="https://github.com/openzipkin/zipkin" target="_blank" title="openzipkin/zipkin">
+        <img class="sidebar-social-icon" alt="openzipkin/zipkin" src="/public/img/GitHub-Mark-Light-32px.png">
+      </a>
+      
+      <a href="https://twitter.com/zipkinproject" target="_blank" title="@zipkinproject">
+        <img class="sidebar-social-icon" alt="@zipkinproject" src="/public/img/TwitterLogo_white.png">
+      </a>
+      
+      <a href="https://gitter.im/openzipkin/zipkin/" target="_blank" title="openzipkin/zipkin">
+        <img class="sidebar-social-icon" alt="openzipkin/zipkin" src="/public/img/gitter.png">
+      </a>
+      
+    </div>
+
+    <nav class="sidebar-nav">
+      
+      
+        
+          
+            <a class="sidebar-nav-item" href="/">Home</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/quickstart.html">Quickstart</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/architecture.html">Architecture</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/existing_instrumentations.html">Existing instrumentations</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/community.html">Zipkin Community</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/data_model.html">Data Model</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item active" href="/pages/instrumenting.html">Instrumenting a library</a>
+          
+        
+      
+
+    </nav>
+
+    <p>&copy; 2018. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title">
+      
+       Instrumenting a library
+      
+  </h1>
+  <p class="message">This is an advanced topic. Before reading further, you may want to check whether
+an instrumentation library for your platform <a href="/pages/existing_instrumentations">already exists</a>. If not and if you want to take on creating an instrumentation library, first things first; jump on
+<a href="https://gitter.im/openzipkin/zipkin">Zipkin Gitter chat channel</a> and let us know. We’ll be extremely
+happy to help you along the way.</p>
+
+<h1 id="overview">Overview</h1>
+
+<p>To instrument a library, you’ll need to understand and create the following elements:</p>
+
+<ol>
+  <li>Core data structures - the information that is collected and sent to Zipkin</li>
+  <li>Trace identifiers - what tags for the information are needed so it can be reassembled in a logical order by Zipkin
+    <ul>
+      <li>Generating identifiers - how to generate these IDs and which IDs should be inherited</li>
+      <li>Communicating trace information - additional information that is sent to Zipkin along with the traces and their IDs.</li>
+    </ul>
+  </li>
+  <li>Timestamps and duration - how to record timing information about an operation.</li>
+</ol>
+
+<p>Alright, ready? Here we go.</p>
+
+<h1 id="core-data-structures">Core data structures</h1>
+
+<p>Core data structures are documented in detail in <a href="https://github.com/openzipkin/zipkin-api/blob/master/thrift/zipkinCore.thrift">Thrift</a> comments. Here’s a high-level description to get you started:</p>
+
+<p><strong>Annotation</strong></p>
+
+<p>An Annotation is used to record an occurrence in time. There’s a set of core
+annotations used to define the beginning and end of an RPC request:</p>
+
+<ul>
+  <li><strong>cs</strong> - Client Send. The client has made the request. This sets the
+beginning of the span.</li>
+  <li><strong>sr</strong> - Server Receive: The server has received the request and will start
+processing it. The difference between this and <code class="highlighter-rouge">cs</code> will be combination of
+network latency and clock jitter.</li>
+  <li><strong>ss</strong> - Server Send: The server has completed processing and has sent the
+request back to the client. The difference between this and <code class="highlighter-rouge">sr</code> will be the
+amount of time it took the server to process the request.</li>
+  <li><strong>cr</strong> - Client Receive: The client has received the response from the server.
+This sets the end of the span. The RPC is considered complete when this
+annotation is recorded.</li>
+</ul>
+
+<p>When using message brokers instead of RPCs, the following annotations help
+clarify the direction of the flow:</p>
+
+<ul>
+  <li><strong>ms</strong> - Message Send: The producer sends a message to a broker.</li>
+  <li><strong>mr</strong> - Message Receive: A consumer received a message from a broker.</li>
+</ul>
+
+<p>Unlike RPC, messaging spans never share a span ID. For example, each consumer
+of a message is a different child span of the producing span.</p>
+
+<p>Other annotations can be recorded during the request’s lifetime in order to
+provide further insight. For instance adding an annotation when a server begins
+and ends an expensive computation may provide insight into how much time is
+being spent pre and post processing the request versus how much time is spent
+running the calculation.</p>
+
+<p><strong>BinaryAnnotation</strong></p>
+
+<p>Binary annotations do not have a time component. They are meant to provide extra
+information about the RPC. For instance when calling an HTTP service, providing
+the URI of the call will help with later analysis of requests coming into the
+service. Binary annotations can also be used for exact match search in the
+Zipkin Api or UI.</p>
+
+<p><strong>Endpoint</strong>
+Annotations and binary annotations have an endpoint associated with them. With two
+exceptions, this endpoint is associated with the traced process. For example, the
+service name drop-down in the Zipkin UI corresponds with Annotation.endpoint.serviceName
+or BinaryAnnotation.endpoint.serviceName. For the sake of usability, the cardinality
+of Endpoint.serviceName should be bound. For example, it shouldn’t include variables
+or random numbers.</p>
+
+<p><strong>Span</strong></p>
+
+<p>A set of Annotations and BinaryAnnotations that correspond to a particular RPC.
+Spans contain identifying information such as traceId, spanId, parentId, and
+RPC name.</p>
+
+<p>Spans are usually small. For example, the serialized form is often measured in
+KiB or less. When spans grow beyond orders of KiB, other problems occur, such as
+hitting limits like Kafka message size (1MiB). Even if you can raise message
+limits, large spans will increase the cost and decrease the usability of the
+tracing system. For this reason, be conscious to store data that helps explain
+system behavior, and don’t store data that doesn’t.</p>
+
+<p><strong>Trace</strong></p>
+
+<p>A set of spans that share a single root span. Traces are built by collecting all
+Spans that share a traceId. The spans are then arranged in a tree based on
+spanId and parentId thus providing an overview of the path a request takes
+through the system.</p>
+
+<h1 id="trace-identifiers">Trace identifiers</h1>
+
+<p>In order to reassemble a set of spans into a full trace three pieces of
+information are required. Trace identifiers can be 128-bit, but span identifiers
+within a trace are always 64-bit.</p>
+
+<p><strong>Trace Id</strong></p>
+
+<p>The overall 64 or 128-bit ID of the trace. Every span in a trace shares this ID.</p>
+
+<p><strong>Span Id</strong></p>
+
+<p>The ID for a particular span. This may or may not be the same as the
+trace id.</p>
+
+<p><strong>Parent Id</strong></p>
+
+<p>This is an optional ID that will only be present on child spans. That is the
+span without a parent id is considered the root of the trace.</p>
+
+<h2 id="generating-identifiers">Generating identifiers</h2>
+
+<p>Let’s walk through how Spans are identified.</p>
+
+<p>When an incoming request has no trace information attached, we generate a random
+trace ID and span ID. The span ID can be reused as the lower 64-bits of the
+trace ID, but it can also be completely different.</p>
+
+<p>If the request already has trace information attached to it, the service should
+use that information as server receive and server send events are part of the
+same span as the client send and client receive events</p>
+
+<p>If the service calls out to a downstream service a new span is created as a
+child of the former span. It is identified by the same trace id, a new span id,
+and the parent id is set to the span id of the previous span. The new span id
+should be 64 random bits.</p>
+
+<p><strong>Note</strong> This process must be repeated if the service makes multiple downstream
+calls. That is each subsequent span will have the same trace id and parent id,
+but a new and different span id.</p>
+
+<h2 id="communicating-trace-information">Communicating trace information</h2>
+
+<p>Trace information needs to be passed between upstream and downstream services in
+order to reassemble a complete trace.  Five pieces of information are required:</p>
+
+<ul>
+  <li>Trace Id</li>
+  <li>Span Id</li>
+  <li>Parent Id</li>
+  <li>Sampled - Lets the downstream service know if it should record trace
+information for the request.</li>
+  <li>Flags - Provides the ability to create and communicate feature flags. This is how
+we can tell downstream services that this is a “debug” request.</li>
+</ul>
+
+<p>Check <a href="https://github.com/openzipkin/b3-propagation">here</a> for the format.</p>
+
+<p><a href="https://twitter.github.io/finagle/">Finagle</a> provides mechanisms for passing this information with HTTP and Thrift
+requests. Other protocols will need to be augmented with the information for
+tracing to be effective.</p>
+
+<p><strong>Instrumentation sampling decisions are made at the edge of the system</strong></p>
+
+<p>Downstream services must honour the sampling decision of the upstream system. If
+there’s no “Sampled” information in the incoming request, the library should
+make a decision on whether to sample this request, and include the decision in
+further downstream requests. This simplifies the math when it comes to
+understanding what’s sampled and what isn’t. It also ensures that a request is
+either fully traced, or not traced at all, making the sampling policy easier to
+understand and configure.</p>
+
+<p>Note that the debug flag will force a trace to be sampled, regardless of any
+sampling rules. The debug flag also applies to storage tier sampling, which is
+configured on the server side of Zipkin.</p>
+
+<p><strong>HTTP Tracing</strong></p>
+
+<p>HTTP headers are used to pass along trace information.</p>
+
+<p>The B3 portion of the header is so named for the original name of Zipkin:
+BigBrotherBird.</p>
+
+<p>Ids are encoded as <a href="https://github.com/twitter/finagle/blob/master/finagle-core/src/main/scala/com/twitter/finagle/tracing/Id.scala">hex strings</a>:</p>
+
+<ul>
+  <li>X-B3-TraceId: 128 or 64 lower-hex encoded bits (required)</li>
+  <li>X-B3-SpanId: 64 lower-hex encoded bits (required)</li>
+  <li>X-B3-ParentSpanId: 64 lower-hex encoded bits (absent on root span)</li>
+  <li>X-B3-Sampled: Boolean (either “1” or “0”, can be absent)</li>
+  <li>X-B3-Flags: “1” means debug (can be absent)</li>
+</ul>
+
+<p>For more information on B3, please see its <a href="https://github.com/openzipkin/b3-propagation">specification</a>.</p>
+
+<p><strong>Thrift Tracing</strong></p>
+
+<p>Finagle clients and servers negotate whether they can handle extra information
+in the header of the thrift message when a connection is established. Once
+negotiated trace data is packed into the front of each thrift message.</p>
+
+<h1 id="timestamps-and-duration">Timestamps and duration</h1>
+
+<p>Span recording is when timing information or metadata is structured and reported
+to zipkin. One of the most important parts of this process is appropriately
+recording timestamps and duration.</p>
+
+<p><strong>Timestamps are microseconds</strong></p>
+
+<p>All Zipkin timestamps are in epoch microseconds (not milliseconds). This value
+should use the most precise measurement available. For example, <code class="highlighter-rouge">clock_gettime</code>
+or simply multiply epoch milliseconds by 1000. Timestamps fields are stored as
+64bit signed integers eventhough negative is invalid.</p>
+
+<p>Microsecond precision primarily supports “local spans”, which are in-process
+operations. For example, with higher precision, you can tell nuances of what
+happened before something else.</p>
+
+<p>All timestamps have faults, including clock skew between hosts and the chance of
+a time service resetting the clock backwards. For this reason, spans should
+record their duration when possible.</p>
+
+<p><strong>Span duration is also microseconds</strong></p>
+
+<p>While it is possible to get nanosecond-precision timing information, Zipkin uses
+microsecond granularity. Here are some reasons why:</p>
+
+<p>First, using the same unit as timestamps makes math easier. For example, if you
+are troubleshooting a span, it is easier to identify with terms in the same unit.</p>
+
+<p>Next, the overhead of recording a span is often variable and can be microseconds
+or more: suggesting a higher resolution than overhead can be distracting.</p>
+
+<p>Future versions of Zipkin may revisit this topic, but for now, everything is
+microseconds.</p>
+
+<p><strong>When to set Span.timestamp and duration</strong></p>
+
+<p>Span.timestamp and duration should only be set by the host that started the span.</p>
+
+<p>The simplest logic is generally this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>unless (logging "sr" in an existing span) {
+ set Span.timestamp and duration
+}
+</code></pre></div></div>
+
+<p>Zipkin merges spans together that share the same trace and span ID. The most
+common case of this is to merge a span reported by both the client (cs, cr) and
+the server (sr, ss). For example, the client starts a span, logging “cs” and
+propagates it via B3 headers, the server continues that span by logging “sr”.</p>
+
+<p>In this case, the client started the span, so it should record Span.timestamp and
+duration, and those values should match the difference between “cs” and “cr”. The
+server did not start this span, so it should not set Span.timestamp or duration.</p>
+
+<p>Another common case is when a server starts a root span from an uninstrumented
+client, such as a web browser. It knows it should start a trace because none was
+present in B3 headers or similar. Since it started the trace, it should record
+Span.timestamp and duration on the root span.</p>
+
+<p>Note: When a span is incomplete, you could set Span.timestamp, but not duration as
+there’s not enough information to do that accurately.</p>
+
+<p><strong>What happens when Span.timestamp and duration are not set?</strong></p>
+
+<p>Span.timestamp and Span.duration are fields added in 2015, 3 years after Zipkin
+started. Not all libraries log these. When these fields are not set, Zipkin adds
+them at query time (not collection time); this is not ideal.</p>
+
+<p>The <a href="http://zipkin.io/zipkin-api/#/paths/%252Ftraces/get/parameters/minDuration">duration query</a>
+will not work as there’s no data to query. Also, local (in-process) spans aren’t required
+to have annotations, so they cannot be queried unless their timestamp is set.</p>
+
+<p>When duration isn’t set by instrumentation, Zipkin tries to derive duration at query time,
+it has to use the problematic method of timestamp math. Ex. if an NTP update happened inside
+the span, the duration Zipkin caculates will be wrong.</p>
+
+<p>Finally, there’s a desire for many to move to single-host spans. The migration path
+towards this is to split dual-host RPC spans into two. When instrumentation logs timestamp
+only for spans it owns, splitting collectors have a heuristic to distinguish a server-initiated
+root span from a client-initiated, dual-host one.</p>
+
+<p>The bottom-line is that choosing not to record Span.timestamp and duration will result
+in less accurate data and less functionality. Since it is very easy to record these authoritatively
+before reporting, all Zipkin instrumentation should do it or ask someone to help them do it.</p>
+
+<h1 id="one-way-rpc-tracing">One-way RPC Tracing</h1>
+
+<p>One-way is the same as normal RPC tracing, except there is no response anticipated.</p>
+
+<p>In normal RPC tracing 4 annotations are used: “cs” “sr” (request) then “ss” “cr” (response).
+In one-way tracing, the first two are used “cs” “sr” as there is no response returned to the caller.</p>
+
+<p>So, the client adds “cs” to a span and reports it to zipkin. Then, the server adds “sr” to the
+same span and reports it. Neither side add Span.timestamp or duration because neither side know both
+when the span started and finished.</p>
+
+<p>Here’s a diagram of one-way RPC tracing:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Client Tracer                                      Server Tracer
++------------------+                               +------------------+
+| +--------------+ |     +-----------------+       | +--------------+ |
+| | TraceContext |======&gt;| Request Headers |========&gt;| TraceContext | |
+| +--------------+ |     +-----------------+       | +--------------+ |
++--------||--------+                               +--------||--------+
+   start ||                                                 ||
+         \/                                          finish ||
+span(context).annotate("cs")                                \/
+                                             span(context).annotate("sr")
+</code></pre></div></div>
+
+<p>Here’s an example of this process using the <a href="https://github.com/openzipkin/brave/blob/master/brave/src/test/java/brave/features/async/OneWaySpanTest.java">Brave Tracer</a>:</p>
+
+<p>Client side:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Add trace identifiers to the outbound span</span>
+<span class="n">tracing</span><span class="o">.</span><span class="na">propagation</span><span class="o">().</span><span class="na">injector</span><span class="o">(</span><span class="nl">Request:</span><span class="o">:</span><span class="n">addHeader</span><span class="o">)</span>
+       <span class="o">.</span><span class="na">inject</span><span class="o">(</span><span class="n">span</span><span class="o">.</span><span class="na">context</span><span class="o">(),</span> <span class="n">request</span><span class="o">);</span>
+
+<span class="n">client</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+
+<span class="c1">// start the client side and flush instead of processing a response</span>
+<span class="n">span</span><span class="o">.</span><span class="na">kind</span><span class="o">(</span><span class="n">Span</span><span class="o">.</span><span class="na">Kind</span><span class="o">.</span><span class="na">CLIENT</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">start</span><span class="o">().</span><span class="na">flush</span><span class="o">();</span>
+
+<span class="c1">// The above will report to zipkin trace identifiers, a "cs" annotation with the</span>
+<span class="c1">// endpoint of the client</span>
+</code></pre></div></div>
+
+<p>Server side:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Parse the span from request headers</span>
+<span class="n">TraceContextOrSamplingFlags</span> <span class="n">result</span> <span class="o">=</span>
+    <span class="n">tracing</span><span class="o">.</span><span class="na">propagation</span><span class="o">().</span><span class="na">extractor</span><span class="o">(</span><span class="nl">Request:</span><span class="o">:</span><span class="n">getHeader</span><span class="o">).</span><span class="na">extract</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+
+<span class="c1">// Reuse the same span ids by joining that context</span>
+<span class="n">span</span> <span class="o">=</span> <span class="n">tracer</span><span class="o">.</span><span class="na">joinSpan</span><span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">context</span><span class="o">())</span>
+
+<span class="c1">// start the server side and flush instead of processing a response</span>
+<span class="n">span</span><span class="o">.</span><span class="na">kind</span><span class="o">(</span><span class="n">Span</span><span class="o">.</span><span class="na">Kind</span><span class="o">.</span><span class="na">SERVER</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">start</span><span class="o">().</span><span class="na">flush</span><span class="o">();</span>
+
+<span class="c1">// The above will report to zipkin trace identifiers, a "sr" annotation with the</span>
+<span class="c1">// endpoint of the server</span>
+</code></pre></div></div>
+
+<p>The above flow assumes a tracer can “flush” a span, which simply sends the span
+to Zipkin without attempting to calculate duration locally.</p>
+
+<h1 id="message-tracing">Message Tracing</h1>
+
+<p>Message Tracing is different than RPC tracing because the producer and consumer
+don’t share span IDs.</p>
+
+<p>In normal RPC tracing, client and server annotations go on the same span. This
+doesn’t work for messaging because there may be multiple consumers for a given
+message. The trace context propagated to the consumer is the parent.</p>
+
+<p>Similar to one-way RPC tracing, messaging tracing doesn’t have a response path:
+only two annotations are used “ms” and “mr”. Unlike one-way RPC tracing, it is
+fine to set Span.timestamp and duration as the producer and each consumer use
+separate spans.</p>
+
+<p>So, the producer adds “ms” to a span and reports it to zipkin. Then, each
+consumer creates a child span adding “mr” to it.</p>
+
+<p>Here’s a diagram of Message tracing:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Producer Tracer                                    Consumer Tracer
++------------------+                               +------------------+
+| +--------------+ |     +-----------------+       | +--------------+ |
+| | TraceContext |======&gt;| Message Headers |========&gt;| TraceContext | |
+| +--------------+ |     +-----------------+       | +--------------+ |
++--------||--------+                               +--------||--------+
+   start ||                                                 ||
+         \/                                          finish ||
+span(context).annotate("ms")                                \/
+             .address("ma", broker)          span(context).annotate("mr")
+                                                          .address("ma", broker)
+</code></pre></div></div>
+
+<p>Here’s an example of this process using the <a href="https://github.com/openzipkin/brave">Brave Tracer</a>:</p>
+
+<p>Producer side:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Add trace identifiers to the outbound span</span>
+<span class="n">tracing</span><span class="o">.</span><span class="na">propagation</span><span class="o">().</span><span class="na">injector</span><span class="o">(</span><span class="nl">Message:</span><span class="o">:</span><span class="n">addHeader</span><span class="o">)</span>
+       <span class="o">.</span><span class="na">inject</span><span class="o">(</span><span class="n">span</span><span class="o">.</span><span class="na">context</span><span class="o">(),</span> <span class="n">message</span><span class="o">);</span>
+
+<span class="n">producer</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+
+<span class="c1">// start and finish the producer side</span>
+<span class="n">span</span><span class="o">.</span><span class="na">kind</span><span class="o">(</span><span class="n">Span</span><span class="o">.</span><span class="na">Kind</span><span class="o">.</span><span class="na">PRODUCER</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">remoteEndpoint</span><span class="o">(</span><span class="n">broker</span><span class="o">.</span><span class="na">endpoint</span><span class="o">())</span>
+    <span class="o">.</span><span class="na">start</span><span class="o">().</span><span class="na">finish</span><span class="o">();</span>
+
+<span class="c1">// The above will report to zipkin trace identifiers, a "ms" annotation with the</span>
+<span class="c1">// endpoint of the producer, and a "ma" (Message Address) with the endpoint of</span>
+<span class="c1">// the broker</span>
+</code></pre></div></div>
+
+<p>Consumer side:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Parse the span from message headers</span>
+<span class="n">TraceContextOrSamplingFlags</span> <span class="n">result</span> <span class="o">=</span>
+    <span class="n">tracing</span><span class="o">.</span><span class="na">propagation</span><span class="o">().</span><span class="na">extractor</span><span class="o">(</span><span class="nl">Message:</span><span class="o">:</span><span class="n">getHeader</span><span class="o">).</span><span class="na">extract</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+
+<span class="c1">// Reuse the same span ids by joining that context</span>
+<span class="n">span</span> <span class="o">=</span> <span class="n">tracer</span><span class="o">.</span><span class="na">newChild</span><span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">context</span><span class="o">())</span>
+
+<span class="c1">// start and finish the consumer side indicating the message arrived.</span>
+<span class="n">span</span><span class="o">.</span><span class="na">kind</span><span class="o">(</span><span class="n">Span</span><span class="o">.</span><span class="na">Kind</span><span class="o">.</span><span class="na">CONSUMER</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">remoteEndpoint</span><span class="o">(</span><span class="n">broker</span><span class="o">.</span><span class="na">endpoint</span><span class="o">())</span>
+    <span class="o">.</span><span class="na">start</span><span class="o">().</span><span class="na">finish</span><span class="o">();</span>
+
+<span class="c1">// The above will report to zipkin trace identifiers, a "mr" annotation with the</span>
+<span class="c1">// endpoint of the consumer, and a "ma" (Message Address) with the endpoint of</span>
+<span class="c1">// the broker.</span>
+</code></pre></div></div>
+
+<p>Many consumers act in bulk, receiving many messages at the same time. It may be
+helpful to inject each consumer span’s trace context into its corresponding
+message headers. This allows a processor to create a child later, at the right
+place in the trace tree.</p>
+
+<p>Here’s an example of doing this with Kafka’s poll api:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="n">ConsumerRecords</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="nf">poll</span><span class="o">(</span><span class="kt">long</span> <span class="n">timeout</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">ConsumerRecords</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="n">records</span> <span class="o">=</span> <span class="n">delegate</span><span class="o">.</span><span class="na">poll</span><span class="o">(</span><span class="n">timeout</span><span class="o">);</span>
+  <span class="k">for</span> <span class="o">(</span><span class="n">ConsumerRecord</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="n">record</span> <span class="o">:</span> <span class="n">records</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">handleConsumed</span><span class="o">(</span><span class="n">record</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="n">records</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kt">void</span> <span class="nf">handleConsumed</span><span class="o">(</span><span class="n">ConsumerRecord</span> <span class="n">record</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// notifies zipkin the record arrived</span>
+  <span class="n">Span</span> <span class="n">span</span> <span class="o">=</span> <span class="n">startAndFinishConsumerSpan</span><span class="o">(</span><span class="n">record</span><span class="o">);</span>
+  <span class="c1">// allows a processor to see the parent ID (the consumer trace context)</span>
+  <span class="n">injector</span><span class="o">.</span><span class="na">inject</span><span class="o">(</span><span class="n">span</span><span class="o">.</span><span class="na">context</span><span class="o">(),</span> <span class="n">record</span><span class="o">.</span><span class="na">headers</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+</div>
+
+    </div>
+
+  </body>
+</html>

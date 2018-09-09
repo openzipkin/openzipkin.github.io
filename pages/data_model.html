@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Data Model &middot; OpenZipkin
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/zipkin.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="shortcut icon" href="/public/favicon.ico">
+</head>
+
+
+  <body class="theme-base-0d">
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="">
+        <img alt="OpenZipkin logo" src="/public/img/zipkin-logo-200x119.jpg"
+             class="sidebar-logo">
+      </a>
+      
+      <a href="https://github.com/openzipkin/zipkin" target="_blank" title="openzipkin/zipkin">
+        <img class="sidebar-social-icon" alt="openzipkin/zipkin" src="/public/img/GitHub-Mark-Light-32px.png">
+      </a>
+      
+      <a href="https://twitter.com/zipkinproject" target="_blank" title="@zipkinproject">
+        <img class="sidebar-social-icon" alt="@zipkinproject" src="/public/img/TwitterLogo_white.png">
+      </a>
+      
+      <a href="https://gitter.im/openzipkin/zipkin/" target="_blank" title="openzipkin/zipkin">
+        <img class="sidebar-social-icon" alt="openzipkin/zipkin" src="/public/img/gitter.png">
+      </a>
+      
+    </div>
+
+    <nav class="sidebar-nav">
+      
+      
+        
+          
+            <a class="sidebar-nav-item" href="/">Home</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/quickstart.html">Quickstart</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/architecture.html">Architecture</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/existing_instrumentations.html">Existing instrumentations</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/community.html">Zipkin Community</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item active" href="/pages/data_model.html">Data Model</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/pages/instrumenting.html">Instrumenting a library</a>
+          
+        
+      
+
+    </nav>
+
+    <p>&copy; 2018. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title">
+      
+       Data Model
+      
+  </h1>
+  <p><em>Note</em> this page is out-of-date. Please view the <a href="https://zipkin.io/zipkin-api/#/default/post_spans">Zipkin Api</a> doc which elaborates the fields in the model until this page is updated.</p>
+
+<p>In order to illustrate the tracing data that Zipkin displays, let’s relate it to the equivalent information in the Zipkin data model. By comparing these, we see that</p>
+
+<ul>
+  <li>inbound and outbound requests are in different spans</li>
+  <li>spans that include <code class="highlighter-rouge">cs</code> can log an <code class="highlighter-rouge">sa</code> annotation of where they are going
+    <ul>
+      <li>This helps when the destination protocol isn’t Zipkin instrumented, such as MySQL.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>First, we see one trace as shown in the Zipkin trace  viewer:</p>
+
+<p><img src="/public/img/json_zipkin_screenshot.png" alt="Zipkin Screenshot" /></p>
+
+<p>And the same trace in the data model of Zipkin:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="w">  
+  </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"traceId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bd7a977555f6b982"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"get"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bd7a977555f6b982"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548467000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"duration"</span><span class="p">:</span><span class="w"> </span><span class="mi">386000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"annotations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548467000</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sr"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548853000</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ss"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"binaryAnnotations"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"traceId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bd7a977555f6b982"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"get-traces"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ebf33e1a81dc6f71"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"parentId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bd7a977555f6b982"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548478000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"duration"</span><span class="p">:</span><span class="w"> </span><span class="mi">354374</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"annotations"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="s2">"binaryAnnotations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lc"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JDBCSpanStore"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"request"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"QueryRequest{serviceName=zipkin-query, spanName=null, annotations=[], binaryAnnotations={}, minDuration=null, maxDuration=null, endTs=1458702548478, lookback=86400000, limit=1}"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"traceId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bd7a977555f6b982"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"query"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"be2d01e33cc78d97"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"parentId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ebf33e1a81dc6f71"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548786000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"duration"</span><span class="p">:</span><span class="w"> </span><span class="mi">13000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"annotations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548786000</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cs"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548799000</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cr"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"binaryAnnotations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc.query"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"select distinct `zipkin_spans`.`trace_id` from `zipkin_spans` join `zipkin_annotations` on (`zipkin_spans`.`trace_id` = `zipkin_annotations`.`trace_id` and `zipkin_spans`.`id` = `zipkin_annotations`.`span_id`) where (`zipkin_annotations`.`endpoint_service_name` = ? and `zipkin_spans`.`start_ts` between ? and ?) order by `zipkin_spans`.`start_ts` desc limit ?"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sa"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spanstore-jdbc"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">3306</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"traceId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bd7a977555f6b982"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"query"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"13038c5fee5a2f2e"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"parentId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ebf33e1a81dc6f71"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548817000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"duration"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"annotations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548817000</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cs"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548818000</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cr"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"binaryAnnotations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc.query"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"select `zipkin_spans`.`trace_id`, `zipkin_spans`.`id`, `zipkin_spans`.`name`, `zipkin_spans`.`parent_id`, `zipkin_spans`.`debug`, `zipkin_spans`.`start_ts`, `zipkin_spans`.`duration` from `zipkin_spans` where `zipkin_spans`.`trace_id` in (?)"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sa"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spanstore-jdbc"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">3306</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"traceId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bd7a977555f6b982"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"query"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"37ee55f3d3a94336"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"parentId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ebf33e1a81dc6f71"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548827000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"duration"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"annotations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548827000</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cs"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1458702548829000</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cr"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"binaryAnnotations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc.query"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"select `zipkin_annotations`.`trace_id`, `zipkin_annotations`.`span_id`, `zipkin_annotations`.`a_key`, `zipkin_annotations`.`a_value`, `zipkin_annotations`.`a_type`, `zipkin_annotations`.`a_timestamp`, `zipkin_annotations`.`endpoint_ipv4`, `zipkin_annotations`.`endpoint_port`, `zipkin_annotations`.`endpoint_service_name` from `zipkin_annotations` where `zipkin_annotations`.`trace_id` in (?) order by `zipkin_annotations`.`a_timestamp` asc, `zipkin_annotations`.`a_key` asc"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zipkin-query"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">9411</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sa"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"serviceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spanstore-jdbc"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">3306</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">  
+ </span></code></pre></figure>
+
+
+</div>
+
+    </div>
+
+  </body>
+</html>
