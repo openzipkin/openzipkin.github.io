@@ -263,7 +263,7 @@ main() {
 
     welcome
 
-    artifact_version_lowercase="${artifact_version,,}"
+    artifact_version_lowercase="$(tr '[:upper:]' '[:lower:]' <<< "$artifact_version")"
     if [  "${artifact_version_lowercase}" = 'latest' ]; then
         printf '%s\n' "${color_title}Fetching version number of latest ${artifact_group}:${artifact_id} release...${color_reset}"
         artifact_version="$(fetch_latest_version "$artifact_group" "$artifact_id")"
