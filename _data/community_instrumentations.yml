@@ -201,6 +201,17 @@
 
 - language: Scala
   library: >-
+    [sttp](https://github.com/kamon-io/kamon-zipkin)
+  framework: >-
+    [akka](https://doc.akka.io/docs/akka/current/index.html),
+    [akka-http](https://doc.akka.io/docs/akka-http/current/index.html),
+  propagation: Http (B3)
+  transports: Http
+  sampling: "Yes"
+  notes: Toolkit for tracing and monitoring for jvm based applications
+
+- language: Scala
+  library: >-
     [akka-tracing](https://github.com/levkhomich/akka-tracing)
   framework: >-
     [Akka](https://akka.io), [Spray](https://spray.io), [Play](https://www.playframework.com)
