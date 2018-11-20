@@ -1,0 +1,51 @@
+- type: Collector
+  library: >-
+    [zipkin-aws collector-sqs](https://github.com/openzipkin/zipkin-aws/tree/master/autoconfigure/collector-sqs)
+  product: >-
+    [AWS SQS](https://aws.amazon.com/sqs/)
+  notes:
+
+- type: Collector
+  library: >-
+    [zipkin-aws collector-kinesis](https://github.com/openzipkin/zipkin-aws/tree/master/autoconfigure/collector-kinesis)
+  product: >-
+    [AWS Kinesis](https://aws.amazon.com/kinesis/)
+  notes:
+
+- type: Storage
+  library: >-
+    [zipkin-aws storage-elasticsearch-aws](https://github.com/openzipkin/zipkin-aws/tree/master/autoconfigure/storage-elasticsearch-aws)
+  product: >-
+    [AWS Elasticsearch Service](https://aws.amazon.com/elasticsearch-service/)
+  notes:
+
+- type: Storage
+  library: >-
+    [zipkin-aws storage-xray](https://github.com/openzipkin/zipkin-aws/tree/master/autoconfigure/storage-xray)
+  product: >-
+    [AWS X-Ray](https://aws.amazon.com/ko/xray/)
+  notes: only supports sending to an XRay UDP daemon
+
+- type: Collector
+  library: >-
+    [zipkin-azure collector-eventhub](https://github.com/openzipkin/zipkin-azure)
+  product: >-
+    [Azure eventhub](https://azure.microsoft.com/en-us/services/event-hubs/)
+  notes:
+
+- type: Storage
+  library: >-
+    [zipkin-gcp storage-stackdriver](https://github.com/openzipkin/zipkin-gcp/tree/master/autoconfigure/storage-stackdriver)
+  product: >-
+    [GCP Stackdriver](https://cloud.google.com/stackdriver/)
+  notes: only supports sending to an Stackdriver
+
+- type: Storage
+  library: >-
+    [zipkin-scouter storage-scouter](https://github.com/scouter-project/zipkin-scouter)
+  product: >-
+    [Scouter APM](https://github.com/scouter-project/scouter)
+  notes: only supports sending to an Scouter
+
+
+
