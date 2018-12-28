@@ -201,7 +201,7 @@
 
 - language: Scala
   library: >-
-    [sttp](https://github.com/kamon-io/kamon-zipkin)
+    [kamon-zipkin](https://github.com/kamon-io/kamon-zipkin)
   framework: >-
     [akka](https://doc.akka.io/docs/akka/current/index.html),
     [akka-http](https://doc.akka.io/docs/akka-http/current/index.html),
