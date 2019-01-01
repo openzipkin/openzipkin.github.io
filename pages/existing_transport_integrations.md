@@ -27,6 +27,6 @@ Listed below are alternative servers that accept Zipkin format. Some use the sam
 
 
 
-Did we miss a library? Please open a pull-request to
+Did we miss an integration? Please open a pull-request to
 [openzipkin.github.io](https://github.com/openzipkin/openzipkin.github.io).
 
