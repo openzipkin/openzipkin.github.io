@@ -15,7 +15,7 @@ Server integration extends collector or storage.
 
 
 
-### Zipkin compatible servers
+### Community Server Alternatives
 The following Zipkin compatible servers receive and process zipkin formatted data.
     
  - [Skywalking](https://github.com/apache/incubator-skywalking)
