@@ -1,0 +1,6 @@
+- type: Storage
+  module: >-
+    [zipkin-scouter storage-scouter](https://github.com/scouter-project/zipkin-scouter)
+  product: >-
+    [Scouter APM](https://github.com/scouter-project/scouter)
+  notes: only supports sending to an Scouter
