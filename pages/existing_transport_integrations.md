@@ -19,7 +19,9 @@ Server integration extends collector or storage.
 The following Zipkin compatible servers receive and process zipkin formatted data.
     
  - [Skywalking](https://github.com/apache/incubator-skywalking)
-   - accept Zipkin v1/v2 spans 
+   - When [zipkin-receiver](https://github.com/apache/incubator-skywalking/blob/master/docs/en/setup/backend/backend-receivers.md) is enabled, Skywalking exposes the same HTTP POST endpoints Zipkin does
+     - http port 9411 accepts `/api/v1/spans` (thrift, json) and /api/v2/spans (json, proto) POST requests.
+     - this integration uses the same encoding library and same endpoints as zipkin does.
  - [jaeger](https://github.com/jaegertracing/jaeger)
    - accept Zipkin v1/v2 spans 
 
