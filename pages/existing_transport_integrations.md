@@ -16,7 +16,7 @@ Server integration extends collector or storage.
 
 
 ### Community Server Alternatives
-The following Zipkin compatible servers receive and process zipkin formatted data.
+Listed below are alternative servers that accept Zipkin format. Some use the same code as Zipkin on the same endpoints while others are on alternative endpoints or partially support features. In any case, these integrations aim to allow existing zipkin clients to use alternative backends the OpenZipkin team does not support. Hence, direct questions to their respective communities.
     
  - [Skywalking](https://github.com/apache/incubator-skywalking)
    - When [zipkin-receiver](https://github.com/apache/incubator-skywalking/blob/master/docs/en/setup/backend/backend-receivers.md) is enabled, Skywalking exposes the same HTTP POST endpoints Zipkin does
