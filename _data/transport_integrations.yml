@@ -26,13 +26,6 @@
     [AWS X-Ray](https://aws.amazon.com/xray/)
   notes: only supports sending to an XRay UDP daemon
 
-- type: Collector
-  module: >-
-    [zipkin-azure collector-eventhub](https://github.com/openzipkin/zipkin-azure)
-  product: >-
-    [Azure eventhub](https://azure.microsoft.com/en-us/services/event-hubs/)
-  notes:
-
 - type: Storage
   module: >-
     [zipkin-gcp storage-stackdriver](https://github.com/openzipkin/zipkin-gcp/tree/master/autoconfigure/storage-stackdriver)
