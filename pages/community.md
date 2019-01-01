@@ -14,7 +14,7 @@ Zipkin code, docs, specs and support. It includes github projects, this web site
 ### Keeping up to date
 Follow [@zipkinproject](https://twitter.com/zipkinproject) on Twitter for news
 including release announcements and community events. You can also ask on [gitter](https://gitter.im/openzipkin/zipkin) about something specific. If you are working on code, you can also
-follow projects like the [server](https://github.com/openzipkin/zipkin) or an [instrumentation](https://zipkin.io/pages/existing_instrumentations.html) you use.
+follow projects like the [server](https://github.com/openzipkin/zipkin) or an [instrumentation](https://zipkin.io/pages/tracers_instrumentation.html) you use.
 
 ### Being an active part of the community
 OpenZipkin is primarily volunteers, and there are a lot of ways to help. Once you

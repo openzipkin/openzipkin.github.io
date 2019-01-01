@@ -30,8 +30,8 @@ Here's a diagram describing this flow:
 
 ![Zipkin architecture]({{ site.github.url }}/public/img/architecture-1.png)
 
-To see if an instrumentation library already exists for your platform, see the
-list of [existing instrumentations]({{ site.github.url}}/pages/existing_instrumentations).
+To see if a tracer or instrumentation library already exists for your platform, see
+[our list]({{ site.github.url}}/pages/tracers_instrumentation).
 
 Example flow
 -----------------------

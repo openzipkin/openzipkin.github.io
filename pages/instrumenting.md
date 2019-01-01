@@ -4,7 +4,7 @@ title: Instrumenting a library
 
 This is an advanced topic. Before reading further, you may want to check whether
 an instrumentation library for your platform [already exists]({{ site.github.url
-}}/pages/existing_instrumentations). If not and if you want to take on creating an instrumentation library, first things first; jump on
+}}/pages/tracers_instrumentation). If not and if you want to take on creating an instrumentation library, first things first; jump on
 [Zipkin Gitter chat channel](https://gitter.im/openzipkin/zipkin) and let us know. We'll be extremely
 happy to help you along the way.
 {: .message}

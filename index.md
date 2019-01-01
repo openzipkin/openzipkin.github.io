@@ -16,8 +16,8 @@ Applications are instrumented to report timing data to Zipkin. The Zipkin UI als
 ## Where to go next?
 
  * To try out Zipkin, check out our [Quickstart guide]({{ site.github.url }}/pages/quickstart)
- * See if your platform has an [existing instrumentation library]({{ site.github.url
-}}/pages/existing_instrumentations)
+ * See if your platform has a [tracer or instrumentation library]({{ site.github.url }}/pages/tracers_instrumentation)
+ * See if a [server extension or alternative]({{ site.github.url }}/pages/extensions_choices) is relevant to your site.
  * Join the [Zipkin Gitter chat channel](https://gitter.im/openzipkin/zipkin)
  * The source code is on GitHub as [openzipkin/zipkin](https://github.com/openzipkin/zipkin/)
  * Issues are also tracked on [GitHub](https://github.com/openzipkin/zipkin/issues)
