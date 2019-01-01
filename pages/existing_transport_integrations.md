@@ -7,13 +7,20 @@ weight: 4
 Zipkin server bundles integration for span collection and storage. By default spans can be collected over http, Kafka or RabbitMQ transports and stored in-memory or in MySQL, Cassandra or Elasticsearch. Zipkin is extensible with external modules which allow alternate transport or storage options. Here is a list of ones maintained by the core team.
 
 | Type | Module | Related product | Other notes |
-|:-----|:--------|:----------------|:------------|{% for integration in site.data.transport_integrations %}
+|:-----|:--------|:----------------|:------------|{% for integration in site.data.openzipkin_transport_integrations %}
 | {{ integration.type }} | {{ integration.module }} | {{integration.product}} | {{ integration.notes }} |{% endfor %}
 {: .wide-table}
 
 
+### Community server integrations
+   
+| Type | Module | Related product | Other notes |
+|:-----|:--------|:----------------|:------------|{% for integration in site.data.community_transport_integrations %}
+| {{ integration.type }} | {{ integration.module }} | {{integration.product}} | {{ integration.notes }} |{% endfor %}
+{: .wide-table}
 
-### Community Server Alternatives
+
+### Community server Alternatives
 Listed below are alternative servers that accept Zipkin format. Some use the same code as Zipkin on the same endpoints while others are on alternative endpoints or partially support features. In any case, these integrations aim to allow existing zipkin clients to use alternative backends the OpenZipkin team does not support. Hence, direct questions to their respective communities.
     
  - [Apache SkyWalking](https://github.com/apache/incubator-skywalking)

@@ -40,13 +40,6 @@
     [Apache kafka](https://kafka.apache.org/)
   notes: Kafka 8.2.2+
 
-- type: Storage
-  module: >-
-    [zipkin-scouter storage-scouter](https://github.com/scouter-project/zipkin-scouter)
-  product: >-
-    [Scouter APM](https://github.com/scouter-project/scouter)
-  notes: only supports sending to an Scouter
-
 - type: Collector
   module: >-
     [zipkin-collector scribe](https://github.com/openzipkin/zipkin/tree/master/zipkin-autoconfigure/collector-scribe)
