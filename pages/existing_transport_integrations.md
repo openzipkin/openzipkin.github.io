@@ -3,7 +3,7 @@ title: Existing server integrations
 weight: 4
 ---
 
-### Server integrations
+### OpenZipkin server integrations
 The spans collected through the instrument API are collected by the zipkin collector and stored in the designated storage.
 The Zipkin server build already integrates http, kafka, rabbitMQ collectors, cassandra, elasticsearch and mysql storage.
 Server integration extends collector or storage.
