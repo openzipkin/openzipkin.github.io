@@ -1,51 +1,64 @@
 - type: Collector
-  library: >-
+  module: >-
     [zipkin-aws collector-sqs](https://github.com/openzipkin/zipkin-aws/tree/master/autoconfigure/collector-sqs)
   product: >-
     [AWS SQS](https://aws.amazon.com/sqs/)
   notes:
 
 - type: Collector
-  library: >-
+  module: >-
     [zipkin-aws collector-kinesis](https://github.com/openzipkin/zipkin-aws/tree/master/autoconfigure/collector-kinesis)
   product: >-
     [AWS Kinesis](https://aws.amazon.com/kinesis/)
   notes:
 
 - type: Storage
-  library: >-
+  module: >-
     [zipkin-aws storage-elasticsearch-aws](https://github.com/openzipkin/zipkin-aws/tree/master/autoconfigure/storage-elasticsearch-aws)
   product: >-
     [AWS Elasticsearch Service](https://aws.amazon.com/elasticsearch-service/)
   notes:
 
 - type: Storage
-  library: >-
+  module: >-
     [zipkin-aws storage-xray](https://github.com/openzipkin/zipkin-aws/tree/master/autoconfigure/storage-xray)
   product: >-
-    [AWS X-Ray](https://aws.amazon.com/ko/xray/)
+    [AWS X-Ray](https://aws.amazon.com/xray/)
   notes: only supports sending to an XRay UDP daemon
 
 - type: Collector
-  library: >-
+  module: >-
     [zipkin-azure collector-eventhub](https://github.com/openzipkin/zipkin-azure)
   product: >-
     [Azure eventhub](https://azure.microsoft.com/en-us/services/event-hubs/)
   notes:
 
 - type: Storage
-  library: >-
+  module: >-
     [zipkin-gcp storage-stackdriver](https://github.com/openzipkin/zipkin-gcp/tree/master/autoconfigure/storage-stackdriver)
   product: >-
     [GCP Stackdriver](https://cloud.google.com/stackdriver/)
   notes: only supports sending to an Stackdriver
 
+- type: Collector
+  module: >-
+    [zipkin-collector kafka08](https://github.com/openzipkin/zipkin/tree/master/zipkin-autoconfigure/collector-kafka08)
+  product: >-
+    [Apache kafka](https://kafka.apache.org/)
+  notes: Kafka 8.2.2+
+
 - type: Storage
-  library: >-
+  module: >-
     [zipkin-scouter storage-scouter](https://github.com/scouter-project/zipkin-scouter)
   product: >-
     [Scouter APM](https://github.com/scouter-project/scouter)
   notes: only supports sending to an Scouter
 
+- type: Collector
+  module: >-
+    [zipkin-collector scribe](https://github.com/openzipkin/zipkin/tree/master/zipkin-autoconfigure/collector-scribe)
+  product: >-
+    [Scribe](https://github.com/facebookarchive/scribe)
+  notes:
 
 
