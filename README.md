@@ -89,8 +89,8 @@ The rest of the repository contains scaffolding; here's a list to give you a
 basic idea of what's what:
 
  * [`_data`](_data) contains lists of things that are rendered into various
-   parts of the page. For instance the list of existing tracers is defined here
-   in a structured way.
+   parts of the page. For instance the list of tracers and instrumentation
+   is defined here in a structured way.
  * [`_includes`](_includes) contains HTML snippets that are shared by some or
    all pages.
  * [`_layouts`](_layouts) contains the basic HTML shared by all pages - and
