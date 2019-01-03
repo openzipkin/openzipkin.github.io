@@ -41,7 +41,7 @@ Listed below are alternative backends that accept Zipkin format. Some use the sa
    - When [zipkin-receiver](https://github.com/apache/incubator-skywalking/blob/master/docs/en/setup/backend/backend-receivers.md) is enabled, Skywalking exposes the same HTTP POST endpoints Zipkin does
      - http port 9411 accepts `/api/v1/spans` (thrift, json) and `/api/v2/spans` (json, proto) POST requests.
      - this extension uses the same encoding library and same endpoints as Zipkin does.
- - [jaeger](https://github.com/jaegertracing/jaeger)
+ - [Jaeger](https://github.com/jaegertracing/jaeger)
    - When `COLLECTOR_ZIPKIN_HTTP_PORT=9411` is set, Jaeger exposes a partial implementation of Zipkin's HTTP POST endpoints
      - http port 9411 accepts `/api/v1/spans` (thrift, json) and `/api/v2/spans` (json, but not proto) POST requests.
    - When `SPAN_STORAGE_TYPE=kafka` and `zipkin-thrift`, Jaeger reads Zipkin v1 thrift encoded span messages from a Kafka topic.
