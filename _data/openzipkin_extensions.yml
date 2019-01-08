@@ -38,7 +38,7 @@
     [zipkin-collector kafka08](https://github.com/openzipkin/zipkin/tree/master/zipkin-autoconfigure/collector-kafka08)
   product: >-
     [Apache kafka](https://kafka.apache.org/)
-  notes: Kafka 8.2.2+
+  notes: Only use this for Legacy Kafka 0.8-0.9 The default server includes support for Kafka 0.10+
 
 - type: Collector
   module: >-
