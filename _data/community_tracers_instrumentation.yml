@@ -267,3 +267,13 @@
   transports: "http, log file"
   sampling: "Yes"
   notes: Zipkin V2 client with OpenTracing API
+
+- language: Java
+  library: >-
+    [kafka-interceptor-kafka](https://github.com/sysco-middleware/kafka-interceptor-zipkin)
+  framework: >-
+    [Apache Kafka](http://kafka.apache.org)
+  propagation: "B3"
+  transports: Http, Kafka
+  sampling: "Yes"
+  notes: Java 8+, meant to be used for off-the-shelf components like Kafka Connectors, KSQL or Kafka REST Proxy. Instrumentation for Kafka Clients and Kafka Streams are included as Brave instrumentation.
