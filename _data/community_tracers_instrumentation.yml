@@ -60,7 +60,7 @@
   library: >-
     [cassandra-zipkin-tracing](https://github.com/thelastpickle/cassandra-zipkin-tracing)
   framework: >-
-    [Apache Cassandra](http://cassandra.apache.org)
+    [Apache Cassandra](https://cassandra.apache.org)
   propagation: CQL (B3)
   transports: Http, Kafka, Scribe
   sampling: "Yes"
@@ -272,7 +272,7 @@
   library: >-
     [kafka-interceptor-zipkin](https://github.com/sysco-middleware/kafka-interceptor-zipkin)
   framework: >-
-    [Apache Kafka](http://kafka.apache.org)
+    [Apache Kafka](https://kafka.apache.org)
   propagation: "B3"
   transports: Http, Kafka
   sampling: "Yes"
