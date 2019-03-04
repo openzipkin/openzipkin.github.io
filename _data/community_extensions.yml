@@ -4,3 +4,9 @@
   product: >-
     [Scouter APM](https://github.com/scouter-project/scouter)
   notes: only supports sending to an Scouter
+- type: Storage
+  module: >-
+    [zipkin-storage-kafka](https://github.com/jeqo/zipkin-storage-kafka)
+  product: >-
+    [Apache kafka](https://kafka.apache.org/)
+  notes: Supports aggregation and indexing of tracing data via Kafka Streams State Store.
