@@ -270,7 +270,7 @@
 
 - language: Java
   library: >-
-    [kafka-interceptor-kafka](https://github.com/sysco-middleware/kafka-interceptor-zipkin)
+    [kafka-interceptor-zipkin](https://github.com/sysco-middleware/kafka-interceptor-zipkin)
   framework: >-
     [Apache Kafka](http://kafka.apache.org)
   propagation: "B3"
