@@ -277,3 +277,33 @@
   transports: Http, Kafka
   sampling: "Yes"
   notes: Java 8+, meant to be used for off-the-shelf components like Kafka Connectors, KSQL or Kafka REST Proxy. Instrumentation for Kafka Clients and Kafka Streams are included as Brave instrumentation.
+
+- language: Go
+  library: >-
+    [zipkin-instrumentation-sql](https://github.com/jcchavezs/zipkin-instrumentation-sql)
+  framework: Any
+  notes: SQL Wrapper for golang database/sql
+
+- language: PHP
+  library: >-
+    [zipkin-instrumentation-symfony](https://github.com/jcchavezs/zipkin-instrumentation-symfony)
+  framework: >-
+    [Symfony](https://symfony.com/)
+  propagation: "B3"
+  transports: "http, log file"
+  sampling: "Yes"
+  notes: A Zipkin integration for Symfony applications 
+
+- language: PHP
+  library: >-
+    [zipkin-instrumentation-doctrine](https://github.com/jcchavezs/zipkin-instrumentation-doctrine)
+  framework: >-
+    [Doctrine](https://www.doctrine-project.org/)
+  notes: Zipkin instrumentation for Doctrine ORM
+
+- language: PHP
+  library: >-
+    [zipkin-instrumentation-guzzle](https://github.com/jcchavezs/zipkin-instrumentation-guzzle)
+  framework: >-
+    [Guzzle](http://docs.guzzlephp.org)
+  notes: Zipkin instrumentation for Guzzle HTTP Client
