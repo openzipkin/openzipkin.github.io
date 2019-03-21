@@ -51,3 +51,11 @@ table.wide-table td {
 table.wide-table th {
   font-size: 0.8em;
 }
+
+p.disclaimer {
+  font-size: 0.8em;
+}
+
+p.notice {
+  font-size: 0.8em;
+}
