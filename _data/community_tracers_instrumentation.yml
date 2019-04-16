@@ -1,3 +1,12 @@
+- language: "C++,Python"
+  library: >-
+    [cppkin](https://github.com/Dudi119/cppKin)
+  framework: Any
+  propagation: Http (B3), Thrift
+  transports: Http, Scribe
+  sampling: "Yes"
+  notes: cpp version also available in windows.
+
 - language: "C,C++"
   library: >-
     [zipkin-cpp](https://github.com/flier/zipkin-cpp)
