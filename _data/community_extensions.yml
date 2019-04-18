@@ -10,7 +10,7 @@
   product: >-
     [Apache kafka](https://kafka.apache.org/)
   notes: Supports aggregation and indexing of tracing data via Kafka Streams State Store.
-- type: Storage
+- type: Reporter
   module: >-
     [spring-cloud-sleuth-haystack-reporter](https://github.com/ExpediaDotCom/spring-cloud-sleuth-haystack-reporter)
   product: >-
