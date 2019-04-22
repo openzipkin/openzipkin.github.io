@@ -82,6 +82,10 @@ pipeline {
 			when {
 				branch 'master'
 			}
+			environment {
+				// GH Personal access token @abesto
+				GITUSER = credentials('2d27b827-20c2-4173-ac84-f3abc308fc88')
+			}
 			steps {
 				sh '''
 				set -xeuo pipefail
@@ -108,6 +112,7 @@ pipeline {
 				if [ -z "$(git status --porcelain)" ]; then
 					echo 'No changes to commit/push'
 				else
+					sh 'git config --local credential.helper "!p() { echo username=\\$GITUSER_USR; echo password=\\$GITUSER_PSW; }; p"'
 					git commit -m "$commitmsg"
 					git log asf-site -3
 					git push origin asf-site
