@@ -14,6 +14,12 @@ pipeline {
 
 	stages {
 		stage('SCM Checkout') {
+			when {
+				anyOf {
+					branch 'master'
+					changeRequest target: 'master'
+				}
+			}
 			steps {
 				deleteDir()
 				checkout scm
@@ -21,6 +27,12 @@ pipeline {
 		}
 
 		stage('Check environment') {
+			when {
+				anyOf {
+					branch 'master'
+					changeRequest target: 'master'
+				}
+			}
 			steps {
 				sh 'env'
 				sh 'pwd'
@@ -33,6 +45,12 @@ pipeline {
 		}
 
 		stage('Install Jekyll') {
+			when {
+				anyOf {
+					branch 'master'
+					changeRequest target: 'master'
+				}
+			}
 			steps {
 				sh '''
 				. "${rvm_path}/scripts/rvm"
@@ -44,6 +62,12 @@ pipeline {
 		}
 
 		stage('Build site') {
+			when {
+				anyOf {
+					branch 'master'
+					changeRequest target: 'master'
+				}
+			}
 			steps {
 				sh '''
 				. "${rvm_path}/scripts/rvm"
@@ -55,6 +79,9 @@ pipeline {
 		}
 
 		stage('Publish') {
+			when {
+				branch 'master'
+			}
 			steps {
 				sh '''
 				set -xeuo pipefail
