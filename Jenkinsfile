@@ -95,7 +95,7 @@ pipeline {
 
 				git fetch origin asf-site:asf-site
 				git reset --hard
-				git checkout -b asf-site --track origin/asf-site
+				git checkout asf-site
 				git log -3
 				git status
 
@@ -109,7 +109,6 @@ pipeline {
 					echo 'No changes to commit/push'
 				else
 					git commit -m "$commitmsg"
-					git pull --rebase
 					git log asf-site -3
 					git push origin asf-site
 				fi
