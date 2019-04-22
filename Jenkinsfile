@@ -95,7 +95,7 @@ pipeline {
 
 				git fetch origin asf-site:asf-site
 				git reset --hard
-				git checkout asf-site
+				git checkout -b asf-site --track origin/asf-site
 				git log -3
 				git status
 
