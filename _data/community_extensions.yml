@@ -1,0 +1,18 @@
+- type: Storage
+  module: >-
+    [zipkin-scouter storage-scouter](https://github.com/scouter-project/zipkin-scouter)
+  product: >-
+    [Scouter APM](https://github.com/scouter-project/scouter)
+  notes: only supports sending to an Scouter
+- type: Storage
+  module: >-
+    [zipkin-storage-kafka](https://github.com/jeqo/zipkin-storage-kafka)
+  product: >-
+    [Apache kafka](https://kafka.apache.org/)
+  notes: Supports aggregation and indexing of tracing data via Kafka Streams State Store.
+- type: Reporter
+  module: >-
+    [spring-cloud-sleuth-haystack-reporter](https://github.com/ExpediaDotCom/spring-cloud-sleuth-haystack-reporter)
+  product: >-
+    [Haystack](https://github.com/ExpediaDotCom/haystack)
+  notes: Supports sending data to Haystack, a resilient, scalable tracing and analysis system.

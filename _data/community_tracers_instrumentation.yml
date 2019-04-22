@@ -1,3 +1,12 @@
+- language: "C++,Python"
+  library: >-
+    [cppkin](https://github.com/Dudi119/cppKin)
+  framework: Any
+  propagation: Http (B3), Thrift
+  transports: Http, Scribe
+  sampling: "Yes"
+  notes: cpp version also available in windows.
+
 - language: "C,C++"
   library: >-
     [zipkin-cpp](https://github.com/flier/zipkin-cpp)
@@ -60,7 +69,7 @@
   library: >-
     [cassandra-zipkin-tracing](https://github.com/thelastpickle/cassandra-zipkin-tracing)
   framework: >-
-    [Apache Cassandra](http://cassandra.apache.org)
+    [Apache Cassandra](https://cassandra.apache.org)
   propagation: CQL (B3)
   transports: Http, Kafka, Scribe
   sampling: "Yes"
@@ -201,6 +210,17 @@
 
 - language: Scala
   library: >-
+    [kamon-zipkin](https://github.com/kamon-io/kamon-zipkin)
+  framework: >-
+    [akka](https://doc.akka.io/docs/akka/current/index.html),
+    [akka-http](https://doc.akka.io/docs/akka-http/current/index.html),
+  propagation: Http (B3)
+  transports: Http
+  sampling: "Yes"
+  notes: Toolkit for tracing and monitoring for jvm based applications
+
+- language: Scala
+  library: >-
     [akka-tracing](https://github.com/levkhomich/akka-tracing)
   framework: >-
     [Akka](https://akka.io), [Spray](https://spray.io), [Play](https://www.playframework.com)
@@ -256,3 +276,43 @@
   transports: "http, log file"
   sampling: "Yes"
   notes: Zipkin V2 client with OpenTracing API
+
+- language: Java
+  library: >-
+    [kafka-interceptor-zipkin](https://github.com/sysco-middleware/kafka-interceptor-zipkin)
+  framework: >-
+    [Apache Kafka](https://kafka.apache.org)
+  propagation: "B3"
+  transports: Http, Kafka
+  sampling: "Yes"
+  notes: Java 8+, meant to be used for off-the-shelf components like Kafka Connectors, KSQL or Kafka REST Proxy. Instrumentation for Kafka Clients and Kafka Streams are included as Brave instrumentation.
+
+- language: Go
+  library: >-
+    [zipkin-instrumentation-sql](https://github.com/jcchavezs/zipkin-instrumentation-sql)
+  framework: Any
+  notes: SQL Wrapper for golang database/sql
+
+- language: PHP
+  library: >-
+    [zipkin-instrumentation-symfony](https://github.com/jcchavezs/zipkin-instrumentation-symfony)
+  framework: >-
+    [Symfony](https://symfony.com/)
+  propagation: "B3"
+  transports: "http, log file"
+  sampling: "Yes"
+  notes: A Zipkin integration for Symfony applications 
+
+- language: PHP
+  library: >-
+    [zipkin-instrumentation-doctrine](https://github.com/jcchavezs/zipkin-instrumentation-doctrine)
+  framework: >-
+    [Doctrine](https://www.doctrine-project.org/)
+  notes: Zipkin instrumentation for Doctrine ORM
+
+- language: PHP
+  library: >-
+    [zipkin-instrumentation-guzzle](https://github.com/jcchavezs/zipkin-instrumentation-guzzle)
+  framework: >-
+    [Guzzle](http://docs.guzzlephp.org)
+  notes: Zipkin instrumentation for Guzzle HTTP Client
