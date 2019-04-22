@@ -112,7 +112,7 @@ pipeline {
 				if [ -z "$(git status --porcelain)" ]; then
 					echo 'No changes to commit/push'
 				else
-					sh 'git config --local credential.helper "!p() { echo username=\\$GITUSER_USR; echo password=\\$GITUSER_PSW; }; p"'
+					git config --local credential.helper "!p() { echo username=\\$GITUSER_USR; echo password=\\$GITUSER_PSW; }; p"
 					git commit -m "$commitmsg"
 					git log asf-site -3
 					git push origin asf-site
