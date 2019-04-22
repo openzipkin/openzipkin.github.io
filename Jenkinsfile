@@ -93,7 +93,7 @@ pipeline {
 				mv _site "${builddir}/"
 				ls -lR "${builddir}/_site/"
 
-				git fetch origin asf-site
+				git fetch origin asf-site:asf-site
 				git reset --hard
 				git checkout asf-site
 				git log -3
