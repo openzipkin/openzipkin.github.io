@@ -1,7 +1,7 @@
 # openzipkin.github.io
 
 This repository contains the source code for the Zipkin documentation site
-http://zipkin.io. It's the
+https://zipkin.apache.org/. It's the
 [organization page](https://help.github.com/articles/user-organization-and-project-pages/)
 for [`openzipkin`](https://github.com/openzipkin/), hosted using
 [GitHub pages and Jekyll](https://help.github.com/articles/using-jekyll-as-a-static-site-generator-with-github-pages/).

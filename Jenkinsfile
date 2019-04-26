@@ -69,6 +69,7 @@ pipeline {
 				}
 			}
 			steps {
+				sh 'git submodule update --init --recursive'
 				sh '''
 				. "${rvm_path}/scripts/rvm"
 				set -e 
