@@ -47,7 +47,7 @@ Listed below are alternative backends that accept Zipkin format. Some use the sa
    - When `SPAN_STORAGE_TYPE=kafka` and `zipkin-thrift`, Jaeger reads Zipkin v1 thrift encoded span messages from a Kafka topic.
      - Note: The above is a [deprecated practice](https://github.com/openzipkin/zipkin/tree/master/zipkin-collector/kafka#legacy-encoding) in Zipkin. Most instrumentation bundle multiple spans per message in v2 format.
  - [Pitchfork](https://github.com/HotelsDotCom/pitchfork)
-   - Pitchfork exposes the same HTTP POST endpoints Zipkin does
+   - Pitchfork exposes the same HTTP POST endpoints Zipkin does. It can also consume spans from a Kafka topic or a RabbitMQ queue.
      - http port 9411 accepts `/api/v1/spans` (thrift, json) and `/api/v2/spans` (json, proto) POST requests.
 
 Did we miss a server extension or alternative? Please open a pull-request to
