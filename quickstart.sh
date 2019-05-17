@@ -15,7 +15,7 @@ color_bad=$(tput setaf 1 || true)
 color_warn=$(tput setaf 3 || true)
 color_reset=$(tput sgr0 || true)
 
-repo=https://repo.maven.apache.org/maven2
+repo=https://repo1.maven.org/maven2
 
 usage() {
     cat <<EOF
