@@ -1,4 +1,4 @@
-title: OpenZipkin
+title: Apache Zipkin (incubating)
 
 tagline: A distributed tracing system
 
@@ -7,7 +7,7 @@ description: >
   troubleshoot latency problems in microservice architectures.
 
 twitter_username: zipkinproject
-github_username:  openzipkin
+github_username:  apache
 
 defaults:
   -

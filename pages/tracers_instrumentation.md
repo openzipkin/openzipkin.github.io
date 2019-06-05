@@ -12,11 +12,9 @@ The following libraries exist to provide instrumentation on various platforms.
 Please refer to their individual documentation for setup and configuration
 guides.
 
-### OpenZipkin supported
+### Supported
 
-The following libraries are supported by the OpenZipkin team and are hosted at
-the [OpenZipkin GitHub](https://github.com/openzipkin/) group. You can reach out to
-the team on [Zipkin Gitter](https://gitter.im/openzipkin/zipkin/) chat.
+The following libraries are supported by the Zipkin team. You can reach out to the team on [Gitter](https://gitter.im/openzipkin/zipkin/) chat.
 
 | Language | Library | Framework | Propagation Supported | Transports Supported | Sampling Supported? | Other notes |
 |:---------|:--------|:----------|:----------------------|:---------------------|:--------------------|:------------|{% for lib in site.data.openzipkin_tracers_instrumentation %}
@@ -32,6 +30,6 @@ the team on [Zipkin Gitter](https://gitter.im/openzipkin/zipkin/) chat.
 {: .wide-table}
 
 Did we miss a library? Please open a pull-request to
-[openzipkin.github.io](https://github.com/openzipkin/openzipkin.github.io).
+[zipkin.apache.org](https://github.com/apache/incubator-zipkin-website).
 
 Want to create instrumentation for another framework or platform? We have documentation on [instrumenting a library]({{ site.github.url }}/pages/instrumenting).

@@ -1,9 +1,8 @@
-# openzipkin.github.io
+# zipkin-website
 
-This repository contains the source code for the Zipkin documentation site
-https://zipkin.apache.org/. It's the
+This repository contains the source code for the Zipkin web site https://zipkin.apache.org/. It's the
 [organization page](https://help.github.com/articles/user-organization-and-project-pages/)
-for [`openzipkin`](https://github.com/openzipkin/), hosted using
+for [Apache Zipkin (incubating) projects](https://github.com/apache?utf8=%E2%9C%93&q=incubator-zipkin&type=&language=), hosted using
 [GitHub pages and Jekyll](https://help.github.com/articles/using-jekyll-as-a-static-site-generator-with-github-pages/).
 This means that everything on the `master` branch is immediately and
 automatically published.
@@ -47,7 +46,7 @@ Windows.
    
 1. **Clone the repository**
 
-        git clone https://github.com/openzipkin/openzipkin.github.io.git
+        git clone https://github.com/apache/incubator-zipkin-website.git
         
 1. **Install Jekyll and friends**
 
@@ -59,7 +58,7 @@ Windows.
    [`Gemfile.lock`](Gemfile.lock) makes sure we all have the same versions
    locally). To install these packages:
    
-        cd openzipkin.github.io
+        cd incubator-zipkin-website
         bundle
         
 1. **Run the site**
@@ -102,12 +101,6 @@ basic idea of what's what:
    [EditorConfig](http://editorconfig.org/) configuration that makes sure
    editors supporting EditorConfig format files in this repository in the same
    way (think spaces vs tabs)
- * [`CNAME`](CNAME) tells GitHub pages that this site should be served at
-   [http://zipkin.io](http://zipkin.io) instead of
-   [http://openzipkin.zipkin.io](http://openzipkin.zipkin.io). For details on
-   how, see
-   [https://help.github.com/articles/using-a-custom-domain-with-github-pages/](Using
-   a custom domain with GitHub Pages)
  * [`Gemfile`](Gemfile) and [`Gemfile.lock`](Gemfile.lock) describe the Ruby
    packages used for building and serving this site; see the documentation of
    [Bundler](http://bundler.io/) for more details.
@@ -140,25 +133,25 @@ There are a few things to keep an eye out for while making changes to the site.
 
 Once you've made your changes, you'll want to create a pull-request, so that the
 changes can be merged into the `master` branch of
-`openzipkin/openzipkin.github.io`, and so published for the betterment of all.
+`apache/incubator-zipkin-website`, and so published for the betterment of all.
 This section describes the steps for getting there, assuming you've followed the
 instructions so far.
 
 1. **Fork this repository**
 
     Go to
-    [openzipkin/openzipkin.github.io](https://github.com/openzipkin/openzipkin.github.io),
+    [apache/incubator-zipkin-website](https://github.com/apache/incubator-zipkin-website),
     and click the "Fork" button. Or just
-    [click here](https://github.com/openzipkin/openzipkin.github.io/fork).
+    [click here](https://github.com/apache/incubator-zipkin-website/fork).
     
 1. **Tell git about your fork**
 
-   We're going to call your fork `origin`, and the original `openzipkin`
+   We're going to call your fork `origin`, and the original `apache`
    repository `upstream`. The following commands tell `git` to make the
    appropriate changes:
    
         git remote rename origin upstream
-        git remote add origin git@github.com:$USER/openzipkin.github.io
+        git remote add origin git@github.com:$USER/incubator-zipkin-website
         git fetch upstream
         
 1. **Create a branch, commit and push your changes**
@@ -169,7 +162,7 @@ instructions so far.
         
 1. **Open a pull-request**
 
-   Open https://github.com/openzipkin/openzipkin.github.io. You should see a bar
+   Open https://github.com/apache/incubator-zipkin-website. You should see a bar
    above the list of files that says you've recently pushed to your branch, with
    a green button on the right to open a pull request. Click it; add text to
    text fields and click buttons as appropriate. See

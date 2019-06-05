@@ -1,5 +1,5 @@
-- url: https://github.com/openzipkin/zipkin
-  text: "openzipkin/zipkin"
+- url: https://github.com/apache/incubator-zipkin
+  text: "apache/incubator-zipkin"
   img: GitHub-Mark-Light-32px.png
 
 - url: https://twitter.com/zipkinproject

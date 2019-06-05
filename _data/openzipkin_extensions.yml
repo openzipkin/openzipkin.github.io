@@ -33,18 +33,3 @@
     [GCP Stackdriver](https://cloud.google.com/stackdriver/)
   notes: only supports sending to an Stackdriver
 
-- type: Collector
-  module: >-
-    [zipkin-collector kafka08](https://github.com/openzipkin/zipkin/tree/master/zipkin-autoconfigure/collector-kafka08)
-  product: >-
-    [Apache kafka](https://kafka.apache.org/)
-  notes: Only use this for Legacy Kafka 0.8-0.9 The default server includes support for Kafka 0.10+
-
-- type: Collector
-  module: >-
-    [zipkin-collector scribe](https://github.com/openzipkin/zipkin/tree/master/zipkin-autoconfigure/collector-scribe)
-  product: >-
-    [Scribe](https://github.com/facebookarchive/scribe)
-  notes:
-
-

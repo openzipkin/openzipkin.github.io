@@ -4,8 +4,8 @@ weight: 1
 ---
 
 
-In this section we’ll walk through building and starting an instance of Zipkin
-for checking out Zipkin locally. There are three options: using Java, Docker or running from source.
+In this section we’ll walk through building and starting an instance of Zipkin for local testing.
+There are three options: using Java, Docker or running from source.
 
 If you are familiar with Docker, this is the preferred method to start. If you are unfamiliar with Docker, try running via Java or from source.
 
