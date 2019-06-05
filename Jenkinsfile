@@ -103,8 +103,9 @@ pipeline {
 				git checkout asf-site
 				git log -3
 				git status
+				git submodule update --init --recursive
 				git add ./zipkin-api/*.yaml
-				git commit -m "force adds zipkin-api" || true 
+				git commit -m "force adds zipkin-api" || true
 
 				rsync -avrh --delete --exclude=".git" "${builddir}/_site/" ./
 				git status
