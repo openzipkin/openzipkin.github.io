@@ -14,7 +14,7 @@ Please refer to their individual documentation for setup and configuration guide
 The following extensions are supported by the Zipkin team. You can reach out to the team on [Gitter](https://gitter.im/openzipkin/zipkin/) chat.
 
 | Type | Module | Related product | Other notes |
-|:-----|:--------|:----------------|:------------|{% for extension in site.data.openzipkin_extensions %}
+|:-----|:--------|:----------------|:------------|{% for extension in site.data.extensions %}
 | {{ extension.type }} | {{ extension.module }} | {{extension.product}} | {{ extension.notes }} |{% endfor %}
 {: .wide-table}
 
