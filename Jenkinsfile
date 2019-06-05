@@ -96,13 +96,15 @@ pipeline {
 
 				builddir="$(mktemp -d)"
 				mv _site "${builddir}/"
-				ls -lR "${builddir}/_site/"
+				ls "${builddir}/_site/"
 
 				git fetch origin asf-site:asf-site
 				git reset --hard
 				git checkout asf-site
 				git log -3
 				git status
+				git add ./zipkin-api/*.yaml
+				git commit -m "force adds zipkin-api" || true 
 
 				rsync -avrh --delete --exclude=".git" "${builddir}/_site/" ./
 				git status
