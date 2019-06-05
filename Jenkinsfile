@@ -108,7 +108,7 @@ pipeline {
 				git add ./zipkin-api/*.yaml
 				git commit -m "force adds zipkin-api" || true
 
-				rsync -avrh --delete --exclude=".git" --exclude="./zipkin-api/*.yaml" "${builddir}/_site/" ./
+				rsync -avrh --delete --exclude=".git" --exclude=".gitmodules" --exclude="./zipkin-api-source" --exclude="./zipkin-api/*.yaml" "${builddir}/_site/" ./
 				git status
 				git diff
 
