@@ -19,5 +19,5 @@ Applications are instrumented to report timing data to Zipkin. The Zipkin UI als
  * See if your platform has a [tracer or instrumentation library]({{ site.github.url }}/pages/tracers_instrumentation)
  * See if a [server extension or alternative]({{ site.github.url }}/pages/extensions_choices) is relevant to your site.
  * Join the [Zipkin Gitter chat channel](https://gitter.im/openzipkin/zipkin)
- * The source code is on GitHub as [openzipkin/zipkin](https://github.com/apache/incubator-zipkin/)
+ * The source code is on GitHub as [apache/incubator-zipkin-*](https://github.com/apache/?q=incubator-zipkin)
  * Issues are also tracked on [GitHub](https://github.com/apache/incubator-zipkin/issues)
