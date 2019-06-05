@@ -102,8 +102,9 @@ pipeline {
 				git reset --hard
 				git checkout asf-site
 				git log -3
-				git status
 				git submodule update --init --recursive
+				git status
+				cp ./zipkin-api-source/*.yaml ./zipkin-api/
 				git add ./zipkin-api/*.yaml
 				git commit -m "force adds zipkin-api" || true
 
