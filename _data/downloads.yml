@@ -1,0 +1,29 @@
+- friendlyName: Zipkin Api
+  module: zipkin-api
+  version: 0.2.1
+  repo: zipkin-api
+- friendlyName: Zipkin Brave for Apache Cassandra
+  module: brave-cassandra
+  version: 0.10.2
+  repo: zipkin-brave-cassandra
+- friendlyName: Zipkin Brave for Apache Karaf
+  module: brave-karaf
+  version: 0.1.2
+  repo: zipkin-brave-karaf
+- friendlyName: Zipkin Dependencies
+  module: zipkin-dependencies
+  version: 2.2.0
+  repo: zipkin-dependencies
+- friendlyName: Zipkin Reporter Java
+  module: zipkin-reporter-java
+  version: 2.8.3
+  repo: zipkin-reporter-java
+- friendlyName: Zipkin Server and Core Library
+  module: zipkin
+  version: 2.14.0
+  repo: zipkin
+- friendlyName: Zipkin Layout Factory
+  module: zipkin-layout-factory
+  version: 0.0.5
+  repo: zipkin-layout-factory
+  type: internal
