@@ -100,14 +100,13 @@ pipeline {
 
 				git fetch origin asf-site:asf-site
 				git reset --hard
-				rm ./zipkin-api/*.yaml
 				git checkout asf-site
 				git log -3
 				git submodule update --init --recursive
 				git status
 				cp ./zipkin-api-source/*.yaml ./zipkin-api/
 				git add ./zipkin-api/*.yaml
-				git commit -am "Zipkin OpenApi definitions"
+				git commit -am "Zipkin OpenApi definitions" || true
 
 				rsync -avrh --delete --exclude=".git" --exclude=".gitmodules" --exclude="zipkin-api-source" --exclude='zipkin-api/*.yaml' "${builddir}/_site/" ./
 				git status
