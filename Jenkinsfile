@@ -106,6 +106,7 @@ pipeline {
 				git status
 				cp ./zipkin-api-source/*.yaml ./zipkin-api/
 				git add ./zipkin-api/*.yaml
+				git commit -am"Zipkin OpenApi definitions"
 
 				rsync -avrh --delete --exclude=".git" --exclude=".gitmodules" --exclude="zipkin-api-source" --exclude='zipkin-api/*.yaml' "${builddir}/_site/" ./
 				git status
