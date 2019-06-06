@@ -8,7 +8,7 @@ weight: 4
 
 Apache Software Foundation (ASF) requires projects to have a downloads page, used in release announcements. Below are the locations of the official voted source releases per-project.
 
-If you like, you can [verify](https://www.apache.org/info/verification) the source downloads using Zipkin's [KEYS file](https://www.apache.org/dist/incubator/zipkin/KEYS).
+If you like, you can [verify](https://www.apache.org/info/verification) the source downloads using Zipkin's [KEYS file]({{ baseUrl }}/KEYS).
 
 {% assign downloads = site.data.downloads | where_exp: "download", "download.type != 'internal'" %}
 
