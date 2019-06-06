@@ -99,6 +99,7 @@ pipeline {
 				ls "${builddir}/_site/"
 
 				git fetch origin asf-site:asf-site
+				git rm -rf ./zipkin-api
 				git reset --hard
 				git checkout asf-site
 				git log -3
