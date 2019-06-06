@@ -2,8 +2,6 @@
 title: Source Downloads
 weight: 4
 ---
-
-## Source Downloads
 {% assign baseUrl = 'https://www.apache.org/dyn/closer.cgi?path=incubator/zipkin' %}
 {% assign downloads = site.data.downloads | where_exp: "download", "download.type != 'internal'" %}
 
