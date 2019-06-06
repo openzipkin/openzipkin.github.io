@@ -2,7 +2,7 @@
 title: Source Downloads
 weight: 4
 ---
-{% assign baseUrl = 'https://www.apache.org/dyn/closer.cgi?path=incubator/zipkin' %}
+{% assign baseUrl = 'https://www.apache.org/dist/incubator/zipkin' %}
 {% assign downloads = site.data.downloads | where_exp: "download", "download.type != 'internal'" %}
 
 Apache Software Foundation (ASF) requires projects to have a downloads page, used in release announcements. Below are the locations of the official voted source releases per-project.
