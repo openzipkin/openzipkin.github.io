@@ -105,6 +105,7 @@ pipeline {
 				git submodule update --init --recursive
 				git status
 				cp ./zipkin-api-source/*.yaml ./zipkin-api/
+				git add ./zipkin-api/*.yaml
 
 				rsync -avrh --delete --exclude=".git" --exclude=".gitmodules" --exclude="zipkin-api-source" --exclude='zipkin-api/*.yaml' "${builddir}/_site/" ./
 				git status
