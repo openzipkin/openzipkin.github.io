@@ -81,15 +81,15 @@ handle_shutdown() {
 ${color_bad}
 It looks like quick-start setup has failed. Please run the command again
 with the debug flag like below, and open an issue on
-https://github.com/apache/incubator-zipkin-website/issues/new. Make sure
+https://github.com/openzipkin/openzipkin.github.io/issues/new. Make sure
 to include the full output of the run.
 ${color_reset}
-    \\curl -sSL https://zipkin.apache.org/quickstart.sh | bash -sx -- $@
+    \\curl -sSL https://zipkin.io/quickstart.sh | bash -sx -- $@
 
 In the meanwhile, you can manually download and run the latest executable jar
 from the following URL:
 
-https://search.maven.org/remote_content?g=org.apache.zipkin&a=zipkin-server&v=LATEST&c=exec
+https://search.maven.org/remote_content?g=io.zipkin&a=zipkin-server&v=LATEST&c=exec
 EOF
     fi
 }
@@ -187,7 +187,7 @@ EOF
 }
 
 main() {
-    local artifact_group=org.apache.zipkin
+    local artifact_group=io.zipkin
     local artifact_id=zipkin-server
     local artifact_version=LATEST
     local artifact_version_lowercase=latest
