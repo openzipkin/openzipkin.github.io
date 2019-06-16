@@ -16,7 +16,7 @@ the [OpenZipkin GitHub](https://github.com/openzipkin/) group. You can reach out
 the team on [Zipkin Gitter](https://gitter.im/openzipkin/zipkin/) chat.
 
 | Type | Module | Related product | Other notes |
-|:-----|:--------|:----------------|:------------|{% for extension in site.data.openzipkin_extensions %}
+|:-----|:--------|:----------------|:------------|{% for extension in site.data.extensions %}
 | {{ extension.type }} | {{ extension.module }} | {{extension.product}} | {{ extension.notes }} |{% endfor %}
 {: .wide-table}
 
