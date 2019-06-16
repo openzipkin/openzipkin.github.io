@@ -4,8 +4,8 @@ weight: 1
 ---
 
 
-In this section we’ll walk through building and starting an instance of Zipkin for local testing.
-There are three options: using Java, Docker or running from source.
+In this section we’ll walk through building and starting an instance of Zipkin
+for checking out Zipkin locally. There are three options: using Java, Docker or running from source.
 
 If you are familiar with Docker, this is the preferred method to start. If you are unfamiliar with Docker, try running via Java or from source.
 
@@ -23,21 +23,21 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 
 ## Java
 
-If you have Java 8 or higher installed, the quickest way to get started is to fetch the [latest release](https://search.maven.org/remote_content?g=org.apache.zipkin&a=zipkin-server&v=LATEST&c=exec) as a self-contained executable jar:
+If you have Java 8 or higher installed, the quickest way to get started is to fetch the [latest release](https://search.maven.org/remote_content?g=io.zipkin.java&a=zipkin-server&v=LATEST&c=exec) as a self-contained executable jar:
 
 ~~~ bash
-curl -sSL https://zipkin.apache.org/quickstart.sh | bash -s
+curl -sSL https://zipkin.io/quickstart.sh | bash -s
 java -jar zipkin.jar
 ~~~
 
 ## Running from Source
 
-Zipkin can be run from source if you are developing new features. To achieve this, you'll need to get [Zipkin's source](https://github.com/apache/incubator-zipkin) and build it.
+Zipkin can be run from source if you are developing new features. To achieve this, you'll need to get [Zipkin's source](https://github.com/openzipkin/zipkin) and build it.
 
 ~~~ bash
 # get the latest source
-git clone https://github.com/apache/incubator-zipkin
-cd incubator-zipkin
+git clone https://github.com/openzipkin/zipkin
+cd zipkin
 # Build the server and also make its dependencies
 ./mvnw -DskipTests --also-make -pl zipkin-server clean install
 # Run the server
