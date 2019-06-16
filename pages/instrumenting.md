@@ -26,7 +26,7 @@ Alright, ready? Here we go.
 Core data structures
 =====
 
-Core data structures are documented in detail in [Thrift](https://github.com/openzipkin/zipkin-api/blob/master/thrift/zipkinCore.thrift) comments. Here's a high-level description to get you started:
+Core data structures are documented in detail in [Thrift](https://github.com/apache/incubator-zipkin-api/blob/master/thrift/zipkinCore.thrift) comments. Here's a high-level description to get you started:
 
 **Annotation**
 
@@ -154,7 +154,7 @@ information for the request.
 * Flags - Provides the ability to create and communicate feature flags. This is how
 we can tell downstream services that this is a "debug" request.
 
-Check [here](https://github.com/openzipkin/b3-propagation) for the format.
+Check [here](https://github.com/apache/incubator-zipkin-b3-propagation) for the format.
 
 [Finagle](https://twitter.github.io/finagle/) provides mechanisms for passing this information with HTTP and Thrift
 requests. Other protocols will need to be augmented with the information for
@@ -189,7 +189,7 @@ Ids are encoded as [hex strings](https://github.com/twitter/finagle/blob/master/
 * X-B3-Sampled: Boolean (either "1" or "0", can be absent)
 * X-B3-Flags: "1" means debug (can be absent)
 
-For more information on B3, please see its [specification](https://github.com/openzipkin/b3-propagation).
+For more information on B3, please see its [specification](https://github.com/apache/incubator-zipkin-b3-propagation).
 
 **Thrift Tracing**
 
@@ -312,7 +312,7 @@ span(context).annotate("cs")                                \/
                                              span(context).annotate("sr")
 ```
 
-Here's an example of this process using the [Brave Tracer](https://github.com/openzipkin/brave/blob/master/brave/src/test/java/brave/features/async/OneWaySpanTest.java):
+Here's an example of this process using the [Brave Tracer](https://github.com/apache/incubator-zipkin-brave/blob/master/brave/src/test/java/brave/features/async/OneWaySpanTest.java):
 
 Client side:
 ```java
@@ -384,7 +384,7 @@ span(context).annotate("ms")                                \/
                                                           .address("ma", broker)
 ```
 
-Here's an example of this process using the [Brave Tracer](https://github.com/openzipkin/brave):
+Here's an example of this process using the [Brave Tracer](https://github.com/apache/incubator-zipkin-brave):
 
 Producer side:
 ```java

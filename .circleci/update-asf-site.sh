@@ -18,7 +18,7 @@ readonly builddir="$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')"
 readonly master_sha="$(git rev-parse --short HEAD)"
 
 # Grab the target branch, delete the existing files so we can do a clean build
-git clone --branch asf-site -- git@github.com:openzipkin/openzipkin.github.io "$builddir"
+git clone --branch asf-site -- git@github.com:apache/incubator-zipkin-website "$builddir"
 rm -rf "${builddir:?}/*"
 
 # Generate the site

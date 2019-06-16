@@ -6,7 +6,7 @@ set -x
 # Where's Waldo?
 [ ! -d ./generate_thrift_v1_docs ] && cd ..
 if [ ! -d ./generate_thrift_v1_docs ]; then
-    echo "Please run this script either from the root of the openzipkin.github.io repository"
+    echo "Please run this script either from the root of the incubator-zipkin-website repository"
     echo "or from the generate_thrift_v1_docs folder in that repository."
     exit 1
 fi
@@ -19,9 +19,10 @@ target_dir="${target_root}/thrift/v1"
 rm -rfv "$target_dir"
 
 # Prepare clean workspace
-cd "$(mktemp -d)"
-git clone https://github.com/openzipkin/zipkin-api.git
-cd zipkin-api/thrift
+#   base temp dir to /tmp to avoid having to custom configure OS/x Docker
+cd "$(mktemp -d /tmp/XXXXXXXXXX)"
+git clone https://github.com/apache/incubator-zipkin-api.git
+cd incubator-zipkin-api/thrift
 
 # Generate HTML docs with Thrift
 rm -fv wrapper.thrift
@@ -43,7 +44,9 @@ set -e
 
 # Apply some transforms to the generated HTML
 cp "$rootdir/generate_thrift_v1_docs/transform.xslt" ./
-docker run --rm -v "$PWD:/workspace" -u "$(id -u)" klakegg/saxon \
+# Currently, this image doesn't work with a user override https://github.com/klakegg/docker-saxon/issues/2
+# docker run --rm -v "$PWD:/workspace" -u "$(id -u)" klakegg/saxon xslt \
+docker run --rm -v "$PWD:/workspace" klakegg/saxon xslt \
        -s:/workspace/html/index.tidy.html \
        -xsl:/workspace/transform.xslt \
        -o:/workspace/html/index.baked.html

@@ -2,7 +2,7 @@
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
       <a href="{{ site.github.url }}">
-        <img alt="OpenZipkin logo" src="{{ site.github.url }}/public/img/zipkin-logo-200x119.jpg"
+        <img alt="Zipkin logo" src="{{ site.github.url }}/public/img/zipkin-logo-200x119.jpg"
              class="sidebar-logo">
       </a>
       {% for link in site.data.sidebar_links %}
@@ -21,9 +21,15 @@
           {% endif %}
         {% endif %}
       {% endfor %}
-
     </nav>
-
-    <p>&copy; {{ site.time | date: '%Y' }}. All rights reserved.</p>
+    <nav>
+      <span>Apache Links</span>
+      <a class="sidebar-nav-item" href="http://www.apache.org/">Apache Software Foundation</a>
+      <a class="sidebar-nav-item" href="http://www.apache.org/licenses/">License</a>
+      <a class="sidebar-nav-item" href="http://www.apache.org/events/current-event">Events</a>
+      <a class="sidebar-nav-item" href="http://www.apache.org/foundation/thanks">Thanks</a>
+      <a class="sidebar-nav-item" href="http://www.apache.org/security">Security</a>
+      <a class="sidebar-nav-item" href="http://www.apache.org/foundation/sponsorship">Sponsor Apache</a>
+    </nav>
   </div>
 </div>

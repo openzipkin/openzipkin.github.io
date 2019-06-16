@@ -1,4 +1,4 @@
-title: OpenZipkin
+title: Apache Zipkin (incubating)
 
 tagline: A distributed tracing system
 
@@ -7,7 +7,7 @@ description: >
   troubleshoot latency problems in microservice architectures.
 
 twitter_username: zipkinproject
-github_username:  openzipkin
+github_username:  apache
 
 defaults:
   -
@@ -16,3 +16,7 @@ defaults:
       weight: 100   # Used to sort navbar items. Lower weight goes higher on the list.
 
 highlighter: rouge
+
+# This is the best we can get to avoid the 
+exclude: ["zipkin-api/**/*", "zipkin-api/mvnw*", "zipkin-api/*.md", "zipkin-api/*.js*" , "zipkin-api/*.xml"]
+include: ["zipkin-api/*.yaml", "zipkin-api/zipkin.proto"]
