@@ -19,7 +19,8 @@ target_dir="${target_root}/thrift/v1"
 rm -rfv "$target_dir"
 
 # Prepare clean workspace
-cd "$(mktemp -d)"
+#   base temp dir to /tmp to avoid having to custom configure OS/x Docker
+cd "$(mktemp -d /tmp/XXXXXXXXXX)"
 git clone https://github.com/openzipkin/zipkin-api.git
 cd zipkin-api/thrift
 
@@ -43,7 +44,9 @@ set -e
 
 # Apply some transforms to the generated HTML
 cp "$rootdir/generate_thrift_v1_docs/transform.xslt" ./
-docker run --rm -v "$PWD:/workspace" -u "$(id -u)" klakegg/saxon \
+# Currently, this image doesn't work with a user override https://github.com/klakegg/docker-saxon/issues/2
+# docker run --rm -v "$PWD:/workspace" -u "$(id -u)" klakegg/saxon xslt \
+docker run --rm -v "$PWD:/workspace" klakegg/saxon xslt \
        -s:/workspace/html/index.tidy.html \
        -xsl:/workspace/transform.xslt \
        -o:/workspace/html/index.baked.html
