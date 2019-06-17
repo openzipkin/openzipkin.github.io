@@ -6,7 +6,7 @@ set -x
 # Where's Waldo?
 [ ! -d ./generate_thrift_v1_docs ] && cd ..
 if [ ! -d ./generate_thrift_v1_docs ]; then
-    echo "Please run this script either from the root of the zipkin-website repository"
+    echo "Please run this script either from the root of the openzipkin.github.io repository"
     echo "or from the generate_thrift_v1_docs folder in that repository."
     exit 1
 fi
@@ -22,7 +22,7 @@ rm -rfv "$target_dir"
 #   base temp dir to /tmp to avoid having to custom configure OS/x Docker
 cd "$(mktemp -d /tmp/XXXXXXXXXX)"
 git clone https://github.com/openzipkin/zipkin-api.git
-cd incubator-zipkin-api/thrift
+cd zipkin-api/thrift
 
 # Generate HTML docs with Thrift
 rm -fv wrapper.thrift

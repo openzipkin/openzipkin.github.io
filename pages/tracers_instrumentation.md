@@ -30,6 +30,6 @@ The following libraries are supported by the Zipkin team. You can reach out to t
 {: .wide-table}
 
 Did we miss a library? Please open a pull-request to
-[zipkin.apache.org](https://github.com/apache/incubator-zipkin-website).
+[openzipkin.github.io](https://github.com/openzipkin/openzipkin.github.io).
 
 Want to create instrumentation for another framework or platform? We have documentation on [instrumenting a library]({{ site.github.url }}/pages/instrumenting).

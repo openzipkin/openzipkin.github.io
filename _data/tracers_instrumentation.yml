@@ -20,7 +20,7 @@
 
 - language: Java
   library: >-
-    [brave](https://github.com/apache/incubator-zipkin-brave)
+    [brave](https://github.com/openzipkin/brave)
   framework: Jersey, RestEASY, JAXRS2, Apache HttpClient, Mysql
   propagation: Http (B3), gRPC (B3)
   transports: Http, Kafka, Scribe
