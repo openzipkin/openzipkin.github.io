@@ -7,3 +7,7 @@ jobs:
       - run: bundle install
       - run: yaml-lint -i -q .
       - run: bundle exec jekyll build
+notify:
+  webhooks:
+    - url: https://webhooks.gitter.im/e/ead3c37d57527214e9f2
+    - url: https://webhooks.gitter.im/e/e57478303f87ecd7bffc
