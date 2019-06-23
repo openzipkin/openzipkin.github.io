@@ -9,6 +9,8 @@ description: >
 twitter_username: zipkinproject
 github_username:  openzipkin
 
+url: https://zipkin.io
+
 defaults:
   -
     values:
