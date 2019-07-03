@@ -1,5 +1,11 @@
 - type: Storage
   module: >-
+    [zipkin-logzio](https://github.com/logzio/zipkin-logzio)
+  product: >-
+    [Logz.io](https://logz.io)
+  notes: Supports both sending and reading back data to and from Logz.io: Secure & Scalable Log Management with Cloud-Based ELK 
+- type: Storage
+  module: >-
     [zipkin-scouter storage-scouter](https://github.com/scouter-project/zipkin-scouter)
   product: >-
     [Scouter APM](https://github.com/scouter-project/scouter)
@@ -16,9 +22,3 @@
   product: >-
     [Haystack](https://github.com/ExpediaDotCom/haystack)
   notes: Supports sending data to Haystack, a resilient, scalable tracing and analysis system.
-- type: Storage
-  module: >-
-    [zipkin-logzio](https://github.com/logzio/zipkin-logzio)
-  product: >-
-    [Logz.io](https://logz.io)
-  notes: Supports both sending and reading back data to and from Logz.io: Secure & Scalable Log Management with Cloud-Based ELK 
