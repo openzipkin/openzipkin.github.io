@@ -21,4 +21,4 @@
     [zipkin-logzio](https://github.com/logzio/zipkin-logzio)
   product: >-
     [Logz.io](https://logz.io)
-  notes: Supports both sending and reading back data to and from logz.io
+  notes: Supports both sending and reading back data to and from Logz.io: Secure & Scalable Log Management with Cloud-Based ELK 
