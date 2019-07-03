@@ -16,3 +16,9 @@
   product: >-
     [Haystack](https://github.com/ExpediaDotCom/haystack)
   notes: Supports sending data to Haystack, a resilient, scalable tracing and analysis system.
+- type: Storage
+  module: >-
+    [zipkin-logzio](https://github.com/logzio/zipkin-logzio)
+  product: >-
+    [Logz.io](https://logz.io)
+  notes: Supports both sending and reading back data to and from logz.io
