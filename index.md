@@ -2,16 +2,17 @@
 title: Home
 weight: 0
 ---
+Zipkin is a distributed tracing system. It helps gather timing data needed to troubleshoot latency problems in service architectures. Features include both the collection and lookup of this data.
 
-![Web interface screenshot]({{ site.github.url }}/public/img/web-screenshot.png)
+If you have a trace ID in a log file, you can jump directly to it. Otherwise, you can query based on attributes such as service, operation name, tags and duration. Some interesting data will be summarized for you, such as the percentage of time spent in a service, and whether or not operations failed.
 
-Zipkin is a distributed tracing system. It helps gather timing data needed to
-troubleshoot latency problems in microservice architectures. It manages both the
-collection and lookup of this data.
-Zipkin’s design is based on the
-[Google Dapper](http://research.google.com/pubs/pub36356.html) paper.
+![Trace view screenshot]({{ site.github.url }}/public/img/web-screenshot.png)
 
-Applications are instrumented to report timing data to Zipkin. The Zipkin UI also presents a Dependency diagram showing how many traced requests went through each application. If you are troubleshooting latency problems or errors, you can filter or sort all traces based on the application, length of trace, annotation, or timestamp. Once you select a trace, you can see the percentage of the total trace time each span takes which allows you to identify the problem application. 
+The Zipkin UI also presents a Dependency diagram showing how many traced requests went through each application. This can be helpful for identifying aggregate behavior including error paths or calls to deprecated services.
+
+![Dependency graph screenshot]({{ site.github.url }}/public/img/dependency-graph.png)
+
+Application's need to be "instrumented" to report trace data to Zipkin. This usually means configuration of a [tracer or instrumentation library]({{ site.github.url }}/pages/tracers_instrumentation). The most popular ways to report data to Zipkin are via http or Kafka, though many other options exist, such as Apache ActiveMQ, gRPC and RabbitMQ. The data served to the UI is stored in-memory, or persistently with a supported backend such as Apache Cassandra or Elasticsearch.
 
 ## Where to go next?
 
