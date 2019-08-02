@@ -1,0 +1,3 @@
+[submodule "zipkin-api"]
+	path = zipkin-api
+	url = git@github.com:openzipkin/zipkin-api.git
