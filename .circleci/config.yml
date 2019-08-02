@@ -9,7 +9,6 @@ jobs:
           command: |
             git submodule init
             git submodule update
-      - run: ls -la ./zipkin-api
       - run: gem install bundler --version 2.0.1
       - run: bundle install
       - run: yaml-lint -i -q .
