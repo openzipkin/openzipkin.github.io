@@ -237,9 +237,7 @@ main() {
     artifact_url="${repo}/${artifact_group_with_slashes}/${artifact_id}/$artifact_version/${artifact_id}-${artifact_version}${artifact_classifier_suffix}.jar"
     fetch "$artifact_url" "$filename"
     verify_checksum "$artifact_url" "$filename"
-    # Disabled as it is assuming the GPG key is from Bintray, which it won't be. This is better than
-    # scaring people. In the future, we can do fancy things to determine which of the ASF keys it is.
-    # verify_signature "$artifact_url" "$filename"
+    verify_signature "$artifact_url" "$filename"
 
     cleanup "$filename"
     farewell "$artifact_classifier" "$filename"
