@@ -224,6 +224,11 @@ main() {
 
     welcome
 
+    if [ "${artifact_group}" = 'io.zipkin.java' ]; then
+       printf '%s\n' "${color_warn}You've requested the server's old group name: 'io.zipkin.java'. Please update links to the current group 'io.zipkin'...${color_reset}"
+       artifact_group=io.zipkin
+    fi
+
     artifact_group_with_slashes="${artifact_group//.//}"
     artifact_version_lowercase="$(tr '[:upper:]' '[:lower:]' <<< "$artifact_version")"
     if [  "${artifact_version_lowercase}" = 'latest' ]; then
