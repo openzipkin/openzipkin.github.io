@@ -38,12 +38,10 @@ which explains important aspects of change culture.
 
 
 ### OpenZipkin brand resources
-**[OpenZipkin brand guide (pdf)]({{ site.github.url}}/public/img/Openzipkin_Brand_Guide.pdf)**
+**[OpenZipkin brand guide (pdf)]({{ site.github.url}}/public/img/Zipkin_Guide.pdf)**
 
-This guide will help you to use OpenZipkin logo with its brand colors, and symbol. You can get original image files(.svg, .png) at below link. 
+This guide will help you to use Zipkin logo with its brand colors, and symbol. You can get original image files(.svg, .png) at below link. 
 
 **[Logo SVG](https://github.com/openzipkin/openzipkin.github.io/tree/master/public/img/logo_svg)**
 
 **[Logo PNG](https://github.com/openzipkin/openzipkin.github.io/tree/master/public/img/logo_png)**
-
-**[Logo variation versions PNG](https://github.com/openzipkin/openzipkin.github.io/tree/master/public/img/logo_variations_png)**
