@@ -147,7 +147,7 @@ verify_checksum() {
     fetch "$url.md5" "$filename.md5"
 
     if command -v md5sum >/dev/null 2>&1; then
-        execute_and_log "md5sum --check <<< \"\$(cat $filename.md5)  $filename\""
+        execute_and_log "md5sum -c <<< \"\$(cat $filename.md5)  $filename\""
         printf '%s\n' "${color_good}Checksum for ${filename} passes verification${color_reset}"
     else
         printf '%s\n' "${color_warn}md5sum not found on path, skipping checksum verification${color_reset}"
