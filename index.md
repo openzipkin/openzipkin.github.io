@@ -15,7 +15,7 @@ The Zipkin UI also presents a Dependency diagram showing how many traced request
 
 Applications need to be "instrumented" to report trace data to Zipkin. This usually means configuration of a [tracer or instrumentation library]({{ site.github.url }}/pages/tracers_instrumentation).
 The most popular ways to report data to Zipkin are via HTTP or Kafka, though many other options exist, such as Apache ActiveMQ, gRPC and RabbitMQ.
-The data served to the UI is stored in-memory, or persistently with a supported backend such as Apache Cassandra or Elasticsearch.
+The data served to the UI are stored in-memory, or persistently with a supported backend such as Apache Cassandra or Elasticsearch.
 
 ## Where to go next?
 
