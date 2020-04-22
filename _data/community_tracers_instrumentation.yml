@@ -25,6 +25,12 @@
   sampling: "Yes"
   notes: lc support. 4.5.2 or higher
 
+- language: "Clojure"
+  library: >-
+    [zipkin-clj](https://github.com/suprematic/zipkin-clj)
+  framework: Any
+  propagation: B3
+
 - language: Elixir
   library: >-
     [Tapper](https://github.com/Financial-Times/tapper)
