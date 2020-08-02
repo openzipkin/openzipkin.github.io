@@ -1,0 +1,25 @@
+# GitHub Pages publishes this site as "zipkin.io" according to the `CNAME` file.
+# Currently, the core team does not have access to the GoDaddy account for "zipkin.io".
+#
+# This workflow raises an issue when "zipkin.io" is about to expire, allowing watchers,
+# most specifically the core team, to follow-up and avoid site outages.
+name: Check domain expiry
+on:
+  schedule:
+    - cron: '12 22 * * *'
+
+jobs:
+  build:
+    name: Check zipkin.io expiration
+    # MacOS comes with whois installed by default
+    runs-on: macos-latest
+    steps:
+      # Exit code 0 if more than 30 days until expiration, 1 otherwise
+      - run:  exit $((($(date -j -f %Y-%m-%dT%H:%M:%SZ "$(whois zipkin.io | awk '/Registry Expiry Date:/ { print $4 }')" +%s) - $(date +%s)) / 3600 / 24 > 30 == 0))
+      - uses: maxkomarychev/oction-create-issue@v0.7.1
+        if: failure()
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: zipkin.io domain about to expire
+          body: zipkin.io is going to expire in less than 30 days. Renew ASAP!
+          labels: bug
