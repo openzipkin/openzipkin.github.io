@@ -1,3 +1,8 @@
+# GitHub Pages publishes this site as "zipkin.io" according to the `CNAME` file.
+# Currently, the core team does not have access to the GoDaddy account for "zipkin.io".
+#
+# This workflow raises an issue when "zipkin.io" is about to expire, allowing watchers,
+# most specifically the core team, to follow-up and avoid site outages.
 name: Check domain expiry
 on:
   schedule:
