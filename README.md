@@ -10,7 +10,7 @@ automatically published.
 
 It uses the static site generator [Jekyll](http://jekyllrb.com/). Jekyll is
 implemented in [Ruby](https://www.ruby-lang.org/en/) and requires Ruby
-version >= 2.1.
+version >= 2.7.
 
 ## Contributing
 
@@ -21,6 +21,8 @@ you can, you should use OSX or Linux; Jekyll is not very well supported on
 Windows.
 
 ### If you've done this kind of thing before
+You may wish to use `rbenv` to ensure your Ruby and Bundler versions are
+consistent before proceeding.
 
 1. Fork, branch, clone
 2. `bundle`
@@ -69,7 +71,7 @@ Windows.
    up any changes you make locally, and regenerate the site, so you can review
    your changes live without having to restart Jekyll.
    
-        jekyll serve
+        bundle exec jekyll serve
 
 
 ### Finding your way around the repository

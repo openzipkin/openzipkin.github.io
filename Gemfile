@@ -6,5 +6,5 @@ require 'json'
 require 'open-uri'
 versions = JSON.parse(open('https://pages.github.com/versions.json').read)
 gem 'github-pages', versions['github-pages']
-gem "yaml-lint", "~> 0.0.9"
-gem "terminal-table", "~> 1.4"
+gem "yaml-lint", "~> 0.0.10"
+gem "terminal-table", "~> 1.8"
