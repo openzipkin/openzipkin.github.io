@@ -160,8 +160,8 @@ verify_signature() {
 
     printf '\n%s\n' "${color_title}Verifying GPG signature of $filename...${color_reset}"
 
-    # Trust key used to sign last release as Bintray locked OpenZipkin's org. The key used to be D401AB61
-    local gpg_key='8DCFC895'
+    # Trust OpenZipkin's key
+    local gpg_key='FF31B515'
 
     if command -v gpg >/dev/null 2>&1; then
         fetch "$url.asc" "$filename.asc"
