@@ -295,9 +295,9 @@
 
 - language: Go
   library: >-
-    [zipkin-instrumentation-sql](https://github.com/jcchavezs/zipkin-instrumentation-sql)
+    [zipkin-go-sql](https://github.com/openzipkin-contrib/zipkin-go-sql)
   framework: Any
-  notes: SQL Wrapper for golang database/sql
+  notes: SQL instrumentation for Go database/sql
 
 - language: PHP
   library: >-
@@ -307,7 +307,7 @@
   propagation: "B3"
   transports: "http, log file"
   sampling: "Yes"
-  notes: A Zipkin integration for Symfony applications 
+  notes: A Zipkin integration for Symfony applications
 
 - language: PHP
   library: >-
