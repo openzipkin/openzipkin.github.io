@@ -1,34 +1,34 @@
 - type: Collector
   module: >-
-    [zipkin-aws collector-sqs](https://github.com/openzipkin/zipkin-aws/tree/master/autoconfigure/collector-sqs)
+    [zipkin-aws collector-sqs](https://github.com/openzipkin/zipkin-aws/tree/master/module#sqs-collector)
   product: >-
     [AWS SQS](https://aws.amazon.com/sqs/)
   notes:
 
 - type: Collector
   module: >-
-    [zipkin-aws collector-kinesis](https://github.com/openzipkin/zipkin-aws/tree/master/autoconfigure/collector-kinesis)
+    [zipkin-aws collector-kinesis](https://github.com/openzipkin/zipkin-aws/tree/master/module#kinesis-collector)
   product: >-
     [AWS Kinesis](https://aws.amazon.com/kinesis/)
   notes:
 
 - type: Storage
   module: >-
-    [zipkin-aws storage-elasticsearch-aws](https://github.com/openzipkin/zipkin-aws/tree/master/autoconfigure/storage-elasticsearch-aws)
+    [zipkin-aws storage-elasticsearch-aws](https://github.com/openzipkin/zipkin-aws/tree/master/module#elasticsearch-storage)
   product: >-
     [AWS Elasticsearch Service](https://aws.amazon.com/elasticsearch-service/)
   notes:
 
 - type: Storage
   module: >-
-    [zipkin-aws storage-xray](https://github.com/openzipkin/zipkin-aws/tree/master/autoconfigure/storage-xray)
+    [zipkin-aws storage-xray](https://github.com/openzipkin/zipkin-aws/tree/master/module#xray-storage)
   product: >-
     [AWS X-Ray](https://aws.amazon.com/xray/)
   notes: only supports sending to an XRay UDP daemon
 
 - type: Storage
   module: >-
-    [zipkin-gcp storage-stackdriver](https://github.com/openzipkin/zipkin-gcp/tree/master/autoconfigure/storage-stackdriver)
+    [zipkin-gcp storage-stackdriver](https://github.com/openzipkin/zipkin-gcp/tree/master/storage-stackdriver)
   product: >-
     [GCP Stackdriver](https://cloud.google.com/stackdriver/)
   notes: only supports sending to an Stackdriver
