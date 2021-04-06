@@ -71,6 +71,15 @@
   transports: Scribe, UDP, easy to add others
   sampling: "Yes"
 
+- language: Go
+  library: >-
+    [zipkintracing](https://github.com/labstack/echo-contrib/tree/master/zipkintracing)
+  framework: >-
+    [Echo](https://echo.labstack.com/)
+  propagation: Http (B3), easy to add others
+  transports: Http
+  sampling: "Yes"  
+
 - language: Java
   library: >-
     [cassandra-zipkin-tracing](https://github.com/thelastpickle/cassandra-zipkin-tracing)
