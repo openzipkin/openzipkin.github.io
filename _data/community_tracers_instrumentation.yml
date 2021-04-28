@@ -225,7 +225,7 @@
 
 - language: Scala
   library: >-
-    [kamon-zipkin](https://github.com/kamon-io/kamon-zipkin)
+    [kamon-zipkin](https://kamon.io/docs/latest/reporters/zipkin/)
   framework: >-
     [akka](https://doc.akka.io/docs/akka/current/index.html),
     [akka-http](https://doc.akka.io/docs/akka-http/current/index.html),
