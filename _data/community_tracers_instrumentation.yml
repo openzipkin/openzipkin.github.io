@@ -174,7 +174,7 @@
   propagation: Http (B3)
   transports: Http
   sampling: "Yes"
-  notes: A [Apache APISIX](https://apisix.apache.org/) plugin to enable tracing to a zipkin server.
+  notes: An [Apache APISIX](https://apisix.apache.org/) plugin to enable tracing to a zipkin server.
 
 - language: Python
   library: >-
