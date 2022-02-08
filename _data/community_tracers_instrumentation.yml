@@ -170,7 +170,8 @@
 - language: Lua
   library: >-
     [Apache APISIX-plugin-zipkin](https://github.com/apache/apisix/tree/master/apisix/plugins/zipkin)
-  framework: [Apache APISIX](https://apisix.apache.org/)
+  framework: >-
+    [Apache APISIX](https://apisix.apache.org/)
   propagation: Http (B3)
   transports: Http
   sampling: "Yes"
