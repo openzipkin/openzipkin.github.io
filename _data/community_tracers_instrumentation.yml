@@ -167,6 +167,16 @@
   sampling: "Yes"
   notes: A [Kong](http://konghq.com/) plugin to enable tracing to a zipkin server.
 
+- language: Lua
+  library: >-
+    [Apache APISIX-plugin-zipkin](https://github.com/apache/apisix/tree/master/apisix/plugins/zipkin)
+  framework: >-
+    [Apache APISIX](https://apisix.apache.org/)
+  propagation: Http (B3)
+  transports: Http
+  sampling: "Yes"
+  notes: An [Apache APISIX](https://apisix.apache.org/) plugin to enable tracing to a zipkin server.
+
 - language: Python
   library: >-
     [py_zipkin](https://github.com/Yelp/py_zipkin)
