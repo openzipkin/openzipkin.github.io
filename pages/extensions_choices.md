@@ -42,6 +42,7 @@ Listed below are alternative backends that accept Zipkin format. Some use the sa
      - http port 9411 accepts `/api/v1/spans` (thrift, json) and `/api/v2/spans` (json, proto) POST requests.
      - Kafka `zipkin` topic, and `zipkin` group ID accepts v2 spans encoded as a thrift/json/proto list per message. 
      - this extension uses the same encoding library and same endpoints as Zipkin does.
+   - Zipkin Lens UI is also bundled in SkyWalking booster UI since 9.4.0. `/zipkin` is exposed by SkyWalking webapp.
  - [Jaeger](https://github.com/jaegertracing/jaeger)
    - When `COLLECTOR_ZIPKIN_HTTP_PORT=9411` is set, Jaeger exposes a partial implementation of Zipkin's HTTP POST endpoints
      - http port 9411 accepts `/api/v1/spans` (thrift, json) and `/api/v2/spans` (json, proto) POST requests.
