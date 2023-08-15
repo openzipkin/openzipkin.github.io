@@ -38,7 +38,7 @@ same data sent to the default Zipkin server.
 Listed below are alternative backends that accept Zipkin format. Some use the same code as Zipkin on the same endpoints while others are on alternative endpoints or partially support features. In any case, the following aim to allow existing zipkin clients to use backends the OpenZipkin team does not support. Hence, direct questions to their respective communities.
     
  - [Apache SkyWalking](https://skywalking.apache.org/)
-   - When [zipkin trace component]([https://github.com/apache/incubator-skywalking/blob/master/docs/en/setup/backend/backend-receivers.md](https://skywalking.apache.org/docs/main/next/en/setup/backend/zipkin-trace/)) is enabled, Skywalking exposes the same HTTP POST endpoints and Kafka topic Zipkin does
+   - When [zipkin trace component](https://skywalking.apache.org/docs/main/next/en/setup/backend/zipkin-trace/) is enabled, Skywalking exposes the same HTTP POST endpoints and Kafka topic Zipkin does
      - http port 9411 accepts `/api/v1/spans` (thrift, json) and `/api/v2/spans` (json, proto) POST requests.
      - Kafka `zipkin` topic, and `zipkin` group ID accepts v2 spans encoded as a thrift/json/proto list per message. 
      - this extension uses the same encoding library and same endpoints as Zipkin does.
