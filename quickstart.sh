@@ -110,7 +110,25 @@ fetch_latest_version() {
     local artifact_group="$1"; shift
     local artifact_id="$1"; shift
     local url="${repo}/${artifact_group_with_slashes}/${artifact_id}/maven-metadata.xml"
-    printf $(curl -sSL $url | sed -n '/<version>/s/.*<version>\([^<]*\)<\/version>.*/\1/p'|tail -1)
+    versions=$(curl -sSL $url | sed -n '/<version>/s/.*<version>\([^<]*\)<\/version>.*/\1/p')
+
+    IFS=$'\n' version_array=($versions)
+    found_version=false
+    for ((i=${#version_array[@]}-1; i>=0; i--)); do
+        version=${version_array[i]}
+        if [[ $version =~ ^[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]$ ]]; then
+            printf "%s\n" "$version"
+            found_version=true
+            break
+        fi
+    done
+
+    if [ "$found_version" = false ]; then
+        cat <<EOF
+        ${color_bad}Cannot found any valid Zipkin release version number; this script is confused. Bailing out. ${color_reset}
+EOF
+        exit 1
+    fi
 }
 
 artifact_part() {
