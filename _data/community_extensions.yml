@@ -1,18 +1,12 @@
 - type: Storage
   module: >-
-    [zipkin-logzio](https://github.com/logzio/zipkin-logzio)
+    [zipkin-storage-forwarder](https://github.com/openzipkin-contrib/zipkin-storage-forwarder)
   product: >-
-    [Logz.io](https://logz.io)
-  notes: "Supports both sending and reading back data to and from Logz.io: Secure & Scalable Log Management with Cloud-Based ELK"
+    [Apache kafka](https://kafka.apache.org/) (Optional)
+  notes: Forwards spans to another HTTP or Kafka collector.
 - type: Storage
   module: >-
-    [zipkin-scouter storage-scouter](https://github.com/scouter-project/zipkin-scouter)
-  product: >-
-    [Scouter APM](https://github.com/scouter-project/scouter)
-  notes: only supports sending to an Scouter
-- type: Storage
-  module: >-
-    [zipkin-storage-kafka](https://github.com/jeqo/zipkin-storage-kafka)
+    [zipkin-storage-kafka](https://github.com/openzipkin-contrib/zipkin-storage-kafka)
   product: >-
     [Apache kafka](https://kafka.apache.org/)
   notes: Supports aggregation and indexing of tracing data via Kafka Streams State Store.

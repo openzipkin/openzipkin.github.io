@@ -21,9 +21,9 @@
 - language: Java
   library: >-
     [brave](https://github.com/openzipkin/brave)
-  framework: Jersey, RestEASY, JAXRS2, Apache HttpClient, Mysql
-  propagation: Http (B3), gRPC (B3)
-  transports: Http, Kafka, Scribe
+  framework: Jersey, gRPC, JAXRS2, Apache HttpClient, Kafka, JMS, Mysql, and many more!
+  propagation: Http (B3), RPC (B3), Messaging (B3)
+  transports: Same as [zipkin-reporter-brave](https://github.com/openzipkin/zipkin-reporter-java/tree/master/brave)
   sampling: "Yes"
   notes: Java 6 or higher
 
@@ -68,3 +68,13 @@
   transports: "http, log file"
   sampling: "Yes"
   notes: V2 native based on brave's model, compatible with PHP 5.6 and PHP 7.x. Check [this](https://github.com/openzipkin/zipkin-php-example) out for an example.
+
+- language: Java
+  library: >-
+    [brave-cassandra](https://github.com/openzipkin/brave-cassandra)
+  framework: >-
+    [Apache Cassandra](https://cassandra.apache.org)
+  propagation: CQL (B3)
+  transports: Same as [zipkin-reporter-brave](https://github.com/openzipkin/zipkin-reporter-java/tree/master/brave)
+  sampling: "Yes"
+  notes: Java 8+

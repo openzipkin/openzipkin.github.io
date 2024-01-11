@@ -1,49 +1,3 @@
-- language: "C++,Python"
-  library: >-
-    [cppkin](https://github.com/Dudi119/cppKin)
-  framework: Any
-  propagation: Http (B3), Thrift
-  transports: Http, Scribe
-  sampling: "Yes"
-  notes: cpp version also available in windows.
-
-- language: "C,C++"
-  library: >-
-    [zipkin-cpp](https://github.com/flier/zipkin-cpp)
-  framework: gRPC
-  propagation: Http (B3)
-  transports: Http, Kafka, Scribe, X-Ray
-  sampling: "Yes"
-  notes: includes benchmarks
-
-- language: "C#"
-  library: >-
-    [ZipkinTracerModule](https://github.com/mdsol/Medidata.ZipkinTracerModule)
-  framework: OWIN, HttpHandler
-  propagation: Http (B3)
-  transports: Http
-  sampling: "Yes"
-  notes: lc support. 4.5.2 or higher
-
-- language: "Clojure"
-  library: >-
-    [zipkin-clj](https://github.com/suprematic/zipkin-clj)
-  framework: Any
-  propagation: B3
-
-- language: Elixir
-  library: >-
-    [Tapper](https://github.com/Financial-Times/tapper)
-  framework: >-
-    Any, [Plug](https://github.com/elixir-lang/plug) supported via [Tapper Plug](https://github.com/Financial-Times/tapper_plug)
-  propagation: Http (B3)
-  transports: Http
-  sampling: "[Yes](https://github.com/Financial-Times/tapper_plug#sampling)"
-  notes: >-
-    Comprises tracing and reporting OTP-application [Tapper](https://github.com/Financial-Times/tapper),
-    with server integration via [Tapper Plug](https://github.com/Financial-Times/tapper_plug), and support for tracing
-    [Absinthe](http://absinthe-graphql.org/) via [Tapper Absinthe Plug](https://github.com/Financial-Times/tapper_absinthe_plug)
-
 - language: Go
   library: >-
     [zipkin-go-opentracing](https://github.com/openzipkin-contrib/zipkin-go-opentracing)
@@ -53,23 +7,6 @@
   transports: Http, Kafka, Scribe
   sampling: "Yes"
   notes:
-
-- language: Go
-  library: >-
-    [go-zipkin](https://github.com/elodina/go-zipkin)
-  framework: x/net Context
-  propagation:
-  transports: Kafka
-  sampling: "Yes"
-
-- language: Go
-  library: >-
-    [monkit-zipkin](https://github.com/spacemonkeygo/monkit-zipkin/)
-  framework: >-
-    [Monkit](https://github.com/spacemonkeygo/monkit/)
-  propagation: Http (B3), easy to add others
-  transports: Scribe, UDP, easy to add others
-  sampling: "Yes"
 
 - language: Go
   library: >-
@@ -92,25 +29,6 @@
 
 - language: Java
   library: >-
-    [Dropwizard Zipkin](https://github.com/smoketurner/dropwizard-zipkin)
-  framework: >-
-    [Dropwizard](http://www.dropwizard.io)
-  propagation: Http (B3), Thrift
-  transports: Http, Scribe
-  sampling: "Yes"
-  notes: Java 7 or higher
-
-- language: Java
-  library: >-
-    [htrace](https://github.com/apache/incubator-htrace/tree/master/htrace-zipkin)
-  framework: HDFS, HBase
-  propagation:
-  transports: Http, Scribe
-  sampling: "Yes"
-  notes: Java 7 or higher
-
-- language: Java
-  library: >-
     [Spring Cloud Sleuth](https://github.com/spring-cloud/spring-cloud-sleuth)
   framework: Spring, Spring Cloud (e.g. Stream, Netflix)
   propagation: Http (B3), Messaging (B3)
@@ -129,43 +47,6 @@
   transports: Http
   sampling: "Yes"
   notes: Java 7 or higher, [SLF4J MDC support](https://github.com/Nike-Inc/wingtips#mdc_info) for auto-tagging all log messages with tracing info
-
-- language: JavaScript
-  library: >-
-    [appmetrics-zipkin](https://github.com/RuntimeTools/appmetrics-zipkin)
-  framework: Express, Koa
-  propagation: Http (B3)
-  transports: Http
-  sampling: "Yes"
-  notes: Provides zipkin support with addition of a single line of code
-
-- language: JavaScript
-  library: >-
-    [zipkin-instrumentation-vue-resource](https://github.com/elgris/zipkin-instrumentation-vue-resource)
-  framework: VueJS
-  propagation: Http (B3)
-  transports: Http
-  sampling: "Yes"
-  notes: An interceptor for vue-resource that instruments outgoing HTTP requests.
-
-- language: JavaScript
-  library: >-
-    [zipkin-instrumentation-mysql](https://github.com/juspay/zipkin-instrumentation-mysql)
-  framework: >-
-    [NodeJS MySQL](https://github.com/mysqljs/mysql)
-  propagation: Http (B3)
-  transports: Http, Kafka, Scribe
-  sampling: "Yes"
-  notes: Provides zipkin support for NodeJS MySQL
-
-- language: Lua
-  library: >-
-    [kong-plugin-zipkin](https://github.com/Kong/kong-plugin-zipkin)
-  framework: Kong
-  propagation: Http (B3)
-  transports: Http
-  sampling: "Yes"
-  notes: A [Kong](http://konghq.com/) plugin to enable tracing to a zipkin server.
 
 - language: Lua
   library: >-
@@ -213,17 +94,6 @@
 
 - language: Python
   library: >-
-    [flask_zipkin](https://github.com/qiajigou/flask-zipkin)
-  framework: >-
-    [Flask](http://flask.pocoo.org)
-  propagation: Http (B3)
-  transports: Pluggable
-  sampling: >-
-    [Yes](http://qiajigou.click/flask-zipkin/)
-  notes: Uses py_zipkin; py2, py3 support.
-
-- language: Python
-  library: >-
     [aiozipkin](https://github.com/aio-libs/aiozipkin)
   framework: >-
     [asyncio](https://docs.python.org/3/library/asyncio.html)
@@ -246,26 +116,6 @@
 
 - language: Scala
   library: >-
-    [akka-tracing](https://github.com/levkhomich/akka-tracing)
-  framework: >-
-    [Akka](https://akka.io), [Spray](https://spray.io), [Play](https://www.playframework.com)
-  propagation: Http (B3), Thrift
-  transports: Scribe
-  sampling: "Yes"
-  notes: Java 6+, Scala 2.10+, activator templates for [Akka](https://github.com/levkhomich/activator-akka-tracing) and [Play](https://github.com/levkhomich/activator-play-tracing)
-
-- language: Scala
-  library: >-
-    [play-zipkin-tracing](https://github.com/bizreach/play-zipkin-tracing)
-  framework: >-
-    [Play](https://www.playframework.com)
-  propagation: Http (B3)
-  transports: Http
-  sampling: "Yes"
-  notes: Uses Brave4; Play 2.3, 2.4 and 2.5 support.
-
-- language: Scala
-  library: >-
     [sttp](https://github.com/softwaremill/sttp)
   framework: >-
     [akka-http](https://doc.akka.io/docs/akka-http/current/index.html),
@@ -274,24 +124,6 @@
   transports: Http
   sampling: "Yes"
   notes: Brave-based wrapper for any http backend implemented using sttp's interface
-
-- language: PHP
-  library: >-
-    [phpkin](https://github.com/whitemerry/phpkin)
-  framework: Any
-  propagation: "B3, custom (depends on user implementation)"
-  transports: "http, log file"
-  sampling: "Yes"
-  notes: Simple and full implementation without dependencies. Very flexible.
-
-- language: PHP
-  library: >-
-    [Molten](https://github.com/chuan-yun/Molten)
-  framework: Any
-  propagation: "B3"
-  transports: "http, log file, syslog"
-  sampling: "Yes"
-  notes: Application transparent;php5.6 or higher;auto trace pdo/mysqli/curl/memcached/redis;auto add http B3 header.
 
 - language: PHP
   library: >-
@@ -304,7 +136,7 @@
 
 - language: Java
   library: >-
-    [kafka-interceptor-zipkin](https://github.com/sysco-middleware/kafka-interceptor-zipkin)
+    [kafka-interceptor-zipkin](https://github.com/openzipkin-contrib/kafka-interceptor-zipkin)
   framework: >-
     [Apache Kafka](https://kafka.apache.org)
   propagation: "B3"
@@ -327,17 +159,3 @@
   transports: "http, log file"
   sampling: "Yes"
   notes: A Zipkin integration for Symfony applications
-
-- language: PHP
-  library: >-
-    [zipkin-instrumentation-doctrine](https://github.com/jcchavezs/zipkin-instrumentation-doctrine)
-  framework: >-
-    [Doctrine](https://www.doctrine-project.org/)
-  notes: Zipkin instrumentation for Doctrine ORM
-
-- language: PHP
-  library: >-
-    [zipkin-instrumentation-guzzle](https://github.com/jcchavezs/zipkin-instrumentation-guzzle)
-  framework: >-
-    [Guzzle](http://docs.guzzlephp.org)
-  notes: Zipkin instrumentation for Guzzle HTTP Client
