@@ -159,3 +159,13 @@
   transports: "http, log file"
   sampling: "Yes"
   notes: A Zipkin integration for Symfony applications
+
+- language: Java
+  library: >-
+    [opentelemetry-java](https://github.com/opentelemetry/opentelemetry-java)
+  framework: >-
+    [Any](https://opentelemetry.io/docs/instrumentation/java/manual/), [auto instrumentation for many popular libraries / frameworks](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/docs/supported-libraries.md)
+  propagation: "B3"
+  transports: "Http, gRPC, Messaging, Pluggable"
+  sampling: "Yes"
+  notes: Java 8+
