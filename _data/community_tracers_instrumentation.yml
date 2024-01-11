@@ -328,7 +328,6 @@
   sampling: "Yes"
   notes: A Zipkin integration for Symfony applications
 
-<<<<<<< HEAD
 - language: PHP
   library: >-
     [zipkin-instrumentation-doctrine](https://github.com/jcchavezs/zipkin-instrumentation-doctrine)
