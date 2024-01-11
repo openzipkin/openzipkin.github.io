@@ -22,9 +22,12 @@ jobs:
         with:
           fetch-depth: 1  # full history is not needed
       - name: Set up Ruby
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: '2.7'
+          # Match build-bin/configure_test
+          rubygems: '3.4.22'
+          bundler: '2.4.22'
           bundler-cache: true
       - name: Test
-        run: build-bin/configure_test && build-bin/test
+        run: build-bin/test

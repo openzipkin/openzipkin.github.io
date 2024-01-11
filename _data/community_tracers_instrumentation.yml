@@ -78,7 +78,7 @@
     [Echo](https://echo.labstack.com/)
   propagation: Http (B3), easy to add others
   transports: Http
-  sampling: "Yes"  
+  sampling: "Yes"
 
 - language: Java
   library: >-
