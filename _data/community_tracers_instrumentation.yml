@@ -78,7 +78,7 @@
     [Echo](https://echo.labstack.com/)
   propagation: Http (B3), easy to add others
   transports: Http
-  sampling: "Yes"  
+  sampling: "Yes"
 
 - language: Java
   library: >-
@@ -328,6 +328,7 @@
   sampling: "Yes"
   notes: A Zipkin integration for Symfony applications
 
+<<<<<<< HEAD
 - language: PHP
   library: >-
     [zipkin-instrumentation-doctrine](https://github.com/jcchavezs/zipkin-instrumentation-doctrine)
