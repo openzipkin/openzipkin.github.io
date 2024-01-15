@@ -159,3 +159,13 @@
   transports: "http, log file"
   sampling: "Yes"
   notes: A Zipkin integration for Symfony applications
+
+- language: Several
+  library: >-
+    [opentelemetry](https://opentelemetry.io)
+  framework: >-
+    Any
+  propagation: "B3, W3C"
+  transports: Http
+  sampling: "Yes"
+  notes: Toolkit for observability, with prebuilt instrumentation for many libraries in several languages.
