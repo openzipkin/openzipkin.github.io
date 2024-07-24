@@ -14,7 +14,7 @@ Regardless of how you start Zipkin, browse to http://your_host:9411 to find trac
 
 ## Docker
 
-The [Docker Zipkin](https://github.com/openzipkin/zipkin/tree/master/docker) project is able to build docker images, provide scripts and a [`docker-compose.yml`](https://github.com/openzipkin/docker-zipkin/blob/master/docker-compose.yml)
+The [Docker Zipkin](https://github.com/openzipkin/zipkin/tree/master/docker) project is able to build docker images, provide scripts and a [`docker-compose.yml`](https://github.com/openzipkin/zipkin/blob/master/docker/examples/docker-compose.yml)
 for launching pre-built images. The quickest start is to run the latest image directly:
 
 ~~~ bash
