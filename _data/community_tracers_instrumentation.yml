@@ -30,6 +30,7 @@
 - language: Java
   library: >-
     [Spring Cloud Sleuth](https://github.com/spring-cloud/spring-cloud-sleuth)
+    [Micrometer Tracing](https://github.com/micrometer-metrics/tracing)
   framework: Spring, Spring Cloud (e.g. Stream, Netflix)
   propagation: Http (B3), Messaging (B3)
   transports: Http, Spring Cloud Stream Compatible (e.g. RabbitMQ, Kafka, Redis or anything with a custom Binder)
