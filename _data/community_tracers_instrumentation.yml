@@ -40,7 +40,7 @@
   library: >-
     [Micrometer Tracing](https://github.com/micrometer-metrics/tracing)
   framework: Spring, Quarkus, Micronaut, Helidon
-  propagation: Http (B3), Messaging (B3), W3C(B3)
+  propagation: B3, W3C
   transports: Http
   sampling: "Yes"
   notes: Java 8+
