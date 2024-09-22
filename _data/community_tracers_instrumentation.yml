@@ -39,7 +39,7 @@
 - language: Java
   library: >-
     [Micrometer Tracing](https://github.com/micrometer-metrics/tracing)
-  framework: Spring Framework 6+, Quarkus, Micronaut, Helidon
+  framework: Spring Boot 3+
   propagation: B3, W3C
   transports: Http
   sampling: "Yes"
